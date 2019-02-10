@@ -6,10 +6,12 @@
 package gui;
 
 import arquitectura.Entorno;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import static tools.EntornoTools.descubrirEntorno;
 import tools.JsonManager;
 
 /**
@@ -37,20 +39,19 @@ public class OnosFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        onosGUI1 = new gui.OnosGUI();
-        onosGUI2 = new gui.OnosGUI();
         jPanel1 = new javax.swing.JPanel();
         jButtonConectar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        jLabelUsuario = new javax.swing.JLabel();
         jTextFieldUsuario = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabelPassword = new javax.swing.JLabel();
+        jLabelControlador = new javax.swing.JLabel();
         jTextFieldControlador = new javax.swing.JTextField();
         jPasswordField = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        jLabelImagen = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ONOS QoS - login");
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(65, 76, 85));
@@ -71,29 +72,35 @@ public class OnosFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Usuario");
+        jLabelUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelUsuario.setText("Usuario");
 
-        jTextFieldUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldUsuarioActionPerformed(evt);
+        jTextFieldUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldUsuarioKeyPressed(evt);
             }
         });
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Contraseña");
+        jLabelPassword.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelPassword.setText("Contraseña");
 
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Controlador");
+        jLabelControlador.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelControlador.setText("Controlador");
 
         jTextFieldControlador.setLocation(new java.awt.Point(-32411, -32581));
-        jTextFieldControlador.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldControladorActionPerformed(evt);
+        jTextFieldControlador.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldControladorKeyPressed(evt);
             }
         });
 
-        jLabel5.setIcon(new javax.swing.ImageIcon("/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/img/Untitled-1.png")); // NOI18N
+        jPasswordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPasswordFieldKeyPressed(evt);
+            }
+        });
+
+        jLabelImagen.setIcon(new javax.swing.ImageIcon("/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/img/Untitled-1.png")); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -101,14 +108,14 @@ public class OnosFrame extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
-                .addComponent(jLabel5)
+                .addComponent(jLabelImagen)
                 .addGap(47, 47, 47)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabelPassword)
+                    .addComponent(jLabelUsuario)
+                    .addComponent(jLabelControlador))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTextFieldUsuario)
@@ -127,19 +134,19 @@ public class OnosFrame extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel5)
+                            .addComponent(jLabelImagen)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1))
+                                    .addComponent(jLabelUsuario))
                                 .addGap(29, 29, 29)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2))
+                                    .addComponent(jLabelPassword))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jTextFieldControlador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3))
+                                    .addComponent(jLabelControlador))
                                 .addGap(29, 29, 29)
                                 .addComponent(jButtonConectar)))))
                 .addGap(24, 24, 24))
@@ -162,37 +169,58 @@ public class OnosFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConectarActionPerformed
-        // TODO add your handling code here:
+       // TODO add your handling code here:
     }//GEN-LAST:event_jButtonConectarActionPerformed
-
-    private void jTextFieldUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldUsuarioActionPerformed
-
-    private void jTextFieldControladorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldControladorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldControladorActionPerformed
 
     private void jButtonConectarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonConectarMouseClicked
         // TODO add your handling code here:
         //DESCUBRIR ENTORNO
+        conectar();
+    }//GEN-LAST:event_jButtonConectarMouseClicked
+
+    private void jTextFieldUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+            jButtonConectar.doClick();
+            conectar();
+    }//GEN-LAST:event_jTextFieldUsuarioKeyPressed
+
+    private void jPasswordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordFieldKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+            jButtonConectar.doClick();
+            conectar();
+    }//GEN-LAST:event_jPasswordFieldKeyPressed
+
+    private void jTextFieldControladorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldControladorKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+            jButtonConectar.doClick();
+            conectar();
+    }//GEN-LAST:event_jTextFieldControladorKeyPressed
+
+    private void conectar(){
+        Conectando conectando = new Conectando(this, false);
+        conectando.setVisible(true);
+        conectando.pack();
+        String usuario = "onos";//jTextFieldUsuario.getText();
+        String password = "rocks";//String.valueOf(jPasswordField.getPassword());
+        String controlador = "192.168.56.101";//jTextFieldControlador.getText();
         try {
-                descubrirEntorno(entorno, jTextFieldUsuario.getText(), String.valueOf(jPasswordField.getPassword()), jTextFieldControlador.getText() ,parser);
-                JFrame principal = new Principal();
+                descubrirEntorno(entorno, usuario, password, controlador ,parser);
+                conectando.dispose();
+                JFrame principal = new Principal(entorno, usuario, password, controlador,  parser);
                 principal.setVisible(true);
                 principal.pack();
-               // this.setVisible(false);
+                this.dispose();
         } catch (IOException e1) {
                 //COMPLETAR VENTANA DE AVISO
+                conectando.dispose();
                 JDialog errorOnos = new NewOkCancelDialog(this, true);
                 errorOnos.setVisible(true);
                 errorOnos.pack();
         }
-
-        
-        
-    }//GEN-LAST:event_jButtonConectarMouseClicked
-
+    }
     /**
      * @param args the command line arguments
      */
@@ -227,57 +255,23 @@ public class OnosFrame extends javax.swing.JFrame {
             }
         });
     }
+    
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConectar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabelControlador;
+    private javax.swing.JLabel jLabelImagen;
+    private javax.swing.JLabel jLabelPassword;
+    private javax.swing.JLabel jLabelUsuario;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField;
     private javax.swing.JTextField jTextFieldControlador;
     private javax.swing.JTextField jTextFieldUsuario;
-    private gui.OnosGUI onosGUI1;
-    private gui.OnosGUI onosGUI2;
     // End of variables declaration//GEN-END:variables
 
-private void descubrirEntorno(Entorno entorno, String usuario, String passwd, String controlador, JsonManager parser) throws IOException {
-                                String json = "";
-                                String endpoint = "http://" + controlador + ":8181/onos/v1";
-                                URL urlClusters = new URL(endpoint + "/cluster");
-                                URL urlTopology = new URL(endpoint + "/devices");
-                                URL urlLinks = new URL(endpoint + "/links");
-                                URL urlFlows = new URL(endpoint + "/flows");
-
-                                // CLUSTERS
-                                json = parser.getJSON(urlClusters, usuario, passwd);
-                                parser.parseoJsonClusters(json);
-                                System.out.println(json);
-                                System.out.println("***CLUSTERS CARGADOS***");
-
-                                // SWITCHES
-                                json = parser.getJSON(urlTopology, usuario, passwd);
-                                parser.parseoJsonTopologia(json);
-                                System.out.println(json);
-                                System.out.println("\n***SWITCHES CARGADOS***");
-
-                                //LINKS
-                                json = parser.getJSON(urlLinks, usuario, passwd);
-                                parser.parseoJsonLinks(json);
-                                System.out.println(json);
-                                System.out.println("\n***ENLACES CARGADOS***");
-
-                                //FLOWS
-                                json = parser.getJSON(urlFlows, usuario, passwd);
-                                parser.parseoJsonFlow(json);
-                                System.out.println(json);
-                                System.out.println("\n***FLUJOS CARGADOS***");
-
-                                System.out.println("\n***TOPOLOGIA CARGADA***");
-
-                        }
+    
 }
 
 

@@ -1,5 +1,7 @@
 package arquitectura;
 
+import java.util.Vector;
+
 public class Flow {
 	private String id;
 	private int idTable;
@@ -104,4 +106,12 @@ public class Flow {
 		
 		return false;
 	}
+        
+        public Object[] toArray(){
+            Vector<Object> v = new Vector<Object>();
+            v.add(this.ovs); v.add(this.id); v.add(this.idGrupo);
+            v.add(this.prioridad); v.add(this.estado); v.add(this.nPaquetes); v.add(this.nBytes);
+            Object[] array = v.toArray();
+            return array;
+        }
 }
