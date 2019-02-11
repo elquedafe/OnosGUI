@@ -29,7 +29,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace pref="109" max="32767" attributes="0"/>
+              <EmptySpace pref="332" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="okButton" linkSize="1" min="-2" pref="67" max="-2" attributes="0"/>
@@ -78,9 +78,6 @@
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="ERROR. No se ha podido establecer conexi&#xf3;n con el controlador"/>
-      </Properties>
     </Component>
   </SubComponents>
 </Form>

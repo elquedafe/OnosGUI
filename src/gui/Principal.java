@@ -77,6 +77,8 @@ public class Principal extends javax.swing.JFrame {
         jTableFlows = new javax.swing.JTable();
         jPanelDetalleFlow = new javax.swing.JPanel();
         jComboBoxSwitches = new javax.swing.JComboBox<>();
+        jButtonFlujo = new javax.swing.JButton();
+        jLabelSwitch = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ONOS QoS");
@@ -93,6 +95,7 @@ public class Principal extends javax.swing.JFrame {
         jButtonDesconexion.setForeground(new java.awt.Color(255, 255, 255));
         jButtonDesconexion.setText("Desconectar");
         jButtonDesconexion.setBorderPainted(false);
+        jButtonDesconexion.setOpaque(true);
         jButtonDesconexion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonDesconexionActionPerformed(evt);
@@ -261,22 +264,52 @@ public class Principal extends javax.swing.JFrame {
                 jComboBoxSwitchesItemStateChanged(evt);
             }
         });
+        jComboBoxSwitches.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxSwitchesActionPerformed(evt);
+            }
+        });
+
+        jButtonFlujo.setBackground(new java.awt.Color(37, 44, 51));
+        jButtonFlujo.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonFlujo.setText("Añadir Flujo");
+        jButtonFlujo.setBorderPainted(false);
+        jButtonFlujo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonFlujoMouseClicked(evt);
+            }
+        });
+
+        jLabelSwitch.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        jLabelSwitch.setText("Switch:");
 
         javax.swing.GroupLayout jPanelDetalleFlowLayout = new javax.swing.GroupLayout(jPanelDetalleFlow);
         jPanelDetalleFlow.setLayout(jPanelDetalleFlowLayout);
         jPanelDetalleFlowLayout.setHorizontalGroup(
             jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDetalleFlowLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jComboBoxSwitches, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGroup(jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelDetalleFlowLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jButtonFlujo, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 16, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalleFlowLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabelSwitch)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxSwitches, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanelDetalleFlowLayout.setVerticalGroup(
             jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDetalleFlowLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jComboBoxSwitches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(29, 29, 29)
+                .addGroup(jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxSwitches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelSwitch))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonFlujo)
+                .addGap(20, 20, 20))
         );
 
         javax.swing.GroupLayout jPanelFlowsLayout = new javax.swing.GroupLayout(jPanelFlows);
@@ -548,16 +581,33 @@ public class Principal extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_jComboBoxSwitchesItemStateChanged
+
+    private void jButtonFlujoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonFlujoMouseClicked
+        try {
+            // TODO add your handling code here:
+            JFrame newFlow = new NuevoFlujo(entorno, parser);
+            newFlow.setVisible(true);
+            newFlow.pack();
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonFlujoMouseClicked
+
+    private void jComboBoxSwitchesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSwitchesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxSwitchesActionPerformed
     
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDesconexion;
+    private javax.swing.JButton jButtonFlujo;
     private javax.swing.JComboBox<String> jComboBoxSwitches;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelFlows;
     private javax.swing.JLabel jLabelFlows2;
+    private javax.swing.JLabel jLabelSwitch;
     private javax.swing.JLabel jLabelTopologia;
     private javax.swing.JList<Flow> jListFlows;
     private javax.swing.JList<Link> jListLinks;

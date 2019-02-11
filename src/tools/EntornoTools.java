@@ -26,38 +26,54 @@ import javax.swing.table.TableModel;
  * @author alvaroluismartinez
  */
 public class EntornoTools {
-    public static void descubrirEntorno(Entorno entorno, String usuario, String passwd, String controlador, JsonManager parser) throws IOException{
+    public static String endpoint;
+    public static String user;
+    public static String password;
+    public static String controlador;
+   
+    public static void descubrirEntorno(Entorno entorno, String usuario, String passwd, String controller, JsonManager parser) throws IOException{
         String json = "";
-        String endpoint = "http://" + controlador + ":8181/onos/v1";
+        user = usuario;
+        password = passwd;
+        controlador = controller;
+        endpoint = "http://" + controlador + ":8181/onos/v1";
         URL urlClusters = new URL(endpoint + "/cluster");
         URL urlTopology = new URL(endpoint + "/devices");
         URL urlLinks = new URL(endpoint + "/links");
         URL urlFlows = new URL(endpoint + "/flows");
 
         // CLUSTERS
-        json = parser.getJSON(urlClusters, usuario, passwd);
+        json = parser.getJSON(urlClusters, usuario, passwd, "GET");
         parser.parseoJsonClusters(json);
         System.out.println(json);
         System.out.println("***CLUSTERS CARGADOS***");
 
         // SWITCHES
-        json = parser.getJSON(urlTopology, usuario, passwd);
+        json = parser.getJSON(urlTopology, usuario, passwd, "GET");
         parser.parseoJsonTopologia(json);
         System.out.println(json);
         System.out.println("\n***SWITCHES CARGADOS***");
-
+        
+        //PORTS
+        for(Switch s : entorno.getMapSwitches().values()){
+            json = parser.getJSON(new URL(endpoint+"/devices/"+s.getId()+"/ports"), usuario, passwd, "GET");
+            parser.parseoJsonPuertos(json);
+            System.out.println(json);
+        }
+        System.out.println("\n***PUERTOS CARGADOS***");
+        
         //LINKS
-        json = parser.getJSON(urlLinks, usuario, passwd);
+        json = parser.getJSON(urlLinks, usuario, passwd, "GET");
         parser.parseoJsonLinks(json);
         System.out.println(json);
         System.out.println("\n***ENLACES CARGADOS***");
-
+        
         //FLOWS
-        json = parser.getJSON(urlFlows, usuario, passwd);
+        json = parser.getJSON(urlFlows, usuario, passwd, "GET");
         parser.parseoJsonFlow(json);
         System.out.println(json);
         System.out.println("\n***FLUJOS CARGADOS***");
-
+        
         System.out.println("\n***TOPOLOGIA CARGADA***");
 
     

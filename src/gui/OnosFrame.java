@@ -180,16 +180,18 @@ public class OnosFrame extends javax.swing.JFrame {
 
     private void jTextFieldUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             jButtonConectar.doClick();
             conectar();
+        }
     }//GEN-LAST:event_jTextFieldUsuarioKeyPressed
 
     private void jPasswordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordFieldKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             jButtonConectar.doClick();
             conectar();
+        }
     }//GEN-LAST:event_jPasswordFieldKeyPressed
 
     private void jTextFieldControladorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldControladorKeyPressed
@@ -216,7 +218,8 @@ public class OnosFrame extends javax.swing.JFrame {
         } catch (IOException e1) {
                 //COMPLETAR VENTANA DE AVISO
                 conectando.dispose();
-                JDialog errorOnos = new NewOkCancelDialog(this, true);
+                System.err.println(e1.getMessage());
+                JDialog errorOnos = new NewOkCancelDialog(this, true, "ERROR. No se ha podido establecer conexión con el controlador");
                 errorOnos.setVisible(true);
                 errorOnos.pack();
         }

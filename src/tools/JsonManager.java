@@ -13,6 +13,7 @@ import arquitectura.Cluster;
 import arquitectura.Entorno;
 import arquitectura.Flow;
 import arquitectura.Link;
+import arquitectura.Port;
 import arquitectura.Switch;
 import com.google.gson.stream.JsonReader;
 
@@ -20,38 +21,39 @@ public class JsonManager {
 	private Link auxLink = null;
 	private Cluster auxCluster = null;
 	private Entorno entorno;
+        private Port auxPuerto = null;
 	private JsonReader reader;
 	public JsonManager(Entorno entorno) {
 		this.entorno = entorno;
 	}
 	
-	public String getJSON(URL url, String usuario, String password) throws IOException{
-        String encoding;
-        String line;
-        String json="";
-        HttpURLConnection connection = null;
-		try {
-			encoding = Base64.getEncoder().encodeToString((usuario + ":"+ password).getBytes("UTF-8"));
-			connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
-	        connection.setDoOutput(true);
-	        connection.setRequestProperty("Authorization", "Basic " + encoding);
-	        InputStream content = (InputStream)connection.getInputStream();
-	        BufferedReader in   = 
-	            new BufferedReader (new InputStreamReader (content));
-	        while ((line = in.readLine()) != null) {
-	            //System.out.println(line);
-	            json += line+"\n";
-	        }
-		} catch (IOException e) {
-			throw new IOException(e);
-		}
-		finally{
-			if(connection != null)
-				connection.disconnect();
-		}
-        
-        return json;
+	public String getJSON(URL url, String usuario, String password, String metodo) throws IOException{
+            String encoding;
+            String line;
+            String json="";
+            HttpURLConnection connection = null;
+                    try {
+                            encoding = Base64.getEncoder().encodeToString((usuario + ":"+ password).getBytes("UTF-8"));
+                            connection = (HttpURLConnection) url.openConnection();
+                            connection.setRequestMethod(metodo);
+                    connection.setDoOutput(true);
+                    connection.setRequestProperty("Authorization", "Basic " + encoding);
+                    InputStream content = (InputStream)connection.getInputStream();
+                    BufferedReader in   = 
+                        new BufferedReader (new InputStreamReader (content));
+                    while ((line = in.readLine()) != null) {
+                        //System.out.println(line);
+                        json += line+"\n";
+                    }
+                    } catch (IOException e) {
+                            throw new IOException(e);
+                    }
+                    finally{
+                            if(connection != null)
+                                    connection.disconnect();
+                    }
+
+            return json;
 	}
 	
 	public void parseoJsonLinks(String json) {
@@ -405,6 +407,84 @@ public class JsonManager {
 			e.printStackTrace();
 		}
 		
+	}
+        
+        public void parseoJsonPuertos(String json){
+            String nombre = "";
+            String switchId = "";
+            reader = new JsonReader(new StringReader(json));
+            reader.setLenient(true);
+            try {
+                reader.beginObject();
+                while(reader.hasNext()){
+                        nombre = reader.nextName();
+                        if(nombre.equals("ports")) {
+                            reader.beginArray();
+                            while(reader.hasNext()){
+                                leerElementoArrayPuertos(reader);
+                            }
+                            reader.endArray();
+                        }
+                        else if(nombre.equals("id"))
+                            switchId = reader.nextString();
+                        else
+                                reader.skipValue();
+                        
+                }
+                //FIN network-topology
+                reader.endObject();
+            } catch (IOException e) {
+                    e.printStackTrace();
+            }
+            finally {
+                try {
+                        reader.close();
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+            }
+        }
+
+    public void leerElementoArrayPuertos(JsonReader reader) {
+                auxPuerto = new Port();
+                String nombre = "";
+                String nombre2 = "";
+                String numero = "";
+                String mac = "";
+                String velocidad = "";
+                String sw = "";
+		try {
+			reader.beginObject();
+			while(reader.hasNext()){
+				nombre = reader.nextName();
+				if(nombre.equals("annotations")) {
+                                        reader.beginObject();
+					while(reader.hasNext()){
+                                             nombre2 = reader.nextName();
+                                             if(nombre2.equals("portMac")) 
+                                                auxPuerto.setMac(mac = reader.nextString());
+                                             else if(nombre2.equals("portName")) 
+                                                auxPuerto.setNombrePuerto(nombre = reader.nextString());
+                                             else   
+                                                 reader.skipValue();
+					}
+                                        reader.endObject();
+				}
+                                else if(nombre.equals("portSpeed")) 
+                                     auxPuerto.setVelocidad(Double.parseDouble(reader.nextString()));
+                                else if(nombre.equals("port"))
+                                     auxPuerto.setNumeroPuerto(reader.nextString());
+                                else if(nombre.equals("element")) 
+                                     auxPuerto.setOvs(sw = reader.nextString());
+                                else
+                                   reader.skipValue();
+			}
+			reader.endObject();
+                        entorno.getMapSwitches().get(sw).addPort(auxPuerto);
+                        auxPuerto = null;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
 
