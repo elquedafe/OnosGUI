@@ -54,5 +54,10 @@ public class Port {
 	public void setNombrePuerto(String nombrePuerto) {
 		this.nombrePuerto = nombrePuerto;
 	}
+        
+        @Override
+        public String toString(){
+            return this.numeroPuerto+"/"+this.nombrePuerto+"("+this.velocidad+")";
+        }
 
 }

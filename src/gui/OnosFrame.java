@@ -6,11 +6,14 @@
 package gui;
 
 import arquitectura.Entorno;
+import java.awt.Component;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import static tools.EntornoTools.descubrirEntorno;
 import tools.JsonManager;
 
@@ -100,7 +103,7 @@ public class OnosFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabelImagen.setIcon(new javax.swing.ImageIcon("/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/img/Untitled-1.png")); // NOI18N
+        jLabelImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/Untitled-1.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -202,26 +205,33 @@ public class OnosFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldControladorKeyPressed
 
     private void conectar(){
-        Conectando conectando = new Conectando(this, false);
-        conectando.setVisible(true);
-        conectando.pack();
+//        Conectando conectando = new Conectando(this, true);
+//        conectando.setVisible(true);
+//        conectando.pack();
         String usuario = "onos";//jTextFieldUsuario.getText();
         String password = "rocks";//String.valueOf(jPasswordField.getPassword());
         String controlador = "192.168.56.101";//jTextFieldControlador.getText();
+        //JOptionPane.showMessageDialog(this, "Conectando con el controlador...", "Conectando...", JOptionPane.INFORMATION_MESSAGE);
+        JDialog dialog = mostrarDialogo();
+        
         try {
-                descubrirEntorno(entorno, usuario, password, controlador ,parser);
-                conectando.dispose();
-                JFrame principal = new Principal(entorno, usuario, password, controlador,  parser);
-                principal.setVisible(true);
-                principal.pack();
-                this.dispose();
+            descubrirEntorno(entorno, usuario, password, controlador ,parser);
+//            conectando.dispose();
+//            conectando.doAceptar();
+            dialog.setVisible(false);
+            JFrame principal = new Principal(entorno, usuario, password, controlador,  parser);
+            principal.setVisible(true);
+            principal.pack();
+            this.dispose();
         } catch (IOException e1) {
                 //COMPLETAR VENTANA DE AVISO
-                conectando.dispose();
-                System.err.println(e1.getMessage());
-                JDialog errorOnos = new NewOkCancelDialog(this, true, "ERROR. No se ha podido establecer conexión con el controlador");
-                errorOnos.setVisible(true);
-                errorOnos.pack();
+//            conectando.dispose();
+            dialog.setVisible(false);
+            System.err.println(e1.getMessage());
+            JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión con el controlador", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+            /*JDialog errorOnos = new NewOkCancelDialog(this, true, "ERROR. No se ha podido establecer conexión con el controlador");
+            errorOnos.setVisible(true);
+            errorOnos.pack();*/
         }
     }
     /**
@@ -273,6 +283,16 @@ public class OnosFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldControlador;
     private javax.swing.JTextField jTextFieldUsuario;
     // End of variables declaration//GEN-END:variables
+
+    private JDialog mostrarDialogo() {
+        JOptionPane pane = new JOptionPane("Conectando con el controlador...", JOptionPane.INFORMATION_MESSAGE);
+        JDialog dialog;
+        dialog = pane.createDialog(null, "Conectando al controlador...");
+        dialog.setModal(false);
+        dialog.setVisible(true);
+        dialog.pack();
+        return dialog;
+    }
 
     
 }

@@ -43,38 +43,38 @@ public class EntornoTools {
         URL urlFlows = new URL(endpoint + "/flows");
 
         // CLUSTERS
-        json = parser.getJSON(urlClusters, usuario, passwd, "GET");
+        json = parser.getJSONGet(urlClusters, usuario, passwd);
         parser.parseoJsonClusters(json);
-        System.out.println(json);
-        System.out.println("***CLUSTERS CARGADOS***");
+//        System.out.println(json);
+//        System.out.println("***CLUSTERS CARGADOS***");
 
         // SWITCHES
-        json = parser.getJSON(urlTopology, usuario, passwd, "GET");
+        json = parser.getJSONGet(urlTopology, usuario, passwd);
         parser.parseoJsonTopologia(json);
-        System.out.println(json);
-        System.out.println("\n***SWITCHES CARGADOS***");
+//        System.out.println(json);
+//        System.out.println("\n***SWITCHES CARGADOS***");
         
         //PORTS
         for(Switch s : entorno.getMapSwitches().values()){
-            json = parser.getJSON(new URL(endpoint+"/devices/"+s.getId()+"/ports"), usuario, passwd, "GET");
+            json = parser.getJSONGet(new URL(endpoint+"/devices/"+s.getId()+"/ports"), usuario, passwd);
             parser.parseoJsonPuertos(json);
-            System.out.println(json);
+            //System.out.println(json);
         }
-        System.out.println("\n***PUERTOS CARGADOS***");
+        //System.out.println("\n***PUERTOS CARGADOS***");
         
         //LINKS
-        json = parser.getJSON(urlLinks, usuario, passwd, "GET");
+        json = parser.getJSONGet(urlLinks, usuario, passwd);
         parser.parseoJsonLinks(json);
-        System.out.println(json);
-        System.out.println("\n***ENLACES CARGADOS***");
+//        System.out.println(json);
+//        System.out.println("\n***ENLACES CARGADOS***");
         
         //FLOWS
-        json = parser.getJSON(urlFlows, usuario, passwd, "GET");
+        json = parser.getJSONGet(urlFlows, usuario, passwd);
         parser.parseoJsonFlow(json);
-        System.out.println(json);
-        System.out.println("\n***FLUJOS CARGADOS***");
-        
-        System.out.println("\n***TOPOLOGIA CARGADA***");
+//        System.out.println(json);
+//        System.out.println("\n***FLUJOS CARGADOS***");
+//        
+//        System.out.println("\n***TOPOLOGIA CARGADA***");
 
     
     }

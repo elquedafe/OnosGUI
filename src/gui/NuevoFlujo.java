@@ -27,14 +27,18 @@ public class NuevoFlujo extends javax.swing.JFrame {
     Entorno entorno;
     /**
      * Creates new form NuevoFlujo
+     * @param entorno
+     * @param parser
+     * @throws java.io.IOException
      */
     public NuevoFlujo(Entorno entorno, JsonManager parser) throws IOException {
         this.entorno = entorno;
         this.parser = parser;
         initComponents();
         EntornoTools.descubrirEntorno(entorno, EntornoTools.user, EntornoTools.password, EntornoTools.controlador, parser);
-        for(Switch s : entorno.getMapSwitches().values())
+        entorno.getMapSwitches().values().forEach((s) -> {
             this.jComboBoxSwitch.addItem(s.getId());
+        });
     }
 
     /**
@@ -233,53 +237,55 @@ public class NuevoFlujo extends javax.swing.JFrame {
     private void jButtonOkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonOkMouseClicked
         // TODO add your handling code here:
         String sw = (String)jComboBoxSwitch.getSelectedItem();
-        String srcPort = (String)jComboBoxSrcPort.getSelectedItem();
-        String dstPort = (String)jComboBoxDstPort.getSelectedItem();
+        Port srcPort = (Port)jComboBoxSrcPort.getSelectedItem();
+        Port dstPort = (Port)jComboBoxDstPort.getSelectedItem();
         String prioridad = jTextFieldPrioridad.getText();
         String timeout = jTextFieldTimeout.getText();
         String idTabla = jTextFieldIdTabla.getText();
         String idGrupo = jTextFieldIdGrupo.getText();
         String json = "";
         json = "{" +
-"	\"priority\": 20," +
-"	\"timeout\": 20," +
-"	\"isPermanent\": false," +
-"	\"deviceId\": \"of:0000000000000001\"," +
-"	\"tableId\": 0," +
-"	\"groupId\": 0," +
-"	\"appId\": \"org.onosproject.fwd\"," +
-"	\"treatment\": {" +
-"		\"instructions\": [" +
-"			{" +
-"				\"type\": \"OUTPUT\"," +
-"				\"port\": \"2\"" +
-"			}" +
-"		]" +
-"	}," +
-"	\"selector\": {" +
-"		\"criteria\": [" +
-"			{" +
-"				\"type\": \"IN_PORT\"," +
-"				\"port\": \"1\"" +
-"			}," +
-"			{" +
-"            	\"type\": \"ETH_DST\"," +
-"                \"mac\": \"00:00:00:00:00:02\"" +
-"            }," +
-"            {" +
-"                \"type\": \"ETH_SRC\"," +
-"                \"mac\": \"00:00:00:00:00:01\"" +
-"            }" +
-"		]" +
-"	}" +
-"}";    String respuesta = "";
+        "	\"priority\": "+ prioridad +"," +
+        "	\"timeout\": " + timeout + "," +
+        "	\"isPermanent\": false," +
+        "	\"deviceId\": \""+ sw +"\"," +
+        "	\"tableId\": "+ idTabla +"," +
+        "	\"groupId\": "+ idGrupo +"," +
+        "	\"appId\": \"org.onosproject.fwd\"," +
+        "	\"treatment\": {" +
+        "		\"instructions\": [" +
+        "			{" +
+        "				\"type\": \"OUTPUT\"," +
+        "				\"port\": \""+ dstPort.getNumeroPuerto() +"\"" +
+        "			}" +
+        "		]" +
+        "	}," +
+        "	\"selector\": {" +
+        "		\"criteria\": [" +
+        "			{" +
+        "				\"type\": \"IN_PORT\"," +
+        "				\"port\": \""+ srcPort.getNumeroPuerto() +"\"" +
+        "			}," +
+        "			{" +
+        "            	\"type\": \"ETH_DST\"," +
+        "                \"mac\": \""+ dstPort.getMac() +"\"" +
+        "            }," +
+        "            {" +
+        "                \"type\": \"ETH_SRC\"," +
+        "                \"mac\": \""+ srcPort.getMac() +"\"" +
+        "            }" +
+        "		]" +
+        "	}" +
+        "}";    
+        String respuesta = "";
+        System.err.println("\n****\n"+json);
         try {
-            respuesta = parser.getJSON(new URL(EntornoTools.endpoint+"/flows/"+sw), EntornoTools.user, EntornoTools.password, "POST");
-            JDialog respuestaPost = new NewOkCancelDialog(this, true, "Flujo añadido correctamente\n"+respuesta);
+            parser.doJSONPost(new URL(EntornoTools.endpoint+"/flows/"+sw), EntornoTools.user, EntornoTools.password, json);
+            JDialog respuestaPost = new NewOkCancelDialog(this, true, "Flujo añadido correctamente");
             respuestaPost.setVisible(true);
             respuestaPost.pack();
         } catch (IOException ex) {
-            JDialog errorPost = new NewOkCancelDialog(this, true, "ERROR. No se ha podido añadir el flujo de forma correcta\n"+respuesta);
+            JDialog errorPost = new NewOkCancelDialog(this, true, "ERROR. No se ha podido añadir el flujo de forma correcta");
             errorPost.setVisible(true);
             errorPost.pack();
             Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
@@ -293,8 +299,8 @@ public class NuevoFlujo extends javax.swing.JFrame {
             ((DefaultComboBoxModel)jComboBoxDstPort.getModel()).removeAllElements();
             ((DefaultComboBoxModel)jComboBoxSrcPort.getModel()).removeAllElements();
             for(Port p : s.getListPorts()){
-                jComboBoxSrcPort.addItem(p.getNumeroPuerto()+"("+p.getVelocidad()+")");
-                jComboBoxDstPort.addItem(p.getNumeroPuerto()+"("+p.getVelocidad()+")");
+                jComboBoxSrcPort.addItem(p);
+                jComboBoxDstPort.addItem(p);
             }
         }
     }//GEN-LAST:event_jComboBoxSwitchItemStateChanged
@@ -303,8 +309,8 @@ public class NuevoFlujo extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonOk;
-    private javax.swing.JComboBox<String> jComboBoxDstPort;
-    private javax.swing.JComboBox<String> jComboBoxSrcPort;
+    private javax.swing.JComboBox<Port> jComboBoxDstPort;
+    private javax.swing.JComboBox<Port> jComboBoxSrcPort;
     private javax.swing.JComboBox<String> jComboBoxSwitch;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

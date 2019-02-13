@@ -14,10 +14,15 @@ import javax.swing.Timer;
 import arquitectura.*;
 import java.awt.CardLayout;
 import java.awt.event.ItemEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.DefaultTableModel;
@@ -28,6 +33,13 @@ import tools.*;
  * @author alvaroluismartinez
  */
 public class Principal extends javax.swing.JFrame {
+    private final int SWITCH = 0;
+    private final int ID = 1;
+    private final int ID_GRUPO = 2;
+    private final int PRIORIDAD = 3;
+    private final int ESTADO = 4;
+    private final int PAQUETES = 5;
+    private final int BYTES = 6;
     private Entorno entorno;
     private JsonManager parser;
     private String usuario;
@@ -77,8 +89,9 @@ public class Principal extends javax.swing.JFrame {
         jTableFlows = new javax.swing.JTable();
         jPanelDetalleFlow = new javax.swing.JPanel();
         jComboBoxSwitches = new javax.swing.JComboBox<>();
-        jButtonFlujo = new javax.swing.JButton();
+        jButtonNuevo = new javax.swing.JButton();
         jLabelSwitch = new javax.swing.JLabel();
+        jButtonEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ONOS QoS");
@@ -89,7 +102,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ONOS QoS");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/img/Untitled-5.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/Untitled-5.png"))); // NOI18N
 
         jButtonDesconexion.setBackground(new java.awt.Color(37, 44, 51));
         jButtonDesconexion.setForeground(new java.awt.Color(255, 255, 255));
@@ -191,6 +204,7 @@ public class Principal extends javax.swing.JFrame {
 
         jLabelFlows2.getAccessibleContext().setAccessibleName("FlujosTabla");
 
+        jPanelCard.setBackground(new java.awt.Color(255, 255, 255));
         jPanelCard.setLayout(new java.awt.CardLayout());
 
         jScrollPaneFlows.setName("jScrollPaneFlows"); // NOI18N
@@ -270,45 +284,58 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jButtonFlujo.setBackground(new java.awt.Color(37, 44, 51));
-        jButtonFlujo.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonFlujo.setText("Añadir Flujo");
-        jButtonFlujo.setBorderPainted(false);
-        jButtonFlujo.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButtonNuevo.setBackground(new java.awt.Color(37, 44, 51));
+        jButtonNuevo.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonNuevo.setBorderPainted(false);
+        jButtonNuevo.setLabel("Añadir flujo");
+        jButtonNuevo.setOpaque(true);
+        jButtonNuevo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonFlujoMouseClicked(evt);
+                jButtonNuevoMouseClicked(evt);
             }
         });
 
         jLabelSwitch.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
         jLabelSwitch.setText("Switch:");
 
+        jButtonEliminar.setBackground(new java.awt.Color(37, 44, 51));
+        jButtonEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonEliminar.setBorderPainted(false);
+        jButtonEliminar.setLabel("Eliminar flujo");
+        jButtonEliminar.setOpaque(true);
+        jButtonEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonEliminarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelDetalleFlowLayout = new javax.swing.GroupLayout(jPanelDetalleFlow);
         jPanelDetalleFlow.setLayout(jPanelDetalleFlowLayout);
         jPanelDetalleFlowLayout.setHorizontalGroup(
             jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelDetalleFlowLayout.createSequentialGroup()
-                .addGroup(jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalleFlowLayout.createSequentialGroup()
+                .addGap(0, 13, Short.MAX_VALUE)
+                .addGroup(jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelDetalleFlowLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jButtonFlujo, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 16, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalleFlowLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabelSwitch)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxSwitches, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jComboBoxSwitches, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jButtonNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18))
         );
         jPanelDetalleFlowLayout.setVerticalGroup(
             jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDetalleFlowLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(31, 31, 31)
                 .addGroup(jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxSwitches, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelSwitch))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonFlujo)
+                .addComponent(jButtonNuevo)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonEliminar)
                 .addGap(20, 20, 20))
         );
 
@@ -582,7 +609,7 @@ public class Principal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jComboBoxSwitchesItemStateChanged
 
-    private void jButtonFlujoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonFlujoMouseClicked
+    private void jButtonNuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNuevoMouseClicked
         try {
             // TODO add your handling code here:
             JFrame newFlow = new NuevoFlujo(entorno, parser);
@@ -591,17 +618,46 @@ public class Principal extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButtonFlujoMouseClicked
+    }//GEN-LAST:event_jButtonNuevoMouseClicked
 
     private void jComboBoxSwitchesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSwitchesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxSwitchesActionPerformed
+
+    private void jButtonEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEliminarMouseClicked
+        // TODO add your handling code here:
+        try{
+            String id = ((DefaultTableModel)jTableFlows.getModel()).getDataVector().elementAt(jTableFlows.getSelectedRow()).get(ID).toString();
+            String sw = ((DefaultTableModel)jTableFlows.getModel()).getDataVector().elementAt(jTableFlows.getSelectedRow()).get(SWITCH).toString();
+            try {
+                int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar el flujo "+id+" del switch "+sw+"?", "Eliminar flujo", WIDTH);
+                if (resultado==JOptionPane.OK_OPTION){
+                    System.out.println(parser.doJSONDelete(new URL(EntornoTools.endpoint+"/flows/"+sw+"/"+id), usuario, password));
+                    JDialog acp = new NewOkCancelDialog(this, false, "Flujo " + id + " eliminado correctamente");
+                    acp.setVisible(true);
+                    acp.pack();
+                }
+            } catch (IOException ex) {
+                System.err.println(ex.getMessage());
+                JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar el flujo");
+                err.setVisible(true);
+                err.pack();
+            }
+        }
+        catch(NullPointerException ex){
+            JDialog err = new NewOkCancelDialog(this, false, "Elija un flujo de la lista");
+            err.setVisible(true);
+            err.pack();
+        }
+            
+    }//GEN-LAST:event_jButtonEliminarMouseClicked
     
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDesconexion;
-    private javax.swing.JButton jButtonFlujo;
+    private javax.swing.JButton jButtonEliminar;
+    private javax.swing.JButton jButtonNuevo;
     private javax.swing.JComboBox<String> jComboBoxSwitches;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

@@ -3,10 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Entorno.java</file>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/NuevoFlujo.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Flow.java</file>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/tools/JsonManager.java</file>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/Conectando.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/tools/EntornoTools.java</file>
-            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/OnosFrame.java</file>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Port.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/Principal.java</file>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/NewOkCancelDialog.java</file>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Switch.java</file>
         </group>
     </open-files>
 </project-private>

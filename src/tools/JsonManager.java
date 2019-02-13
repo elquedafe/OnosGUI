@@ -16,6 +16,8 @@ import arquitectura.Link;
 import arquitectura.Port;
 import arquitectura.Switch;
 import com.google.gson.stream.JsonReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 public class JsonManager {
 	private Link auxLink = null;
@@ -27,7 +29,7 @@ public class JsonManager {
 		this.entorno = entorno;
 	}
 	
-	public String getJSON(URL url, String usuario, String password, String metodo) throws IOException{
+	public String getJSONGet(URL url, String usuario, String password) throws IOException{
             String encoding;
             String line;
             String json="";
@@ -35,7 +37,7 @@ public class JsonManager {
                     try {
                             encoding = Base64.getEncoder().encodeToString((usuario + ":"+ password).getBytes("UTF-8"));
                             connection = (HttpURLConnection) url.openConnection();
-                            connection.setRequestMethod(metodo);
+                            connection.setRequestMethod("GET");
                     connection.setDoOutput(true);
                     connection.setRequestProperty("Authorization", "Basic " + encoding);
                     InputStream content = (InputStream)connection.getInputStream();
@@ -55,7 +57,65 @@ public class JsonManager {
 
             return json;
 	}
-	
+	public void doJSONPost(URL url, String usuario, String password, String cuerpo) throws IOException{
+            String encoding;
+            String line;
+            String json="";
+            HttpURLConnection connection = null;
+            OutputStreamWriter osw = null;
+                    try {
+                            encoding = Base64.getEncoder().encodeToString((usuario + ":"+ password).getBytes("UTF-8"));
+                            connection = (HttpURLConnection) url.openConnection();
+                            connection.setRequestMethod("POST");
+                    connection.setDoOutput(true);
+                    connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                    connection.setRequestProperty("Accept", "application/json");
+                    connection.setRequestProperty("Authorization", "Basic " + encoding);
+                    OutputStream os = connection.getOutputStream();
+                    osw = new OutputStreamWriter(os, "UTF-8");    
+                    osw.write(cuerpo);
+                    osw.flush();
+                    } catch (IOException e) {
+                            throw new IOException(e);
+                    }
+                    finally{
+                        if(osw != null)
+                            osw.close();
+                        if(connection != null)
+                            connection.disconnect();
+                    }
+            
+        }
+        
+    public String doJSONDelete(URL url, String usuario, String password) throws IOException{
+        String encoding;
+        String line;
+        String json="";
+        HttpURLConnection connection = null;
+        try {
+                encoding = Base64.getEncoder().encodeToString((usuario + ":"+ password).getBytes("UTF-8"));
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("DELETE");
+        connection.setDoOutput(true);
+        connection.setRequestProperty("Authorization", "Basic " + encoding);
+        InputStream content = (InputStream)connection.getInputStream();
+        BufferedReader in   = 
+            new BufferedReader (new InputStreamReader (content));
+        while ((line = in.readLine()) != null) {
+            System.out.println(line);
+            json += line+"\n";
+        }
+        } catch (IOException e) {
+                throw new IOException(e);
+        }
+        finally{
+                if(connection != null)
+                        connection.disconnect();
+        }
+
+        return json;
+    }
+        
 	public void parseoJsonLinks(String json) {
 		String nombre = "";
 		entorno.getListLinks().clear();
@@ -486,5 +546,6 @@ public class JsonManager {
 			e.printStackTrace();
 		}
 	}
+
 }
 
