@@ -199,9 +199,10 @@ public class OnosFrame extends javax.swing.JFrame {
 
     private void jTextFieldControladorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldControladorKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             jButtonConectar.doClick();
             conectar();
+        }
     }//GEN-LAST:event_jTextFieldControladorKeyPressed
 
     private void conectar(){

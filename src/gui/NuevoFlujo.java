@@ -22,7 +22,7 @@ import tools.JsonManager;
  *
  * @author alvaroluismartinez
  */
-public class NuevoFlujo extends javax.swing.JFrame {
+public class NuevoFlujo extends javax.swing.JDialog {
     JsonManager parser;
     Entorno entorno;
     /**
@@ -70,7 +70,7 @@ public class NuevoFlujo extends javax.swing.JFrame {
         jComboBoxDstPort = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         jPanelBanner.setBackground(new java.awt.Color(65, 76, 85));
 
@@ -281,11 +281,11 @@ public class NuevoFlujo extends javax.swing.JFrame {
         System.err.println("\n****\n"+json);
         try {
             parser.doJSONPost(new URL(EntornoTools.endpoint+"/flows/"+sw), EntornoTools.user, EntornoTools.password, json);
-            JDialog respuestaPost = new NewOkCancelDialog(this, true, "Flujo añadido correctamente");
+            JDialog respuestaPost = new NewOkCancelDialog(null, true, "Flujo añadido correctamente");
             respuestaPost.setVisible(true);
             respuestaPost.pack();
         } catch (IOException ex) {
-            JDialog errorPost = new NewOkCancelDialog(this, true, "ERROR. No se ha podido añadir el flujo de forma correcta");
+            JDialog errorPost = new NewOkCancelDialog(null, true, "ERROR. No se ha podido añadir el flujo de forma correcta");
             errorPost.setVisible(true);
             errorPost.pack();
             Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);

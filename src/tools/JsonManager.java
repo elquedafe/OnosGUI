@@ -12,19 +12,24 @@ import java.util.Base64;
 import arquitectura.Cluster;
 import arquitectura.Entorno;
 import arquitectura.Flow;
+import arquitectura.Host;
 import arquitectura.Link;
 import arquitectura.Port;
 import arquitectura.Switch;
 import com.google.gson.stream.JsonReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JsonManager {
 	private Link auxLink = null;
 	private Cluster auxCluster = null;
 	private Entorno entorno;
         private Port auxPuerto = null;
+        private Host auxHost = null;
 	private JsonReader reader;
+        
 	public JsonManager(Entorno entorno) {
 		this.entorno = entorno;
 	}
@@ -135,7 +140,6 @@ public class JsonManager {
 				else
 					reader.skipValue();
 			}
-			//FIN network-topology
 			reader.endObject();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -150,7 +154,7 @@ public class JsonManager {
 		
 	}
 
-	public void parseoJsonTopologia(String json) {
+	public void parseoJsonDevices(String json) {
 		entorno.getMapSwitches().clear();
 		String nombre = "";
 		reader = new JsonReader(new StringReader(json));
@@ -169,7 +173,7 @@ public class JsonManager {
 				else
 					reader.skipValue();
 			}
-			//FIN network-topology
+			//FIN network-devices
 			reader.endObject();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -290,7 +294,6 @@ public class JsonManager {
 				else
 					reader.skipValue();
 			}
-			//FIN network-topology
 			reader.endObject();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -351,7 +354,6 @@ public class JsonManager {
 				else
 					reader.skipValue();
 			}
-			//FIN network-topology
 			reader.endObject();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -408,7 +410,6 @@ public class JsonManager {
 				else
 					reader.skipValue();
 			}
-			//FIN network-topology
 			reader.endObject();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -491,7 +492,6 @@ public class JsonManager {
                                 reader.skipValue();
                         
                 }
-                //FIN network-topology
                 reader.endObject();
             } catch (IOException e) {
                     e.printStackTrace();
@@ -546,6 +546,104 @@ public class JsonManager {
 			e.printStackTrace();
 		}
 	}
+    
+    public void parseoJsonHosts(String json){
+        String nombre = "";
+        entorno.getMapHosts().clear();
+        reader = new JsonReader(new StringReader(json));
+        reader.setLenient(true);
+        try {
+            reader.beginObject();
+            while(reader.hasNext()){
+                    nombre = reader.nextName();
+                    if(nombre.equals("hosts")) {
+                        reader.beginArray();
+                        while(reader.hasNext()){
+                            leerElementoArrayHosts(reader);
+                        }
+                        reader.endArray();
+                    }
+                    else
+                            reader.skipValue();
+
+            }
+            reader.endObject();
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
+        finally {
+            try {
+                    reader.close();
+            } catch (IOException e) {
+                    e.printStackTrace();
+            }
+        }
+    }
+    
+    public void leerElementoArrayHosts(JsonReader reader){
+        String nombre;
+        String nombre2;
+        String swConnected = null;
+        String port = null;
+        List<String> listIps = new ArrayList<String>();
+        auxHost = new Host();
+        try {
+            reader.beginObject();
+            while(reader.hasNext()){
+                switch (nombre = reader.nextName()) {
+                    case "id":
+                        auxHost.setId(reader.nextString());
+                        break;
+                    case "mac":
+                        auxHost.setMac(reader.nextString());
+                        break;
+                    case "vlan":
+                        auxHost.setVlan(reader.nextString());
+                        break;
+                    case "innerVlan":
+                        auxHost.setInnerVlan(reader.nextString());
+                        break;
+                    case "ipAddresses":
+                        reader.beginArray();
+                        while(reader.hasNext()){
+                            listIps.add(reader.nextString());
+                        }   reader.endArray();
+                        break;
+                    case "locations":
+                        reader.beginArray();
+                        while(reader.hasNext()){
+                            reader.beginObject();
+                            while(reader.hasNext()){
+                                switch (nombre2 = reader.nextName()) {
+                                    case "elementId":
+                                        swConnected = reader.nextString();
+                                        break;
+                                    case "port":
+                                        port = reader.nextString();
+                                        break;
+                                    default:
+                                        reader.skipValue();
+                                        break;
+                                }
+                            }
+                            reader.endObject();
+                            auxHost.getMapLocations().put(swConnected, port);
+                        }   reader.endArray();
+                        break;
+                    default:
+                        reader.skipValue();
+                        break;
+                }
+                }
+                reader.endObject();
+                auxHost.setIp(listIps);
+                entorno.addHost(auxHost);
+                auxHost = null;
+        } 
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 

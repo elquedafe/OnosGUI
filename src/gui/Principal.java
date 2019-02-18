@@ -45,8 +45,9 @@ public class Principal extends javax.swing.JFrame {
     private String usuario;
     private String password;
     private String controlador;
-    private Timer timerTopologia;
+    private Timer timerDevices;
     private Timer timerFlows;
+    private Timer timerTopologia;
     /**
      * Creates new form Principal
      */
@@ -75,9 +76,10 @@ public class Principal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButtonDesconexion = new javax.swing.JButton();
         jPanelMenu = new javax.swing.JPanel();
-        jLabelTopologia = new javax.swing.JLabel();
+        jLabelEnlaces = new javax.swing.JLabel();
         jLabelFlows = new javax.swing.JLabel();
         jLabelFlows2 = new javax.swing.JLabel();
+        jLabelTopologia = new javax.swing.JLabel();
         jPanelCard = new javax.swing.JPanel();
         jScrollPaneFlows = new javax.swing.JScrollPane();
         jListFlows = new javax.swing.JList<>();
@@ -92,6 +94,7 @@ public class Principal extends javax.swing.JFrame {
         jButtonNuevo = new javax.swing.JButton();
         jLabelSwitch = new javax.swing.JLabel();
         jButtonEliminar = new javax.swing.JButton();
+        jPanelTopologia = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ONOS QoS");
@@ -145,15 +148,15 @@ public class Principal extends javax.swing.JFrame {
 
         jPanelMenu.setBackground(new java.awt.Color(160, 164, 168));
 
-        jLabelTopologia.setBackground(new java.awt.Color(96, 97, 106));
-        jLabelTopologia.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelTopologia.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabelTopologia.setText("     Topología");
-        jLabelTopologia.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.darkGray, null, null));
-        jLabelTopologia.setOpaque(true);
-        jLabelTopologia.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabelEnlaces.setBackground(new java.awt.Color(96, 97, 106));
+        jLabelEnlaces.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelEnlaces.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabelEnlaces.setText("     Enlaces");
+        jLabelEnlaces.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.darkGray, null, null));
+        jLabelEnlaces.setOpaque(true);
+        jLabelEnlaces.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabelTopologiaMouseClicked(evt);
+                jLabelEnlacesMouseClicked(evt);
             }
         });
 
@@ -183,18 +186,33 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jLabelTopologia.setBackground(new java.awt.Color(96, 97, 106));
+        jLabelTopologia.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelTopologia.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabelTopologia.setText("     Topología");
+        jLabelTopologia.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.darkGray, null, null));
+        jLabelTopologia.setOpaque(true);
+        jLabelTopologia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelTopologiaMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelMenuLayout = new javax.swing.GroupLayout(jPanelMenu);
         jPanelMenu.setLayout(jPanelMenuLayout);
         jPanelMenuLayout.setHorizontalGroup(
             jPanelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabelTopologia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabelEnlaces, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabelFlows, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
             .addComponent(jLabelFlows2, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+            .addComponent(jLabelTopologia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelMenuLayout.setVerticalGroup(
             jPanelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMenuLayout.createSequentialGroup()
                 .addComponent(jLabelTopologia, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jLabelEnlaces, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabelFlows, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -356,6 +374,10 @@ public class Principal extends javax.swing.JFrame {
 
         jPanelCard.add(jPanelFlows, "jPanelFlows");
 
+        jPanelTopologia.setName("jPanelTopologia"); // NOI18N
+        jPanelTopologia.setLayout(new java.awt.GridLayout());
+        jPanelCard.add(jPanelTopologia, "jPanelTopologia");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -378,14 +400,15 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabelTopologiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelTopologiaMouseClicked
+    private void jLabelEnlacesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelEnlacesMouseClicked
         try {
             // TODO add your handling code here:
             CardLayout card = (CardLayout)jPanelCard.getLayout();
             card.show(jPanelCard, jPanelLinks.getName());
-            jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+            jLabelEnlaces.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             jLabelFlows2.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
             jLabelFlows.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             if(timerFlows != null && timerFlows.isRunning())
                 timerFlows.stop();
             EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
@@ -411,27 +434,29 @@ public class Principal extends javax.swing.JFrame {
                     
                 }
             };
-            if(timerTopologia == null){
-                timerTopologia = new Timer(5000 ,topologiaTimeout);
-                timerTopologia.setRepeats(true); //Se repite cuando TRUE
-                if(!timerTopologia.isRunning())
-                    timerTopologia.start();
+            if(timerDevices == null){
+                timerDevices = new Timer(5000 ,topologiaTimeout);
+                timerDevices.setRepeats(true); //Se repite cuando TRUE
+                if(!timerDevices.isRunning())
+                    timerDevices.start();
             }
         } catch (IOException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jLabelTopologiaMouseClicked
+    }//GEN-LAST:event_jLabelEnlacesMouseClicked
 
     private void jLabelFlowsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelFlowsMouseClicked
         try {
             // TODO add your handling code here:
             CardLayout card = (CardLayout)jPanelCard.getLayout();
             card.show(jPanelCard, jScrollPaneFlows.getName());
-            jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelEnlaces.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
             jLabelFlows2.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
             jLabelFlows.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
-            if(timerTopologia != null && timerTopologia.isRunning())
-                timerTopologia.stop();
+            jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            
+            if(timerDevices != null && timerDevices.isRunning())
+                timerDevices.stop();
             EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
             EntornoTools.actualizarGUIFlows(((DefaultListModel<Flow>)jListFlows.getModel()), entorno.getMapSwitches().values());
             ActionListener flowsTimeout = new ActionListener() {
@@ -443,6 +468,7 @@ public class Principal extends javax.swing.JFrame {
                             flowSelected = jListFlows.getSelectedValue();
                         
                         //Actualizar listas
+                        
                         EntornoTools.actualizarGUIFlows(((DefaultListModel<Flow>)jListFlows.getModel()), entorno.getMapSwitches().values());
                         
                         //Reseleccionar elemento de la lista
@@ -468,8 +494,8 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
          if(timerFlows != null && timerFlows.isRunning())
             this.timerFlows.stop();
-        if(timerTopologia != null && timerTopologia.isRunning())
-            this.timerTopologia.stop();
+        if(timerDevices != null && timerDevices.isRunning())
+            this.timerDevices.stop();
         this.dispose();
         JFrame login = new OnosFrame();
         login.setVisible(true);
@@ -482,23 +508,28 @@ public class Principal extends javax.swing.JFrame {
             CardLayout card = (CardLayout)jPanelCard.getLayout();
             card.show(jPanelCard, jPanelFlows.getName());
             
-            jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelEnlaces.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
             jLabelFlows2.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             jLabelFlows.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
             EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
             EntornoTools.actualizarGUIFlowsTable(jTableFlows, entorno.getMapSwitches().values());
             ActionListener flowsTimeout = new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                     try {
                         EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
-                        Flow flowSelected = null;
+                        String idFlowSelected = null;
                         ///
                         //SI SE SLEECCIONA FILA, SE GUARDA
                         ///
-                        
+                        if(jTableFlows.getSelectedRow() != -1)
+                            idFlowSelected = ((DefaultTableModel)jTableFlows.getModel()).getDataVector().get(jTableFlows.getSelectedRow()).get(ID).toString();
                         //Actualizar listas
                         EntornoTools.actualizarGUIFlowsTable(jTableFlows, entorno.getMapSwitches().values());
-                        
+                        for(int i=0; i<jTableFlows.getRowCount(); i++){
+                            if( ((DefaultTableModel)jTableFlows.getModel()).getDataVector().get(i).get(ID).toString().equals(idFlowSelected) )
+                                jTableFlows.setRowSelectionInterval(i, i);
+                        }
                         //Reseleccionar elemento de la lista
                         /*if(flowSelected != null)
                             (DefaultTableModel)jTableFlows
@@ -612,7 +643,7 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonNuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNuevoMouseClicked
         try {
             // TODO add your handling code here:
-            JFrame newFlow = new NuevoFlujo(entorno, parser);
+            JDialog newFlow = new NuevoFlujo(entorno, parser);
             newFlow.setVisible(true);
             newFlow.pack();
         } catch (IOException ex) {
@@ -651,6 +682,39 @@ public class Principal extends javax.swing.JFrame {
         }
             
     }//GEN-LAST:event_jButtonEliminarMouseClicked
+
+    private void jLabelTopologiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelTopologiaMouseClicked
+        // TODO add your handling code here:
+        try{
+            CardLayout card = (CardLayout)jPanelCard.getLayout();
+            card.show(jPanelCard, this.jPanelTopologia.getName());
+            
+            jLabelEnlaces.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelFlows2.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelFlows.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+            EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
+            EntornoTools.actualizarGUITopologia(entorno, jPanelTopologia);
+            ActionListener topologiaTimeout = new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    try {
+                        EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
+                        EntornoTools.actualizarGUITopologia(entorno, jPanelTopologia);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    
+                }
+            };
+            if(timerTopologia == null){
+                timerTopologia = new Timer(5000 ,topologiaTimeout);
+                timerTopologia.setRepeats(true); //Se repite cuando TRUE
+                timerTopologia.start();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jLabelTopologiaMouseClicked
     
 
 
@@ -661,6 +725,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBoxSwitches;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelEnlaces;
     private javax.swing.JLabel jLabelFlows;
     private javax.swing.JLabel jLabelFlows2;
     private javax.swing.JLabel jLabelSwitch;
@@ -673,6 +738,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelFlows;
     private javax.swing.JPanel jPanelLinks;
     private javax.swing.JPanel jPanelMenu;
+    private javax.swing.JPanel jPanelTopologia;
     private javax.swing.JScrollPane jScrollPaneFlows;
     private javax.swing.JScrollPane jScrollPaneLinks;
     private javax.swing.JScrollPane jScrollPaneTable;
