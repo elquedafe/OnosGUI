@@ -59,7 +59,6 @@ public class Principal extends javax.swing.JFrame {
         this.parser = parser;
         initComponents();
         EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
-        EntornoTools.actualizarBoxSwitches(entorno, jComboBoxSwitches);
     }
 
     /**
@@ -129,7 +128,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonDesconexion)
-                .addContainerGap())
+                .addGap(19, 19, 19))
         );
         jPanelBannerLayout.setVerticalGroup(
             jPanelBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,7 +140,7 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(9, 9, 9)
                         .addGroup(jPanelBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jButtonDesconexion, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButtonDesconexion))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -375,7 +374,7 @@ public class Principal extends javax.swing.JFrame {
         jPanelCard.add(jPanelFlows, "jPanelFlows");
 
         jPanelTopologia.setName("jPanelTopologia"); // NOI18N
-        jPanelTopologia.setLayout(new java.awt.GridLayout());
+        jPanelTopologia.setLayout(new java.awt.GridLayout(1, 0));
         jPanelCard.add(jPanelTopologia, "jPanelTopologia");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -408,11 +407,11 @@ public class Principal extends javax.swing.JFrame {
             jLabelEnlaces.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             jLabelFlows2.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
             jLabelFlows.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
-            jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+            jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
             if(timerFlows != null && timerFlows.isRunning())
                 timerFlows.stop();
             EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
-            EntornoTools.actualizarGUILinks(((DefaultListModel)jListLinks.getModel()), entorno.getListLinks());
+            EntornoTools.actualizarGUILinks(((DefaultListModel)jListLinks.getModel()), entorno.getMapSwitches());
             ActionListener topologiaTimeout = new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                     try {
@@ -423,7 +422,7 @@ public class Principal extends javax.swing.JFrame {
                             linkSelected = jListLinks.getSelectedValue();
                         
                         //Actualizar listas
-                        EntornoTools.actualizarGUILinks(((DefaultListModel)jListLinks.getModel()), entorno.getListLinks());
+                        EntornoTools.actualizarGUILinks(((DefaultListModel)jListLinks.getModel()), entorno.getMapSwitches());
                         
                         //Reseleccionar elemento de la lista
                         if(linkSelected != null)
@@ -514,6 +513,7 @@ public class Principal extends javax.swing.JFrame {
             jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
             EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
             EntornoTools.actualizarGUIFlowsTable(jTableFlows, entorno.getMapSwitches().values());
+            EntornoTools.actualizarBoxSwitches(entorno, jComboBoxSwitches);
             ActionListener flowsTimeout = new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                     try {
@@ -526,6 +526,7 @@ public class Principal extends javax.swing.JFrame {
                             idFlowSelected = ((DefaultTableModel)jTableFlows.getModel()).getDataVector().get(jTableFlows.getSelectedRow()).get(ID).toString();
                         //Actualizar listas
                         EntornoTools.actualizarGUIFlowsTable(jTableFlows, entorno.getMapSwitches().values());
+                        EntornoTools.actualizarBoxSwitches(entorno, jComboBoxSwitches);
                         for(int i=0; i<jTableFlows.getRowCount(); i++){
                             if( ((DefaultTableModel)jTableFlows.getModel()).getDataVector().get(i).get(ID).toString().equals(idFlowSelected) )
                                 jTableFlows.setRowSelectionInterval(i, i);
@@ -535,6 +536,8 @@ public class Principal extends javax.swing.JFrame {
                             (DefaultTableModel)jTableFlows
                             jListFlows.setSelectedIndex(((DefaultListModel)jListFlows.getModel()).indexOf(flowSelected));
                             */
+                        
+                        
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -558,7 +561,7 @@ public class Principal extends javax.swing.JFrame {
             
             // TODO add your handling code here:
         if(evt.getStateChange() == ItemEvent.SELECTED){
-            if(timerFlows.isRunning())
+            if(timerFlows != null && timerFlows.isRunning())
                 timerFlows.stop();
             String sw = (String)jComboBoxSwitches.getSelectedItem();
             
@@ -591,7 +594,7 @@ public class Principal extends javax.swing.JFrame {
 
                         }
                     };
-                    if(!timerFlows.isRunning()){
+                    if(timerFlows!=null && !timerFlows.isRunning()){
                         timerFlows = new Timer(5000 ,flowsTimeout);
                         timerFlows.setRepeats(true); //Se repite cuando TRUE
                         timerFlows.start();
@@ -643,7 +646,7 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonNuevoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNuevoMouseClicked
         try {
             // TODO add your handling code here:
-            JDialog newFlow = new NuevoFlujo(entorno, parser);
+            JDialog newFlow = new NuevoFlujo(entorno, parser, (String)jComboBoxSwitches.getSelectedItem());
             newFlow.setVisible(true);
             newFlow.pack();
         } catch (IOException ex) {
@@ -694,23 +697,23 @@ public class Principal extends javax.swing.JFrame {
             jLabelFlows.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
             jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
-            EntornoTools.actualizarGUITopologia(entorno, jPanelTopologia);
-            ActionListener topologiaTimeout = new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    try {
-                        EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
-                        EntornoTools.actualizarGUITopologia(entorno, jPanelTopologia);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    
-                }
-            };
-            if(timerTopologia == null){
-                timerTopologia = new Timer(5000 ,topologiaTimeout);
-                timerTopologia.setRepeats(true); //Se repite cuando TRUE
-                timerTopologia.start();
-            }
+            EntornoTools.actualizarGUITopologia(entorno, parser, jPanelTopologia);
+//            ActionListener topologiaTimeout = new ActionListener() {
+//                public void actionPerformed(ActionEvent evt) {
+//                    try {
+//                        EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
+//                        EntornoTools.actualizarGUITopologia(entorno, jPanelTopologia);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    
+//                }
+//            };
+//            if(timerTopologia == null){
+//                timerTopologia = new Timer(5000 ,topologiaTimeout);
+//                timerTopologia.setRepeats(true); //Se repite cuando TRUE
+//                timerTopologia.start();
+//            }
         } catch (IOException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }

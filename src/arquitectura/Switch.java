@@ -7,12 +7,16 @@ import java.util.Map;
 
 public class Switch {
 	private String id;
+        private boolean disponible;
 	private List<Port> listPorts;
 	private Map<String, Flow> mapFlows;
+        private List<Link> listLinks;
 	
 	public Switch(String id) {
 		this.id = id;
+                this.disponible = false;
 		this.listPorts = new ArrayList<Port>();
+                this.listLinks = new ArrayList<Link>();
 		this.mapFlows = new HashMap<String, Flow>();
 	}
 
@@ -22,6 +26,14 @@ public class Switch {
 
 	public void setListPorts(List<Port> listPorts) {
 		this.listPorts = listPorts;
+	}
+        
+        public List<Link> getListLinks() {
+		return listLinks;
+	}
+
+	public void setListLinks(List<Link> listLinks) {
+		this.listLinks = listLinks;
 	}
         
         public void addPort(Port p){
@@ -72,8 +84,24 @@ public class Switch {
 	public String getId() {
 		return id;
 	}
+        
+        public void setId(String id) {
+		this.id = id;
+	}
+        
+        public boolean getDisponible() {
+		return disponible;
+	}
+        
+        public void setDisponible(boolean disponible) {
+		this.disponible = disponible;
+	}
 	
 	public void addFlow(Flow flow) {
 		this.mapFlows.put(flow.getId(), flow);
 	}
+        
+        
+        
+        
 }

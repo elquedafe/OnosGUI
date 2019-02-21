@@ -123,7 +123,8 @@ public class JsonManager {
         
 	public void parseoJsonLinks(String json) {
 		String nombre = "";
-		entorno.getListLinks().clear();
+		for(Switch s : entorno.getMapSwitches().values())
+                    s.getListLinks().clear();
 		reader = new JsonReader(new StringReader(json));
 		reader.setLenient(true);
 		try {
@@ -189,18 +190,26 @@ public class JsonManager {
 	}
 
 	public void leerElementoArrayDevices(JsonReader reader) {
-		String elemento = "";
+                String elemento = "";
+                String id;
+                boolean disponible;
+                Switch sw = null;
 		try {
-			reader.beginObject();
-			while(reader.hasNext()){
-				elemento = reader.nextName();
-				if(elemento.equals("id")) {
-					entorno.addSwitch(reader.nextString());
-				}
-				else
-					reader.skipValue();
-			}
-			reader.endObject();
+            
+                    reader.beginObject();
+                    while(reader.hasNext()){
+                        elemento = reader.nextName();
+                        if(elemento.equals("id")) {
+                            sw = new Switch(reader.nextString());
+                        }
+                        else if(elemento.equals("available")){
+                            sw.setDisponible(reader.nextBoolean());
+                        }
+                        else
+                            reader.skipValue();
+                    }
+                    reader.endObject();
+                    entorno.getMapSwitches().put(sw.getId(), sw);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -244,8 +253,15 @@ public class JsonManager {
 					reader.endObject();
 				}
 				else if(elemento.equals("state") && reader.nextString().equals("ACTIVE")){
-					if(!duplicado(auxLink))
-						entorno.addLink(auxLink);
+					//if(!duplicado(auxLink)){
+                                            for(Switch s : entorno.getMapSwitches().values()){
+                                                if(!duplicado(s, auxLink)){
+                                                    s.getListLinks().add(auxLink);
+                                                }
+                                                //SEGUIR POR AQUI ME HE QUEDADO MAL
+                                         //   }
+                                            //entorno.addLink(auxLink);
+                                        }
 					auxLink = null;
 				}
 				else
@@ -259,10 +275,10 @@ public class JsonManager {
 	}
 	
 	
-
-	private boolean duplicado(Link nuevoLink) {
+        private boolean duplicado(Switch s, Link nuevoLink) {
 		boolean duplicado = false;
-		for(Link link : entorno.getListLinks()) {
+                
+		for(Link link : s.getListLinks()) {
 			if(link.getDst().equals(nuevoLink.getSrc()) && link.getDstPort().equals(nuevoLink.getSrcPort()) && link.getSrc().equals(nuevoLink.getDst()) && link.getSrcPort().equals(nuevoLink.getDstPort())) {
 				duplicado = true;
 				break;

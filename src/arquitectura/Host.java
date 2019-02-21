@@ -152,7 +152,15 @@ public class Host {
     public void setMapLocations(Map<String, String> mapLocations) {
         this.mapLocations = mapLocations;
     }
-	
-	
+
+    @Override
+    public String toString(){
+        String str = "";
+        str += this.mac;
+        for(String s : ipList){
+            str += "/"+s;
+        }
+        return str;
+    }
 	
 }

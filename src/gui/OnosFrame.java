@@ -11,9 +11,13 @@ import java.awt.Dialog.ModalityType;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import static tools.EntornoTools.descubrirEntorno;
 import tools.JsonManager;
 
@@ -29,6 +33,17 @@ public class OnosFrame extends javax.swing.JFrame {
      */
     public OnosFrame() {
         initComponents();
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         entorno = new Entorno();
         parser = new JsonManager(entorno);
     }

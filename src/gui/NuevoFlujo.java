@@ -6,6 +6,7 @@
 package gui;
 
 import arquitectura.Entorno;
+import arquitectura.Host;
 import arquitectura.Port;
 import arquitectura.Switch;
 import java.awt.event.ItemEvent;
@@ -25,20 +26,22 @@ import tools.JsonManager;
 public class NuevoFlujo extends javax.swing.JDialog {
     JsonManager parser;
     Entorno entorno;
+    String selectedSwitch;
     /**
      * Creates new form NuevoFlujo
      * @param entorno
      * @param parser
      * @throws java.io.IOException
      */
-    public NuevoFlujo(Entorno entorno, JsonManager parser) throws IOException {
+    public NuevoFlujo(Entorno entorno, JsonManager parser, String selectedSwitch) throws IOException {
         this.entorno = entorno;
         this.parser = parser;
+        this.selectedSwitch = selectedSwitch;
         initComponents();
         EntornoTools.descubrirEntorno(entorno, EntornoTools.user, EntornoTools.password, EntornoTools.controlador, parser);
-        entorno.getMapSwitches().values().forEach((s) -> {
-            this.jComboBoxSwitch.addItem(s.getId());
-        });
+        fillComboBoxes();
+        if(selectedSwitch!=null)
+            jComboBoxSwitch.setSelectedItem(selectedSwitch);
     }
 
     /**
@@ -69,6 +72,10 @@ public class NuevoFlujo extends javax.swing.JDialog {
         jComboBoxSrcPort = new javax.swing.JComboBox<>();
         jComboBoxDstPort = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
+        jComboBoxHostOrigen = new javax.swing.JComboBox<>();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jComboBoxHostDestino = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -105,7 +112,7 @@ public class NuevoFlujo extends javax.swing.JDialog {
         );
 
         jTextFieldPrioridad.setToolTipText("O");
-        jTextFieldPrioridad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextFieldPrioridad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(184, 179, 174)));
         jTextFieldPrioridad.setOpaque(true);
 
         jComboBoxSwitch.addItemListener(new java.awt.event.ItemListener() {
@@ -133,13 +140,13 @@ public class NuevoFlujo extends javax.swing.JDialog {
         jLabel4.setText("Prioridad:");
 
         jTextFieldTimeout.setToolTipText("O");
-        jTextFieldTimeout.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextFieldTimeout.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(184, 179, 174)));
         jTextFieldTimeout.setOpaque(true);
 
         jLabel5.setText("Timeout:");
 
         jTextFieldIdTabla.setToolTipText("O");
-        jTextFieldIdTabla.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextFieldIdTabla.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(184, 179, 174)));
         jTextFieldIdTabla.setOpaque(true);
 
         jLabel6.setText("Id Tabla:");
@@ -147,12 +154,27 @@ public class NuevoFlujo extends javax.swing.JDialog {
         jLabel7.setText("Id Grupo:");
 
         jTextFieldIdGrupo.setToolTipText("O");
-        jTextFieldIdGrupo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jTextFieldIdGrupo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(184, 179, 174)));
         jTextFieldIdGrupo.setOpaque(true);
+        jTextFieldIdGrupo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldIdGrupoActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Puerto Entrada:");
 
+        jComboBoxSrcPort.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxSrcPortItemStateChanged(evt);
+            }
+        });
+
         jLabel9.setText("Puerto Salida:");
+
+        jLabel10.setText("Host Origen:");
+
+        jLabel11.setText("Host Destino:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -164,12 +186,16 @@ public class NuevoFlujo extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel8)
-                    .addComponent(jLabel9))
+                    .addComponent(jLabel9)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jComboBoxHostOrigen, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jComboBoxSwitch, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jComboBoxSrcPort, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jComboBoxDstPort, 0, 140, Short.MAX_VALUE))
+                    .addComponent(jComboBoxDstPort, 0, 140, Short.MAX_VALUE)
+                    .addComponent(jComboBoxHostDestino, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,18 +243,36 @@ public class NuevoFlujo extends javax.swing.JDialog {
                     .addComponent(jTextFieldIdTabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldIdGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                    .addComponent(jLabel10)
+                    .addComponent(jComboBoxHostOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7)
+                    .addComponent(jTextFieldIdGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxHostDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonOk)
                     .addComponent(jButtonCancelar))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void fillComboBoxes(){
+        //Llenar sw y puertos
+        entorno.getMapSwitches().values().forEach((s) -> {
+            this.jComboBoxSwitch.addItem(s.getId());
+        });
+        // LLenar Hosts
+        for(Host h : entorno.getMapHosts().values()){
+            this.jComboBoxHostDestino.addItem(h);
+            this.jComboBoxHostOrigen.addItem(h);
+        }
+    }
+    
     private void jButtonCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelarMouseClicked
         // TODO add your handling code here:
         this.dispose();
@@ -305,14 +349,26 @@ public class NuevoFlujo extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jComboBoxSwitchItemStateChanged
 
+    private void jComboBoxSrcPortItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxSrcPortItemStateChanged
+        
+    }//GEN-LAST:event_jComboBoxSrcPortItemStateChanged
+
+    private void jTextFieldIdGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIdGrupoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldIdGrupoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonOk;
     private javax.swing.JComboBox<Port> jComboBoxDstPort;
+    private javax.swing.JComboBox<Host> jComboBoxHostDestino;
+    private javax.swing.JComboBox<Host> jComboBoxHostOrigen;
     private javax.swing.JComboBox<Port> jComboBoxSrcPort;
     private javax.swing.JComboBox<String> jComboBoxSwitch;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
