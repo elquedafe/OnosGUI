@@ -8,7 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
 
-
 import arquitectura.Cluster;
 import arquitectura.Entorno;
 import arquitectura.Flow;
@@ -68,18 +67,20 @@ public class JsonManager {
             String json="";
             HttpURLConnection connection = null;
             OutputStreamWriter osw = null;
+                System.out.println("**URL***"+url.getFile());
                     try {
-                            encoding = Base64.getEncoder().encodeToString((usuario + ":"+ password).getBytes("UTF-8"));
-                            connection = (HttpURLConnection) url.openConnection();
-                            connection.setRequestMethod("POST");
-                    connection.setDoOutput(true);
-                    connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                    connection.setRequestProperty("Accept", "application/json");
-                    connection.setRequestProperty("Authorization", "Basic " + encoding);
-                    OutputStream os = connection.getOutputStream();
-                    osw = new OutputStreamWriter(os, "UTF-8");    
-                    osw.write(cuerpo);
-                    osw.flush();
+                        encoding = Base64.getEncoder().encodeToString((usuario + ":"+ password).getBytes("UTF-8"));
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setRequestMethod("POST");
+                        connection.setDoOutput(true);
+                        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+                        connection.setRequestProperty("Accept", "application/json");
+                        connection.setRequestProperty("Authorization", "Basic " + encoding);
+                        OutputStream os = connection.getOutputStream();
+                        osw = new OutputStreamWriter(os, "UTF-8");    
+                        osw.write(cuerpo);
+                        osw.flush();
+                        connection.getInputStream();
                     } catch (IOException e) {
                             throw new IOException(e);
                     }
@@ -98,18 +99,18 @@ public class JsonManager {
         String json="";
         HttpURLConnection connection = null;
         try {
-                encoding = Base64.getEncoder().encodeToString((usuario + ":"+ password).getBytes("UTF-8"));
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("DELETE");
-        connection.setDoOutput(true);
-        connection.setRequestProperty("Authorization", "Basic " + encoding);
-        InputStream content = (InputStream)connection.getInputStream();
-        BufferedReader in   = 
+            encoding = Base64.getEncoder().encodeToString((usuario + ":"+ password).getBytes("UTF-8"));
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("DELETE");
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Authorization", "Basic " + encoding);
+            InputStream content = (InputStream)connection.getInputStream();
+            BufferedReader in   = 
             new BufferedReader (new InputStreamReader (content));
-        while ((line = in.readLine()) != null) {
-            System.out.println(line);
-            json += line+"\n";
-        }
+            while ((line = in.readLine()) != null) {
+               System.out.println(line);
+                json += line+"\n";
+            }
         } catch (IOException e) {
                 throw new IOException(e);
         }
@@ -209,7 +210,8 @@ public class JsonManager {
                             reader.skipValue();
                     }
                     reader.endObject();
-                    entorno.getMapSwitches().put(sw.getId(), sw);
+                    if(sw.getDisponible())
+                        entorno.getMapSwitches().put(sw.getId(), sw);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

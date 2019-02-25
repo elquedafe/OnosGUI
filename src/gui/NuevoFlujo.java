@@ -72,10 +72,10 @@ public class NuevoFlujo extends javax.swing.JDialog {
         jComboBoxSrcPort = new javax.swing.JComboBox<>();
         jComboBoxDstPort = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
-        jComboBoxHostOrigen = new javax.swing.JComboBox<>();
+        jComboBoxSrcHost = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jComboBoxHostDestino = new javax.swing.JComboBox<>();
+        jComboBoxDstHost = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -191,11 +191,11 @@ public class NuevoFlujo extends javax.swing.JDialog {
                     .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jComboBoxHostOrigen, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jComboBoxSrcHost, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jComboBoxSwitch, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jComboBoxSrcPort, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jComboBoxDstPort, 0, 140, Short.MAX_VALUE)
-                    .addComponent(jComboBoxHostDestino, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jComboBoxDstHost, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -244,12 +244,12 @@ public class NuevoFlujo extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jComboBoxHostOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxSrcHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jTextFieldIdGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxHostDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxDstHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -268,8 +268,8 @@ public class NuevoFlujo extends javax.swing.JDialog {
         });
         // LLenar Hosts
         for(Host h : entorno.getMapHosts().values()){
-            this.jComboBoxHostDestino.addItem(h);
-            this.jComboBoxHostOrigen.addItem(h);
+            this.jComboBoxDstHost.addItem(h);
+            this.jComboBoxSrcHost.addItem(h);
         }
     }
     
@@ -283,43 +283,45 @@ public class NuevoFlujo extends javax.swing.JDialog {
         String sw = (String)jComboBoxSwitch.getSelectedItem();
         Port srcPort = (Port)jComboBoxSrcPort.getSelectedItem();
         Port dstPort = (Port)jComboBoxDstPort.getSelectedItem();
+        Host hostOrigen = (Host)this.jComboBoxSrcHost.getSelectedItem();
+        Host hostDestino = (Host)this.jComboBoxDstHost.getSelectedItem();
         String prioridad = jTextFieldPrioridad.getText();
         String timeout = jTextFieldTimeout.getText();
         String idTabla = jTextFieldIdTabla.getText();
         String idGrupo = jTextFieldIdGrupo.getText();
         String json = "";
         json = "{" +
-        "	\"priority\": "+ prioridad +"," +
-        "	\"timeout\": " + timeout + "," +
-        "	\"isPermanent\": false," +
-        "	\"deviceId\": \""+ sw +"\"," +
-        "	\"tableId\": "+ idTabla +"," +
-        "	\"groupId\": "+ idGrupo +"," +
-        "	\"appId\": \"org.onosproject.fwd\"," +
-        "	\"treatment\": {" +
-        "		\"instructions\": [" +
-        "			{" +
-        "				\"type\": \"OUTPUT\"," +
-        "				\"port\": \""+ dstPort.getNumeroPuerto() +"\"" +
-        "			}" +
-        "		]" +
-        "	}," +
-        "	\"selector\": {" +
-        "		\"criteria\": [" +
-        "			{" +
-        "				\"type\": \"IN_PORT\"," +
-        "				\"port\": \""+ srcPort.getNumeroPuerto() +"\"" +
-        "			}," +
-        "			{" +
-        "            	\"type\": \"ETH_DST\"," +
-        "                \"mac\": \""+ dstPort.getMac() +"\"" +
-        "            }," +
-        "            {" +
-        "                \"type\": \"ETH_SRC\"," +
-        "                \"mac\": \""+ srcPort.getMac() +"\"" +
-        "            }" +
-        "		]" +
-        "	}" +
+        "\"priority\": "+ prioridad +"," +
+        "\"timeout\": " + timeout + "," +
+        "\"isPermanent\": false," +
+        "\"deviceId\": \""+ sw +"\"," +
+        "\"tableId\": "+ idTabla +"," +
+        "\"groupId\": "+ idGrupo +"," +
+        "\"appId\": \"org.onosproject.fwd\"," +
+        "\"treatment\": {" +
+        "\"instructions\": [" +
+        "{" +
+        "\"type\": \"OUTPUT\"," +
+        "\"port\": \""+ dstPort.getNumeroPuerto() +"\"" +
+        "}" +
+        "]" +
+        "}," +
+        "\"selector\": {" +
+        "\"criteria\": [" +
+        "{" +
+        "\"type\": \"IN_PORT\"," +
+        "\"port\": \""+ srcPort.getNumeroPuerto() +"\"" +
+        "}," +
+        "{" +
+        "\"type\": \"ETH_DST\"," +
+        "\"mac\": \""+ hostDestino.getMac() +"\"" +
+        "}," +
+        "{" +
+        "\"type\": \"ETH_SRC\"," +
+        "\"mac\": \""+ hostOrigen.getMac() +"\"" +
+        "}" +
+        "]" +
+        "}" +
         "}";    
         String respuesta = "";
         System.err.println("\n****\n"+json);
@@ -361,9 +363,9 @@ public class NuevoFlujo extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonOk;
+    private javax.swing.JComboBox<Host> jComboBoxDstHost;
     private javax.swing.JComboBox<Port> jComboBoxDstPort;
-    private javax.swing.JComboBox<Host> jComboBoxHostDestino;
-    private javax.swing.JComboBox<Host> jComboBoxHostOrigen;
+    private javax.swing.JComboBox<Host> jComboBoxSrcHost;
     private javax.swing.JComboBox<Port> jComboBoxSrcPort;
     private javax.swing.JComboBox<String> jComboBoxSwitch;
     private javax.swing.JLabel jLabel1;
