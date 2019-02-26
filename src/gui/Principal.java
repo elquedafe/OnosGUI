@@ -13,6 +13,8 @@ import java.io.IOException;
 import javax.swing.Timer;
 import arquitectura.*;
 import java.awt.CardLayout;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -58,6 +60,9 @@ public class Principal extends javax.swing.JFrame {
         this.controlador = controlador;
         this.parser = parser;
         initComponents();
+        this.jLabelTopologiaMouseClicked(null);
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        this.jTableFlows.setAutoCreateRowSorter(true);
         EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
     }
 
@@ -411,7 +416,7 @@ public class Principal extends javax.swing.JFrame {
             if(timerFlows != null && timerFlows.isRunning())
                 timerFlows.stop();
             EntornoTools.descubrirEntorno(entorno, usuario, password, controlador, parser);
-            EntornoTools.actualizarGUILinks(((DefaultListModel)jListLinks.getModel()), entorno.getMapSwitches());
+            EntornoTools.actualizarGUILinks(entorno, ((DefaultListModel)jListLinks.getModel()), entorno.getMapSwitches());
             ActionListener topologiaTimeout = new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                     try {
@@ -422,7 +427,7 @@ public class Principal extends javax.swing.JFrame {
                             linkSelected = jListLinks.getSelectedValue();
                         
                         //Actualizar listas
-                        EntornoTools.actualizarGUILinks(((DefaultListModel)jListLinks.getModel()), entorno.getMapSwitches());
+                        EntornoTools.actualizarGUILinks(entorno, ((DefaultListModel)jListLinks.getModel()), entorno.getMapSwitches());
                         
                         //Reseleccionar elemento de la lista
                         if(linkSelected != null)
@@ -686,6 +691,7 @@ public class Principal extends javax.swing.JFrame {
             
     }//GEN-LAST:event_jButtonEliminarMouseClicked
 
+    
     private void jLabelTopologiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelTopologiaMouseClicked
         // TODO add your handling code here:
         try{

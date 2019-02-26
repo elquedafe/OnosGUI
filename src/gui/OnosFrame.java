@@ -6,10 +6,19 @@
 package gui;
 
 import arquitectura.Entorno;
+import com.googlecode.jpingy.PingArguments;
 import java.awt.Component;
 import java.awt.Dialog.ModalityType;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.net.ConnectException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,6 +42,9 @@ public class OnosFrame extends javax.swing.JFrame {
      */
     public OnosFrame() {
         initComponents();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
@@ -219,7 +231,31 @@ public class OnosFrame extends javax.swing.JFrame {
             conectar();
         }
     }//GEN-LAST:event_jTextFieldControladorKeyPressed
-
+    
+    private boolean ping(String ip) throws IOException{
+        try {
+            boolean ret = false;
+            Socket t = new Socket();
+            t.connect(new InetSocketAddress(ip, 8181), 2000);
+            DataInputStream dis = new DataInputStream(t.getInputStream());
+            PrintStream ps = new PrintStream(t.getOutputStream());
+            ps.println("Hello");
+            String str = dis.readLine();
+            if (str.equals("Hello")){
+                System.out.println("Alive!") ;
+            }
+            else{
+                System.out.println("Dead or echo port not responding");
+            }
+            ret = true;
+            t.close();
+            return ret;
+        } catch (IOException ex) {
+            Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
+            throw new IOException("Socket error");
+        }
+        
+    }
     private void conectar(){
 //        Conectando conectando = new Conectando(this, true);
 //        conectando.setVisible(true);
@@ -229,16 +265,25 @@ public class OnosFrame extends javax.swing.JFrame {
         String controlador = "192.168.56.101";//jTextFieldControlador.getText();
         //JOptionPane.showMessageDialog(this, "Conectando con el controlador...", "Conectando...", JOptionPane.INFORMATION_MESSAGE);
         JDialog dialog = mostrarDialogo();
-        
         try {
-            descubrirEntorno(entorno, usuario, password, controlador ,parser);
-//            conectando.dispose();
-//            conectando.doAceptar();
-            dialog.setVisible(false);
-            JFrame principal = new Principal(entorno, usuario, password, controlador,  parser);
-            principal.setVisible(true);
-            principal.pack();
-            this.dispose();
+            System.out.println("Comprobando conectividad...");
+            if(ping(controlador)){
+                descubrirEntorno(entorno, usuario, password, controlador ,parser);
+    //            conectando.dispose();
+    //            conectando.doAceptar();
+                dialog.setVisible(false);
+                JFrame principal = new Principal(entorno, usuario, password, controlador,  parser);
+                principal.setVisible(true);
+                principal.pack();
+                this.dispose();
+            }
+            else{
+                dialog.setVisible(false);
+                System.err.println("No conexion con controlador");
+                JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión con el controlador", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+            
+            }
+            
         } catch (IOException e1) {
                 //COMPLETAR VENTANA DE AVISO
 //            conectando.dispose();

@@ -127,29 +127,34 @@ public class EntornoTools {
         
     }
     
-    public static void actualizarGUILinks(DefaultListModel<Link> modeloListaLinks, Map<String, Switch> sws) {
+    public static void actualizarGUILinks(Entorno entorno, DefaultListModel<Link> modeloListaLinks, Map<String, Switch> sws) {
         List<Link> l = null;
         modeloListaLinks.clear();
-        for(Switch s : sws.values())
-            for (Link link : s.getListLinks()){
-                if(!duplicado(sws.values(), link, modeloListaLinks)){}
-                    //modeloListaLinks.addElement(link);
-            }
+        cargarAllLinks(entorno, modeloListaLinks);
+//        for(Switch s : sws.values()){
+//            for (Link link : s.getListLinks()){
+//                //eliminarDuplicado(sws.values(), link, modeloListaLinks);
+//                    modeloListaLinks.addElement(link);
+//            }
+//        }
     }
     
-    private static boolean duplicado(Collection<Switch> sws, Link nuevoLink, DefaultListModel<Link> modeloListaLinks){
+    private static boolean eliminarDuplicado(Collection<Switch> sws, Link nuevoLink, DefaultListModel<Link> modeloListaLinks){
         boolean b = false;
-        
+        int i = 0;
         for(Switch s : sws){
             for(Link link : s.getListLinks()){
-                if(link.getDst().equals(nuevoLink.getSrc()) && link.getDstPort().equals(nuevoLink.getSrcPort()) && link.getSrc().equals(nuevoLink.getDst()) && link.getSrcPort().equals(nuevoLink.getDstPort())) {
+                if(link.getDst().equals(nuevoLink.getDst()) && link.getDstPort().equals(nuevoLink.getDstPort()) && link.getSrc().equals(nuevoLink.getSrc()) && link.getSrcPort().equals(nuevoLink.getSrcPort())) {
                         b = true;
+                        i++;
+                        //modeloListaLinks.addElement(link);
                 }
-                else if(link.getDst().equals(nuevoLink.getDst()) && link.getDstPort().equals(nuevoLink.getDstPort()) && link.getSrc().equals(nuevoLink.getSrc()) && link.getSrcPort().equals(nuevoLink.getSrcPort())) {
-                        b = false;
+                else{
+                    if(i > 1)
                         modeloListaLinks.addElement(link);
                 }
             }
+            
         }
         return b;
     }
@@ -282,8 +287,8 @@ public class EntornoTools {
                 pipe.addAttributeSink(graph);
             }
             System.out.println("ZOOM: "+view.getCamera().getViewPercent());
-            if(nNodos>10)
-                //view.getCamera().setViewPercent((double)10/nNodos);
+//            if(nNodos>10)
+//                view.getCamera().setViewPercent((double)10/nNodos);
             panel.add((DefaultView)view);
         }
         else{
@@ -297,6 +302,30 @@ public class EntornoTools {
 //        
         
         
+    }
+    
+    private static void cargarAllLinks(Entorno entorno, DefaultListModel<Link> modelo){
+        for(Switch s : entorno.getMapSwitches().values()){
+            for(Link l : s.getListLinks()){
+                modelo.addElement(l);
+                if(duplicado(modelo, l))
+                    modelo.removeElement(l);
+            }
+        }
+    }
+    
+    private static boolean duplicado(DefaultListModel<Link> modelo, Link l){
+        boolean b = false;
+        Link auxLink = null;
+        for(int i = 0; i < modelo.getSize(); i++){
+            auxLink = modelo.get(i);
+            if(auxLink.getSrc().equals(l.getDst()) && auxLink.getDst().equals(l.getSrc()) && auxLink.getSrcPort().equals(l.getDstPort()) && auxLink.getDstPort().equals(l.getSrcPort())){
+                return true;
+            }
+            
+        }
+        return b;
+            
     }
     
 }

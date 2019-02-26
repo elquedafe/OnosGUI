@@ -16,6 +16,7 @@ node.switch {
 	size: 30px;
 	fill-mode: image-scaled; 
 	fill-image: url("img/ovs.png");
+	
 }
 
 node.switchUnavailable{

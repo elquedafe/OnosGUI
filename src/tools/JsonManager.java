@@ -219,6 +219,7 @@ public class JsonManager {
 	
 	private void leerElementoArrayLinks(JsonReader reader) {
 		String elemento = "";
+                String id = ""; 
 		try {
 			reader.beginObject();
 			while(reader.hasNext()){
@@ -257,9 +258,12 @@ public class JsonManager {
 				else if(elemento.equals("state") && reader.nextString().equals("ACTIVE")){
 					//if(!duplicado(auxLink)){
                                             for(Switch s : entorno.getMapSwitches().values()){
-                                                if(!duplicado(s, auxLink)){
+                                                if(s.getId().equals(auxLink.getSrc())){
                                                     s.getListLinks().add(auxLink);
                                                 }
+//                                                if(!duplicado(s, auxLink)){
+//                                                    s.getListLinks().add(auxLink);
+//                                                }
                                                 //SEGUIR POR AQUI ME HE QUEDADO MAL
                                          //   }
                                             //entorno.addLink(auxLink);
@@ -445,12 +449,16 @@ public class JsonManager {
 		String elemento = "";
 		Flow flow = null;
 		String sw = "";
+                String appId = "";
 		try {
 			reader.beginObject();
 			while(reader.hasNext()){
 				elemento = reader.nextName();
 				if(elemento.equals("id")) {
 					flow = new Flow(reader.nextString());
+				}
+                                else if(elemento.equals("appId")) {
+					appId = reader.nextString();
 				}
 				else if(elemento.equals("tableId")) {
 					flow.setIdTable(Integer.parseInt(reader.nextString()));;
@@ -481,7 +489,9 @@ public class JsonManager {
 					reader.skipValue();
 			}
 			reader.endObject();
-			entorno.getMapSwitches().get(sw).addFlow(flow);
+                        if(appId.equals("org.onosproject.fwd")){
+                            entorno.getMapSwitches().get(sw).addFlow(flow);
+                        }
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
