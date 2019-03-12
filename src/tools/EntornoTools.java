@@ -284,6 +284,7 @@ public class EntornoTools {
                 pipe = viewer.newViewerPipe();
                 NodeClickListener listener =  new NodeClickListener(pipe, view, graph, entorno, parser);
                 pipe.addViewerListener((ViewerListener)listener);
+                
                 pipe.addAttributeSink(graph);
             }
             System.out.println("ZOOM: "+view.getCamera().getViewPercent());
@@ -294,6 +295,7 @@ public class EntornoTools {
         else{
             //viewer.disableAutoLayout();
         }
+        
 //        (view).repaint();
 //        while(true){
 //            pipe.pump();

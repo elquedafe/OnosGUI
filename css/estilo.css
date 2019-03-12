@@ -13,7 +13,7 @@ node.switch {
 	shape: box;
 	/*shape: box; */
 	text-alignment: center;
-	size: 30px;
+	size: 20px;
 	fill-mode: image-scaled; 
 	fill-image: url("img/ovs.png");
 	
@@ -23,7 +23,7 @@ node.switchUnavailable{
 	text-mode: normal; 
 	shape: box;
 	padding: 30px, 20px, 30px;
-	size: 30px;
+	size: 20px;
 	shape: box; 
 	fill-color: rgb(255,100,100); 
 
@@ -34,7 +34,7 @@ node.host{
 	text-alignment: center;
 	padding: 0px, 20px, 0px;
 	shape: box;
-	size: 30px;
+	size: 20px;
 	fill-mode: image-scaled; 
 	fill-image: url("img/host.png");
 }
