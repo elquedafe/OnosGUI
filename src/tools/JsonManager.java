@@ -15,6 +15,8 @@ import arquitectura.Host;
 import arquitectura.Link;
 import arquitectura.Port;
 import arquitectura.Switch;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.stream.JsonReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -204,13 +206,13 @@ public class JsonManager {
                             sw = new Switch(reader.nextString());
                         }
                         else if(elemento.equals("available")){
-                            sw.setDisponible(reader.nextBoolean());
+                            sw.setAvailable(reader.nextBoolean());
                         }
                         else
                             reader.skipValue();
                     }
                     reader.endObject();
-                    if(sw.getDisponible())
+                    if(sw.getAvailable())
                         entorno.getMapSwitches().put(sw.getId(), sw);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -550,18 +552,18 @@ public class JsonManager {
 					while(reader.hasNext()){
                                              nombre2 = reader.nextName();
                                              if(nombre2.equals("portMac")) 
-                                                auxPuerto.setMac(mac = reader.nextString());
+                                                auxPuerto.setPortMac(mac = reader.nextString());
                                              else if(nombre2.equals("portName")) 
-                                                auxPuerto.setNombrePuerto(nombre = reader.nextString());
+                                                auxPuerto.setPortName(nombre = reader.nextString());
                                              else   
                                                  reader.skipValue();
 					}
                                         reader.endObject();
 				}
                                 else if(nombre.equals("portSpeed")) 
-                                     auxPuerto.setVelocidad(Double.parseDouble(reader.nextString()));
+                                     auxPuerto.setSpeed(Double.parseDouble(reader.nextString()));
                                 else if(nombre.equals("port"))
-                                     auxPuerto.setNumeroPuerto(reader.nextString());
+                                     auxPuerto.setPortNumber(reader.nextString());
                                 else if(nombre.equals("element")) 
                                      auxPuerto.setOvs(sw = reader.nextString());
                                 else
@@ -670,6 +672,58 @@ public class JsonManager {
         } 
         catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    void parseoJsonDevicesGson(String json) {
+        Gson gson = new Gson();
+        
+        LinkedTreeMap jsonObject = gson.fromJson(json, LinkedTreeMap.class);
+        ArrayList node = (ArrayList)jsonObject.get("devices");
+        for(Object o : node){
+            LinkedTreeMap map = (LinkedTreeMap)o;
+            String id = (String)map.get("id");
+            String type = (String)map.get("type");
+            boolean available = (boolean)map.get("available");
+            String role = (String)map.get("role");
+            String mfr = (String)map.get("mfr");
+            String hw = (String)map.get("hw");
+            String sw = (String)map.get("sw");
+            String serial = (String)map.get("serial");
+            String driver = (String)map.get("driver");
+            String chassisId = (String)map.get("chassisId");
+            String lastUpdate = (String)map.get("lastUpdate");
+            String humanReadableLastUpdate = (String)map.get("humanReadableLastUpdate");
+            LinkedTreeMap annotations = (LinkedTreeMap)map.get("annotations");
+            
+            Switch s = new Switch(id, type, available, role, mfr, hw, sw, serial, driver, chassisId, lastUpdate, humanReadableLastUpdate, annotations);
+            entorno.getMapSwitches().put(id, s);
+        }
+        
+        
+        
+    }
+
+    void parseoJsonPuertosGson(String json) {
+        String id = "";
+        Gson gson = new Gson();
+        
+        LinkedTreeMap jsonObject = gson.fromJson(json, LinkedTreeMap.class);
+        ArrayList ports = (ArrayList)jsonObject.get("ports");
+        id = (String)jsonObject.get("id");
+        for(Object o : ports){
+            LinkedTreeMap mapPort = (LinkedTreeMap)o;
+            String ovs = (String) mapPort.get("element") ;
+            String port = (String) mapPort.get("port");
+            boolean isEnabled = (boolean) mapPort.get("isEnabled");
+            String type = (String) mapPort.get("type");
+            double portSpeed = (double)mapPort.get("portSpeed");
+            LinkedTreeMap annotations = (LinkedTreeMap)mapPort.get("annotations");
+            String portMac = (String)annotations.get("portMac");
+            String portName = (String)annotations.get("portName");
+            
+            Port p = new Port(ovs, port, isEnabled, type, portSpeed, portMac, portName, annotations);
+            entorno.getMapSwitches().get(id).addPort(p);
         }
     }
 

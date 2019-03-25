@@ -262,7 +262,7 @@ public class OnosFrame extends javax.swing.JFrame {
 //        conectando.pack();
         String usuario = "onos";//jTextFieldUsuario.getText();
         String password = "rocks";//String.valueOf(jPasswordField.getPassword());
-        String controlador = "192.168.56.101";//jTextFieldControlador.getText();
+        String controlador = "192.168.56.102";//jTextFieldControlador.getText();
         //JOptionPane.showMessageDialog(this, "Conectando con el controlador...", "Conectando...", JOptionPane.INFORMATION_MESSAGE);
         JDialog dialog = mostrarDialogo();
         try {

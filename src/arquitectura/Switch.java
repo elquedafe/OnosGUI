@@ -1,5 +1,6 @@
 package arquitectura;
 
+import com.google.gson.internal.LinkedTreeMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,18 +8,64 @@ import java.util.Map;
 
 public class Switch {
 	private String id;
-        private boolean disponible;
+        private String type;
+        private boolean available;
+        private String role;
+        private String mfr;
+        private String hw;
+        private String sw;
+        private String serial;
+        private String driver;
+        private String chassisId;
+        private String lastUpdate;
+        private String humanReadableLastUpdate;
+        private LinkedTreeMap annotations;
+        
 	private List<Port> listPorts;
 	private Map<String, Flow> mapFlows;
         private List<Link> listLinks;
 	
 	public Switch(String id) {
-		this.id = id;
-                this.disponible = false;
-		this.listPorts = new ArrayList<Port>();
-                this.listLinks = new ArrayList<Link>();
-		this.mapFlows = new HashMap<String, Flow>();
+            this.id = id;
+            this.available = false;
+            this.listPorts = new ArrayList<Port>();
+            this.listLinks = new ArrayList<Link>();
+            this.mapFlows = new HashMap<String, Flow>();
 	}
+        
+        public Switch(String id, 
+                String type, 
+                boolean available, 
+                String role, 
+                String mfr, 
+                String hw, 
+                String sw, 
+                String serial, 
+                String driver, 
+                String chassisId, 
+                String lastUpdate, 
+                String humanReadableLastUpdate, 
+                LinkedTreeMap annotations){
+            this.id = id;
+            this.type = type;
+            this.available = available;
+            this.role = role;
+            this.mfr = mfr;
+            this.available = available;
+            this.hw = hw;
+            this.sw = sw;
+            this.serial = serial;
+            this.driver = driver;
+            this.chassisId = chassisId;
+            this.lastUpdate = lastUpdate;
+            this.humanReadableLastUpdate = humanReadableLastUpdate;
+            this.annotations = annotations;
+            
+            this.listPorts = new ArrayList<Port>();
+            this.listLinks = new ArrayList<Link>();
+            this.mapFlows = new HashMap<String, Flow>();
+            
+        }
 
 	public List<Port> getListPorts() {
 		return listPorts;
@@ -43,7 +90,7 @@ public class Switch {
         public Port getPortPorNumero(String numero){
             Port puerto = null;
             for(Port p : this.listPorts){
-                if(p.getNumeroPuerto().equals(numero)){
+                if(p.getPortNumber().equals(numero)){
                     puerto = p;
                     break;
                 }
@@ -54,7 +101,7 @@ public class Switch {
         public Port getPortPorMac(String mac){
             Port puerto = null;
             for(Port p : this.listPorts){
-                if(p.getMac().equals(mac)){
+                if(p.getPortMac().equals(mac)){
                     puerto = p;
                     break;
                 }
@@ -65,7 +112,7 @@ public class Switch {
         public Port getPortPorNombre(String nombre){
             Port puerto = null;
             for(Port p : this.listPorts){
-                if(p.getNombrePuerto().equals(nombre)){
+                if(p.getPortName().equals(nombre)){
                     puerto = p;
                     break;
                 }
@@ -89,12 +136,12 @@ public class Switch {
 		this.id = id;
 	}
         
-        public boolean getDisponible() {
-		return disponible;
+        public boolean getAvailable() {
+		return available;
 	}
         
-        public void setDisponible(boolean disponible) {
-		this.disponible = disponible;
+        public void setAvailable(boolean available) {
+		this.available = available;
 	}
 	
 	public void addFlow(Flow flow) {

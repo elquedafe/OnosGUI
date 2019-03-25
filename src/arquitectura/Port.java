@@ -1,20 +1,46 @@
 package arquitectura;
 
+import com.google.gson.internal.LinkedTreeMap;
+
 public class Port {
 	private String ovs;
-	private String numeroPuerto;
-	private double velocidad;
-	private String mac;
-	private String nombrePuerto;
+        private boolean isEnabled;
+        private String type;
+	private double speed;
+	private String portNumber;
+        private LinkedTreeMap annotations;
+	private String portMac;
+	private String portName;
 	
 	public Port() {
-		this.ovs = "";
-		this.numeroPuerto = "";
-		this.velocidad = 0;
-		this.mac = "";
-		this.nombrePuerto = "";
+                this.ovs = "";
+                this.portName = "";
+                this.portNumber = "";
+                this.isEnabled = false;
+                this.type = "";
+                this.speed = 0;
+                this.portMac = "";
 	}
-
+        
+        public Port(String ovs, 
+                String port, 
+                boolean isEnabled, 
+                String type, 
+                double portSpeed, 
+                String portMac, 
+                String portName, 
+                LinkedTreeMap annotations) {
+		
+            this.ovs = ovs;
+            this.portNumber = port;
+            this.isEnabled = isEnabled;
+            this.type = type;
+            this.speed = portSpeed;
+            this.portMac = portMac;
+            this.portName = portName;
+            this.annotations = annotations;
+	}
+        
 	public String getOvs() {
 		return ovs;
 	}
@@ -23,41 +49,41 @@ public class Port {
 		this.ovs = ovs;
 	}
 
-	public String getNumeroPuerto() {
-		return numeroPuerto;
+	public String getPortNumber() {
+		return portNumber;
 	}
 
-	public void setNumeroPuerto(String numeroPuerto) {
-		this.numeroPuerto = numeroPuerto;
+	public void setPortNumber(String portNumber) {
+		this.portNumber = portNumber;
 	}
 
-	public double getVelocidad() {
-		return velocidad;
+	public double getSpeed() {
+		return speed;
 	}
 
-	public void setVelocidad(double velocidad) {
-		this.velocidad = velocidad;
+	public void setSpeed(double speed) {
+		this.speed = speed;
 	}
 
-	public String getMac() {
-		return mac;
+	public String getPortMac() {
+		return portMac;
 	}
 
-	public void setMac(String mac) {
-		this.mac = mac;
+	public void setPortMac(String mac) {
+		this.portMac = portMac;
 	}
 
-	public String getNombrePuerto() {
-		return nombrePuerto;
+	public String getPortName() {
+		return portName;
 	}
 
-	public void setNombrePuerto(String nombrePuerto) {
-		this.nombrePuerto = nombrePuerto;
+	public void setPortName(String nombrePuerto) {
+		this.portName = portName;
 	}
         
         @Override
         public String toString(){
-            return this.numeroPuerto+"/"+this.nombrePuerto+"("+this.velocidad+")";
+            return this.portNumber+"/"+this.portName+"("+this.speed+")";
         }
 
 }

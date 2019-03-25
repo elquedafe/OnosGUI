@@ -302,7 +302,7 @@ public class NuevoFlujo extends javax.swing.JDialog {
         "\"instructions\": [" +
         "{" +
         "\"type\": \"OUTPUT\"," +
-        "\"port\": \""+ dstPort.getNumeroPuerto() +"\"" +
+        "\"port\": \""+ dstPort.getPortNumber() +"\"" +
         "}" +
         "]" +
         "}," +
@@ -310,7 +310,7 @@ public class NuevoFlujo extends javax.swing.JDialog {
         "\"criteria\": [" +
         "{" +
         "\"type\": \"IN_PORT\"," +
-        "\"port\": \""+ srcPort.getNumeroPuerto() +"\"" +
+        "\"port\": \""+ srcPort.getPortNumber() +"\"" +
         "}," +
         "{" +
         "\"type\": \"ETH_DST\"," +

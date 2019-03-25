@@ -86,39 +86,46 @@ public class EntornoTools {
 
         // CLUSTERS
         json = parser.getJSONGet(urlClusters, usuario, passwd);
-        parser.parseoJsonClusters(json);
+//        parser.parseoJsonClusters(json);
+        parser.parseoJsonClustersGson(json);
 //        System.out.println(json);
 //        System.out.println("***CLUSTERS CARGADOS***");
 
         // SWITCHES
         json = parser.getJSONGet(urlDevices, usuario, passwd);
-        parser.parseoJsonDevices(json);
+        //
+        //parser.parseoJsonDevices(json);
+        parser.parseoJsonDevicesGson(json);
 //        System.out.println(json);
 //        System.out.println("\n***SWITCHES CARGADOS***");
         
         //PORTS
         for(Switch s : entorno.getMapSwitches().values()){
             json = parser.getJSONGet(new URL(endpoint+"/devices/"+s.getId()+"/ports"), usuario, passwd);
-            parser.parseoJsonPuertos(json);
+            //parser.parseoJsonPuertos(json);
+            parser.parseoJsonPuertosGson(json);
             //System.out.println(json);
         }
         //System.out.println("\n***PUERTOS CARGADOS***");
         
         //LINKS
         json = parser.getJSONGet(urlLinks, usuario, passwd);
-        parser.parseoJsonLinks(json);
+//        parser.parseoJsonLinks(json);
+        parser.parseoJsonLinksGson(json);
 //        System.out.println(json);
 //        System.out.println("\n***ENLACES CARGADOS***");
         
         //FLOWS
         json = parser.getJSONGet(urlFlows, usuario, passwd);
-        parser.parseoJsonFlow(json);
+//        parser.parseoJsonFlow(json);
+        parser.parseoJsonFlowGson(json);
 //        System.out.println(json);
 //        System.out.println("\n***FLUJOS CARGADOS***");
 //        
         //HOSTS
         json = parser.getJSONGet(urlHosts, usuario, passwd);
-        parser.parseoJsonHosts(json);
+//        parser.parseoJsonHosts(json);
+        parser.parseoJsonHostsGson(json);
         System.out.println(json);
 //        System.out.println("\n***HOSTS CARGADOS***");
     
@@ -182,10 +189,9 @@ public class EntornoTools {
         }
     }
     
-    public static void actualizarBoxSwitches(Entorno entorno, JComboBox box){
-        
+    public static void actualizarBoxSwitches(Entorno entorno, JComboBox box){        
         for(Switch s : entorno.getMapSwitches().values()){
-            if(s.getDisponible()){
+            if(s.getAvailable()){
                 box.removeItem(s.getId());
                 box.addItem(s.getId());
             }
@@ -227,14 +233,14 @@ public class EntornoTools {
             nNodos++;
             System.out.println("Switch id: "+ s.getId());
             Point3 xyz = Toolkit.nodePointPosition(graph, s.getId());
-            if(s.getDisponible()){
+            if(s.getAvailable()){
                 graph.removeNode(s.getId());
                 graph.addNode(s.getId());
                 Node sw = graph.getNode(s.getId());
             
                 if (xyz!=null)
                     sw.setAttribute("xyz", xyz.x, xyz.y, xyz.z);
-                if(s.getDisponible())
+                if(s.getAvailable())
                     sw.addAttribute("ui.class", "switch");
                 
                 sw.addAttribute("ui.label", sw.getId());
