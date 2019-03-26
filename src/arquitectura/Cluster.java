@@ -2,13 +2,32 @@ package arquitectura;
 
 public class Cluster {
 	private String id;
-	private String puerto;
-	private String estado;
+        private String ip;
+	private int tcpPort;
+        private String status;
+        private String lastUpdate;
+        private String humanReadableLastUpdate;
 	
-	public Cluster(String id, String puerto, String estado) {
+	public Cluster(String id, int puerto, String estado) {
 		this.id = id;
-		this.puerto = puerto;
-		this.estado = estado;
+		this.tcpPort = puerto;
+		this.status = estado;
+	}
+        
+        public Cluster(String id, 
+                String ip, 
+                int tcpPort,
+                String status,
+                String lastUpdate,
+                String humanReadableLastUpdate) {
+		
+            this.id = id;
+            this.ip = ip;
+            this.tcpPort = tcpPort;
+            this.status = status;
+            this.lastUpdate = lastUpdate;
+            this.humanReadableLastUpdate = humanReadableLastUpdate;
+            
 	}
 
 	public Cluster(){
@@ -23,24 +42,24 @@ public class Cluster {
 		this.id = id;
 	}
 
-	public String getPuerto() {
-		return puerto;
+	public int getTcpPort() {
+		return tcpPort;
 	}
 
-	public void setPuerto(String puerto) {
-		this.puerto = puerto;
+	public void setTcpPort(int tcpPort) {
+		this.tcpPort = tcpPort;
 	}
 
-	public String getEstado() {
-		return estado;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setEstado(String estado) {
-		this.estado = estado;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	public String toString() {
-		return this.estado + "\t" + this.id + ":"+ this.puerto;
+		return this.status + "\t" + this.id + ":"+ this.tcpPort;
 	}
 	
 }

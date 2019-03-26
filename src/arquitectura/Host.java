@@ -10,9 +10,9 @@ public class Host {
     private String mac;
     private String vlan;
     private String innerVlan;
+    private String outerTpid;
+    private boolean configured;
     private List<String> ipList;
-    private String puerto;
-    private String ovs;
     private Map<String, String> mapLocations;
     
     public Host() {
@@ -20,9 +20,9 @@ public class Host {
             this.mac = "";
             this.vlan = "";
             this.innerVlan = "";
+            this.outerTpid = "";
+            this.configured = false;
             this.ipList = new ArrayList<String>();
-            this.puerto = "";
-            this.ovs = "";
             this.mapLocations = new HashMap<String, String>();
     }
 
@@ -31,114 +31,85 @@ public class Host {
             this.mac = "";
             this.vlan = "";
             this.innerVlan = "";
+            this.outerTpid = "";
+            this.configured = false;
             this.ipList = new ArrayList<String>();
-            this.puerto = "";
-            this.ovs = "";
             this.mapLocations = new HashMap<String, String>();
     }
-        
-    /**
-     * @return the id
-     */
+
+    public Host(String id, String mac, String vlan, String innerVlan, String outerTpid, boolean configured, List<String> ipList, Map<String, String> mapLocations) {
+        this.id = id;
+        this.mac = mac;
+        this.vlan = vlan;
+        this.innerVlan = innerVlan;
+        this.outerTpid = outerTpid;
+        this.configured = configured;
+        this.ipList = ipList;
+        this.mapLocations = mapLocations;
+    }
+    
+    
+
     public String getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId(String id) {
         this.id = id;
     }
 
-    /**
-     * @return the mac
-     */
     public String getMac() {
         return mac;
     }
 
-    /**
-     * @param mac the mac to set
-     */
     public void setMac(String mac) {
         this.mac = mac;
     }
 
-    /**
-     * @return the vlan
-     */
     public String getVlan() {
         return vlan;
     }
 
-    /**
-     * @param vlan the vlan to set
-     */
     public void setVlan(String vlan) {
         this.vlan = vlan;
     }
 
-    /**
-     * @return the innerVlan
-     */
     public String getInnerVlan() {
         return innerVlan;
     }
 
-    /**
-     * @param innerVlan the innerVlan to set
-     */
     public void setInnerVlan(String innerVlan) {
         this.innerVlan = innerVlan;
     }
 
-    /**
-     * @return the ip
-     */
+    public String getOuterTpid() {
+        return outerTpid;
+    }
+
+    public void setOuterTpid(String outerTpid) {
+        this.outerTpid = outerTpid;
+    }
+
+    public boolean isConfigured() {
+        return configured;
+    }
+
+    public void setConfigured(boolean configured) {
+        this.configured = configured;
+    }
+
     public List<String> getIpList() {
         return ipList;
     }
 
-    /**
-     * @param ip the ip to set
-     */
-    public void setIp(List<String> ipList) {
+    public void setIpList(List<String> ipList) {
         this.ipList = ipList;
-    }
-
-    /**
-     * @return the puerto
-     */
-    public String getPuerto() {
-        return puerto;
-    }
-
-    /**
-     * @param puerto the puerto to set
-     */
-    public void setPuerto(String puerto) {
-        this.puerto = puerto;
-    }
-
-    /**
-     * @return the ovs
-     */
-    public String getOvs() {
-        return ovs;
-    }
-
-    /**
-     * @param ovs the ovs to set
-     */
-    public void setOvs(String ovs) {
-        this.ovs = ovs;
     }
     
     public void addLocatoin(String sw, String port){
         this.getMapLocations().put(sw, port);
     }
-
+    
     /**
      * @return the mapLocations
      */
@@ -162,5 +133,95 @@ public class Host {
         }
         return str;
     }
+    
+    
+        
+//    /**
+//     * @return the id
+//     */
+//    public String getId() {
+//        return id;
+//    }
+//
+//    /**
+//     * @param id the id to set
+//     */
+//    public void setId(String id) {
+//        this.id = id;
+//    }
+//
+//    /**
+//     * @return the mac
+//     */
+//    public String getMac() {
+//        return mac;
+//    }
+//
+//    /**
+//     * @param mac the mac to set
+//     */
+//    public void setMac(String mac) {
+//        this.mac = mac;
+//    }
+//
+//    /**
+//     * @return the vlan
+//     */
+//    public String getVlan() {
+//        return vlan;
+//    }
+//
+//    /**
+//     * @param vlan the vlan to set
+//     */
+//    public void setVlan(String vlan) {
+//        this.vlan = vlan;
+//    }
+//
+//    /**
+//     * @return the innerVlan
+//     */
+//    public String getInnerVlan() {
+//        return innerVlan;
+//    }
+//
+//    /**
+//     * @param innerVlan the innerVlan to set
+//     */
+//    public void setInnerVlan(String innerVlan) {
+//        this.innerVlan = innerVlan;
+//    }
+//
+//    /**
+//     * @return the ip
+//     */
+//    public List<String> getIpList() {
+//        return ipList;
+//    }
+//
+//    /**
+//     * @param ip the ip to set
+//     */
+//    public void setIp(List<String> ipList) {
+//        this.ipList = ipList;
+//    }
+//
+//    
+//
+//    /**
+//     * @return the ovs
+//     */
+//    public String getOvs() {
+//        return ovs;
+//    }
+//
+//    /**
+//     * @param ovs the ovs to set
+//     */
+//    public void setOvs(String ovs) {
+//        this.ovs = ovs;
+//    }
+    
+    
 	
 }

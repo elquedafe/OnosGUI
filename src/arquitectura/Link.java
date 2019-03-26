@@ -2,9 +2,11 @@ package arquitectura;
 
 public class Link {
 	private String src;
-	private String dst;
 	private String srcPort;
+	private String dst;
 	private String dstPort;
+        private String type;
+        private String state;
 	private double cost;
 	
 	public Link(String src, String dst, String srcPort, String dstPort) {
@@ -13,6 +15,16 @@ public class Link {
 		this.srcPort = srcPort;
 		this.dstPort = dstPort;
 		this.cost = 0;
+	}
+        
+        public Link(String src, String srcPort, String dst,  String dstPort, String type, String state, double cost) {
+            this.src = src;
+            this.srcPort = srcPort;
+            this.dst = dst;
+            this.dstPort = dstPort;
+            this.type = type;
+            this.state = state;
+            this.cost = cost;
 	}
 	
 	public Link(){
