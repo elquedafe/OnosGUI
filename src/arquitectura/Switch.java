@@ -87,7 +87,7 @@ public class Switch {
             this.listPorts.add(p);
         }
         
-        public Port getPortPorNumero(String numero){
+        public Port getPortByNumber(String numero){
             Port puerto = null;
             for(Port p : this.listPorts){
                 if(p.getPortNumber().equals(numero)){
@@ -98,7 +98,7 @@ public class Switch {
             return puerto;
         }
         
-        public Port getPortPorMac(String mac){
+        public Port getPortByMac(String mac){
             Port puerto = null;
             for(Port p : this.listPorts){
                 if(p.getPortMac().equals(mac)){
@@ -109,7 +109,7 @@ public class Switch {
             return puerto;
         }
         
-        public Port getPortPorNombre(String nombre){
+        public Port getPortByName(String nombre){
             Port puerto = null;
             for(Port p : this.listPorts){
                 if(p.getPortName().equals(nombre)){

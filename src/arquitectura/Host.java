@@ -48,8 +48,6 @@ public class Host {
         this.mapLocations = mapLocations;
     }
     
-    
-
     public String getId() {
         return id;
     }

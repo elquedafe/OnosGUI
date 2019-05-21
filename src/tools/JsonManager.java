@@ -299,7 +299,7 @@ public class JsonManager {
                     String k = (String)key;
                     if(!k.equals("type")){
                         criteriaKey = k;
-                        criteriaValue = (String)mapCriteria.get(k);
+                        criteriaValue = String.valueOf(mapCriteria.get(k));
                     }
                     
                 }
