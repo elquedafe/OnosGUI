@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import tools.EntornoTools;
+import tools.HttpTools;
 import tools.JsonManager;
 
 /**
@@ -24,8 +25,6 @@ import tools.JsonManager;
  * @author alvaroluismartinez
  */
 public class NuevoFlujo extends javax.swing.JDialog {
-    JsonManager parser;
-    Entorno entorno;
     String selectedSwitch;
     /**
      * Creates new form NuevoFlujo
@@ -33,15 +32,15 @@ public class NuevoFlujo extends javax.swing.JDialog {
      * @param parser
      * @throws java.io.IOException
      */
-    public NuevoFlujo(Entorno entorno, JsonManager parser, String selectedSwitch) throws IOException {
-        this.entorno = entorno;
-        this.parser = parser;
+    public NuevoFlujo(String selectedSwitch) throws IOException {
+        this.setTitle("Nuevo Flujo");
         this.selectedSwitch = selectedSwitch;
         initComponents();
-        EntornoTools.descubrirEntorno(entorno, EntornoTools.user, EntornoTools.password, EntornoTools.controlador, parser);
+        EntornoTools.descubrirEntorno();
         fillComboBoxes();
         if(selectedSwitch!=null)
             jComboBoxSwitch.setSelectedItem(selectedSwitch);
+        pack();
     }
 
     /**
@@ -78,6 +77,7 @@ public class NuevoFlujo extends javax.swing.JDialog {
         jComboBoxDstHost = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setModal(true);
 
         jPanelBanner.setBackground(new java.awt.Color(65, 76, 85));
 
@@ -263,11 +263,11 @@ public class NuevoFlujo extends javax.swing.JDialog {
 
     private void fillComboBoxes(){
         //Llenar sw y puertos
-        entorno.getMapSwitches().values().forEach((s) -> {
+        Entorno.mapSwitches.values().forEach((s) -> {
             this.jComboBoxSwitch.addItem(s.getId());
         });
         // LLenar Hosts
-        for(Host h : entorno.getMapHosts().values()){
+        for(Host h : Entorno.mapHosts.values()){
             this.jComboBoxDstHost.addItem(h);
             this.jComboBoxSrcHost.addItem(h);
         }
@@ -326,7 +326,7 @@ public class NuevoFlujo extends javax.swing.JDialog {
         String respuesta = "";
         System.err.println("\n****\n"+json);
         try {
-            parser.doJSONPost(new URL(EntornoTools.endpoint+"/flows/"+sw), EntornoTools.user, EntornoTools.password, json);
+            HttpTools.doJSONPost(new URL(EntornoTools.endpoint+"/flows/"+sw), json);
             JDialog respuestaPost = new NewOkCancelDialog(null, true, "Flujo añadido correctamente");
             respuestaPost.setVisible(true);
             respuestaPost.pack();
@@ -341,7 +341,7 @@ public class NuevoFlujo extends javax.swing.JDialog {
     private void jComboBoxSwitchItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxSwitchItemStateChanged
         // TODO add your handling code here:
         if(evt.getStateChange() == ItemEvent.SELECTED){
-            Switch s = entorno.getMapSwitches().get((String)jComboBoxSwitch.getSelectedItem());
+            Switch s = Entorno.mapSwitches.get((String)jComboBoxSwitch.getSelectedItem());
             ((DefaultComboBoxModel)jComboBoxDstPort.getModel()).removeAllElements();
             ((DefaultComboBoxModel)jComboBoxSrcPort.getModel()).removeAllElements();
             for(Port p : s.getListPorts()){

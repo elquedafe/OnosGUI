@@ -59,9 +59,8 @@ import org.graphstream.ui.view.ViewerPipe;
  */
 public class EntornoTools {
     public static String endpoint;
-    public static String user;
-    public static String password;
-    public static String controlador;
+    public static String apiHost;
+    
     private static Graph graph;
     private static Viewer viewer;
     //private static ProxyPipe pipe;
@@ -70,14 +69,10 @@ public class EntornoTools {
     public static Entorno entorno;
     public static JsonManager parser;
     
-    public static void descubrirEntorno(Entorno entorno, String usuario, String passwd, String controller, JsonManager parser) throws IOException{
-        entorno = entorno;
-        parser = parser;
+
+    //OLD ENTORNO
+    /*public static void descubrirEntorno() throws IOException{
         String json = "";
-        user = usuario;
-        password = passwd;
-        controlador = controller;
-        endpoint = "http://" + controlador + ":8181/onos/v1";
         URL urlClusters = new URL(endpoint + "/cluster");
         URL urlDevices = new URL(endpoint + "/devices");
         URL urlLinks = new URL(endpoint + "/links");
@@ -85,14 +80,14 @@ public class EntornoTools {
         URL urlHosts = new URL(endpoint + "/hosts");
 
         // CLUSTERS
-        json = parser.getJSONGet(urlClusters, usuario, passwd);
+        json = HttpTools.doJSONGet(urlClusters);
 //        parser.parseoJsonClusters(json);
         parser.parseoJsonClustersGson(json);
 //        System.out.println(json);
 //        System.out.println("***CLUSTERS CARGADOS***");
 
         // SWITCHES
-        json = parser.getJSONGet(urlDevices, usuario, passwd);
+        json = HttpTools.doJSONGet(urlDevices);
         //
         //parser.parseoJsonDevices(json);
         parser.parseoJsonDevicesGson(json);
@@ -100,8 +95,8 @@ public class EntornoTools {
 //        System.out.println("\n***SWITCHES CARGADOS***");
         
         //PORTS
-        for(Switch s : entorno.getMapSwitches().values()){
-            json = parser.getJSONGet(new URL(endpoint+"/devices/"+s.getId()+"/ports"), usuario, passwd);
+        for(Switch s : Entorno.mapSwitches.values()){
+            json = HttpTools.doJSONGet(new URL(endpoint+"/devices/"+s.getId()+"/ports"));
             //parser.parseoJsonPuertos(json);
             parser.parseoJsonPuertosGson(json);
             //System.out.println(json);
@@ -109,21 +104,21 @@ public class EntornoTools {
         //System.out.println("\n***PUERTOS CARGADOS***");
         
         //LINKS
-        json = parser.getJSONGet(urlLinks, usuario, passwd);
+        json = HttpTools.doJSONGet(urlLinks);
 //        parser.parseoJsonLinks(json);
         parser.parseoJsonLinksGson(json);
 //        System.out.println(json);
 //        System.out.println("\n***ENLACES CARGADOS***");
         
         //FLOWS
-        json = parser.getJSONGet(urlFlows, usuario, passwd);
+        json = HttpTools.doJSONGet(urlFlows);
 //        parser.parseoJsonFlow(json);
         parser.parseoJsonFlowGson(json);
 //        System.out.println(json);
 //        System.out.println("\n***FLUJOS CARGADOS***");
 //        
         //HOSTS
-        json = parser.getJSONGet(urlHosts, usuario, passwd);
+        json = HttpTools.doJSONGet(urlHosts);
 //        parser.parseoJsonHosts(json);
         parser.parseoJsonHostsGson(json);
         System.out.println(json);
@@ -132,12 +127,21 @@ public class EntornoTools {
 //      System.out.println("\n***TOPOLOGIA CARGADA***");
         
         
+    }*/
+    
+    public static void descubrirEntorno() throws IOException{
+        String json = "";
+        URL urlEntorno = new URL(endpoint + "/getEntorno");
+        json = HttpTools.doJSONGet(new URL((EntornoTools.endpoint + "/getEntorno")));
+        JsonManager.parseoEntorno(json);
+        
     }
     
-    public static void actualizarGUILinks(Entorno entorno, DefaultListModel<Link> modeloListaLinks, Map<String, Switch> sws) {
+    
+    public static void actualizarGUILinks(DefaultListModel<Link> modeloListaLinks, Map<String, Switch> sws) {
         List<Link> l = null;
         modeloListaLinks.clear();
-        cargarAllLinks(entorno, modeloListaLinks);
+        cargarAllLinks(modeloListaLinks);
 //        for(Switch s : sws.values()){
 //            for (Link link : s.getListLinks()){
 //                //eliminarDuplicado(sws.values(), link, modeloListaLinks);
@@ -189,8 +193,8 @@ public class EntornoTools {
         }
     }
     
-    public static void actualizarBoxSwitches(Entorno entorno, JComboBox box){        
-        for(Switch s : entorno.getMapSwitches().values()){
+    public static void actualizarBoxSwitches(JComboBox box){        
+        for(Switch s : Entorno.mapSwitches.values()){
             if(s.getAvailable()){
                 box.removeItem(s.getId());
                 box.addItem(s.getId());
@@ -206,7 +210,7 @@ public class EntornoTools {
         }
     }
     
-    public static void actualizarGUITopologia(Entorno entorno, JsonManager parser, JPanel panel){
+    public static void actualizarGUITopologia(JPanel panel){
         panel.removeAll();
         int nNodos = 0;
         //Graph graph = new SingleGraph("Topologia", false, true);
@@ -229,7 +233,7 @@ public class EntornoTools {
             graph.clear();
             //viewer.enableAutoLayout();
         }*/
-        for(Switch s : entorno.getMapSwitches().values()){
+        for(Switch s : Entorno.mapSwitches.values()){
             nNodos++;
             System.out.println("Switch id: "+ s.getId());
             Point3 xyz = Toolkit.nodePointPosition(graph, s.getId());
@@ -256,7 +260,7 @@ public class EntornoTools {
                 ed.addAttribute("ui.label", l.getSrc()+"/"+l.getSrcPort()+"<->"+l.getDst()+"/"+l.getDstPort());
             }
         }
-        for(Host h : entorno.getMapHosts().values()){
+        for(Host h : Entorno.mapHosts.values()){
             nNodos++;
             System.out.println("Host id: "+ h.getId());
             Point3 xyz = Toolkit.nodePointPosition(graph, h.getId());
@@ -312,8 +316,8 @@ public class EntornoTools {
         
     }
     
-    private static void cargarAllLinks(Entorno entorno, DefaultListModel<Link> modelo){
-        for(Switch s : entorno.getMapSwitches().values()){
+    private static void cargarAllLinks(DefaultListModel<Link> modelo){
+        for(Switch s : Entorno.mapSwitches.values()){
             for(Link l : s.getListLinks()){
                 modelo.addElement(l);
                 if(duplicado(modelo, l))

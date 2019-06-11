@@ -138,7 +138,7 @@ public class NodeClickListener implements ViewerListener , MouseInputListener{
         Node n = graph.getNode(id);
         try {
             if(n.getAttribute("ui.class").equals("switch")){
-               JDialog dialog = new NuevoFlujo(entorno, parser, id);
+               JDialog dialog = new NuevoFlujo(id);
                dialog.setVisible(true);
                dialog.pack();
             }

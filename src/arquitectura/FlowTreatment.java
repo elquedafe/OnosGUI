@@ -13,26 +13,26 @@ import java.util.List;
  * @author alvaroluismartinez
  */
 public class FlowTreatment {
-    private List<FlowInstruction> listInstructions;
+    private List<FlowInstruction> flowInstructions;
 
     /**
      *
      * @param listInstructions
      */
     public FlowTreatment(List<FlowInstruction> listInstructions) {
-        this.listInstructions = listInstructions;
+        this.flowInstructions = listInstructions;
     }
 
     public FlowTreatment() {
-        this.listInstructions = new ArrayList<FlowInstruction>();
+        this.flowInstructions = new ArrayList<FlowInstruction>();
     }
 
     public List<FlowInstruction> getListInstructions() {
-        return listInstructions;
+        return flowInstructions;
     }
 
     public void setListInstructions(List<FlowInstruction> listInstructions) {
-        this.listInstructions = listInstructions;
+        this.flowInstructions = listInstructions;
     }
     
     

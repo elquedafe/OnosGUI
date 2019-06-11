@@ -21,16 +21,16 @@ public class Switch {
         private String humanReadableLastUpdate;
         private LinkedTreeMap annotations;
         
-	private List<Port> listPorts;
-	private Map<String, Flow> mapFlows;
-        private List<Link> listLinks;
+	private List<Port> ports;
+	private Map<String, Flow> flows;
+        private List<Link> links;
 	
 	public Switch(String id) {
             this.id = id;
             this.available = false;
-            this.listPorts = new ArrayList<Port>();
-            this.listLinks = new ArrayList<Link>();
-            this.mapFlows = new HashMap<String, Flow>();
+            this.ports = new ArrayList<Port>();
+            this.links = new ArrayList<Link>();
+            this.flows = new HashMap<String, Flow>();
 	}
         
         public Switch(String id, 
@@ -61,35 +61,35 @@ public class Switch {
             this.humanReadableLastUpdate = humanReadableLastUpdate;
             this.annotations = annotations;
             
-            this.listPorts = new ArrayList<Port>();
-            this.listLinks = new ArrayList<Link>();
-            this.mapFlows = new HashMap<String, Flow>();
+            this.ports = new ArrayList<Port>();
+            this.links = new ArrayList<Link>();
+            this.flows = new HashMap<String, Flow>();
             
         }
 
 	public List<Port> getListPorts() {
-		return listPorts;
+		return ports;
 	}
 
 	public void setListPorts(List<Port> listPorts) {
-		this.listPorts = listPorts;
+		this.ports = listPorts;
 	}
         
         public List<Link> getListLinks() {
-		return listLinks;
+		return links;
 	}
 
 	public void setListLinks(List<Link> listLinks) {
-		this.listLinks = listLinks;
+		this.links = listLinks;
 	}
         
         public void addPort(Port p){
-            this.listPorts.add(p);
+            this.ports.add(p);
         }
         
         public Port getPortByNumber(String numero){
             Port puerto = null;
-            for(Port p : this.listPorts){
+            for(Port p : this.ports){
                 if(p.getPortNumber().equals(numero)){
                     puerto = p;
                     break;
@@ -100,7 +100,7 @@ public class Switch {
         
         public Port getPortByMac(String mac){
             Port puerto = null;
-            for(Port p : this.listPorts){
+            for(Port p : this.ports){
                 if(p.getPortMac().equals(mac)){
                     puerto = p;
                     break;
@@ -111,7 +111,7 @@ public class Switch {
         
         public Port getPortByName(String nombre){
             Port puerto = null;
-            for(Port p : this.listPorts){
+            for(Port p : this.ports){
                 if(p.getPortName().equals(nombre)){
                     puerto = p;
                     break;
@@ -121,11 +121,11 @@ public class Switch {
         }
 
 	public Map<String, Flow> getMapFlows() {
-		return mapFlows;
+		return flows;
 	}
 
 	public void setMapFlows(Map<String, Flow> listFlows) {
-		this.mapFlows = listFlows;
+		this.flows = listFlows;
 	}
 
 	public String getId() {
@@ -145,7 +145,7 @@ public class Switch {
 	}
 	
 	public void addFlow(Flow flow) {
-		this.mapFlows.put(flow.getId(), flow);
+		this.flows.put(flow.getId(), flow);
 	}
         
         

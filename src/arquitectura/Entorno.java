@@ -4,42 +4,46 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *
+ * @author alvaroluismartinez
+ */
 public class Entorno {
     //private int nNodos = 0;
     //private int nSwitches = 0;
     //private int nHosts = 0;
-    private Map<String, Switch> mapSwitches;
+    public static Map<String, Switch> mapSwitches = new HashMap<String, Switch>();
     //private List<Link> listLinks;
     //private List<Switch> listSwitches;
-    private List<Cluster> listClusters;
-    private Map<String, Host> mapHosts;
+    public static List<Cluster> listClusters = new ArrayList<Cluster>();
+    public static Map<String, Host> mapHosts = new HashMap<String, Host>();
 
-    public Entorno() {
-            /*this.nNodos = 0;
-            this.nSwitches = 0;
-            this.nHosts = 0;*/
+    /*public Entorno() {
+            //this.nNodos = 0;
+            //this.nSwitches = 0;
+            //this.nHosts = 0;
             this.mapSwitches = new HashMap<String, Switch>();
             //this.listLinks = new ArrayList<Link>();
             //this.listSwitches = new ArrayList<Switch>();
             this.listClusters = new ArrayList<Cluster>();
             this.mapHosts = new HashMap<String, Host>();
-    }
+    }*/
 
-    public Map<String, Switch> getMapSwitches() {
+    /*public static Map<String, Switch> getMapSwitches() {
             return mapSwitches;
-    }
+    }*/
 
-    public void setMapSwitches(Map<String, Switch> mapSwitches) {
+    /*public void setMapSwitches(Map<String, Switch> mapSwitches) {
             this.mapSwitches = mapSwitches;
-    }
+    }*/
 
-    public Map<String, Host> getMapHosts() {
+    /*public Map<String, Host> getMapHosts() {
             return mapHosts;
-    }
+    }*/
 
-    public void setMapHosts(Map<String, Host> mapHosts) {
+    /*public void setMapHosts(Map<String, Host> mapHosts) {
             this.mapHosts = mapHosts;
-    }
+    }*/
 
 //    public List<Link> getListLinks() {
 //            return listLinks;
@@ -49,9 +53,9 @@ public class Entorno {
 //            this.listLinks = listLinks;
 //    }
 
-    public List<Cluster> getListClusters() {
-            return listClusters;
-    }
+//    public List<Cluster> getListClusters() {
+//            return listClusters;
+//    }
     /*public List<Switch> getListSwitches() {
             return listSwitches;
     }
@@ -64,22 +68,22 @@ public class Entorno {
 //            this.listLinks.add(link);
 //    }
 
-    public void addCluster(Cluster cluster){
-            this.listClusters.add(cluster);
+    public static void addCluster(Cluster cluster){
+        listClusters.add(cluster);
     }
 
-    public void addSwitch(String nombre) {
-            this.mapSwitches.put(nombre, new Switch(nombre));
+    public static void addSwitch(String nombre) {
+        mapSwitches.put(nombre, new Switch(nombre));
             //this.nSwitches++;
     }
 
-    public void addHost(String nombre) {
-            this.mapHosts.put(nombre, new Host(nombre));
+    public static void addHost(String nombre) {
+        mapHosts.put(nombre, new Host(nombre));
             //this.nSwitches++;
     }
     
-    public void addHost(Host host){
-        this.mapHosts.put(host.getId(), host);
+    public static void addHost(Host host){
+        mapHosts.put(host.getId(), host);
     }
 	
 	

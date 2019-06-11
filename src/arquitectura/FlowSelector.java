@@ -13,24 +13,24 @@ import java.util.List;
  * @author alvaroluismartinez
  */
 public class FlowSelector {
-    private List<FlowCriteria> listFlowCriteria;
+    private List<FlowCriteria> flowCriterias;
 
     public FlowSelector(List<FlowCriteria> listFlowCriteria) {
-        this.listFlowCriteria = listFlowCriteria;
+        this.flowCriterias = listFlowCriteria;
     }
 
     public FlowSelector() {
-        this.listFlowCriteria = new ArrayList<FlowCriteria>();
+        this.flowCriterias = new ArrayList<FlowCriteria>();
     }
     
     
 
     public List<FlowCriteria> getListFlowCriteria() {
-        return listFlowCriteria;
+        return flowCriterias;
     }
 
     public void setListFlowCriteria(List<FlowCriteria> listFlowCriteria) {
-        this.listFlowCriteria = listFlowCriteria;
+        this.flowCriterias = listFlowCriteria;
     }
     
     

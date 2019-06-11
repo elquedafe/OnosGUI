@@ -36,14 +36,9 @@ import java.util.logging.Logger;
 import static tools.EntornoTools.endpoint;
 
 public class JsonManager {
-    private Entorno entorno;
-    private JsonReader reader;
+    //private static JsonReader reader;
 
-    public JsonManager(Entorno entorno) {
-            this.entorno = entorno;
-    }
-
-    public String getJSONGet(URL url, String usuario, String password) throws IOException{
+    /*public String getJSONGet(URL url, String usuario, String password) throws IOException{
         String encoding;
         String line;
         String json="";
@@ -130,7 +125,7 @@ public class JsonManager {
         }
 
         return json;
-    }
+    }*/
 
     public void parseoJsonDevicesGson(String json) {
         Gson gson = new Gson();
@@ -154,7 +149,7 @@ public class JsonManager {
             LinkedTreeMap annotations = (LinkedTreeMap)map.get("annotations");
             
             Switch s = new Switch(id, type, available, role, mfr, hw, sw, serial, driver, chassisId, lastUpdate, humanReadableLastUpdate, annotations);
-            entorno.getMapSwitches().put(id, s);
+            Entorno.mapSwitches.put(id, s);
         }
     }
 
@@ -177,7 +172,7 @@ public class JsonManager {
             String portName = (String)annotations.get("portName");
             
             Port p = new Port(ovs, port, isEnabled, type, portSpeed, portMac, portName, annotations);
-            entorno.getMapSwitches().get(id).addPort(p);
+            Entorno.mapSwitches.get(id).addPort(p);
         }
     }
 
@@ -195,7 +190,7 @@ public class JsonManager {
             String lastUpdate = (String)mapClusters.get("lastUpdate");
             String humanReadableLastUpdate = (String)mapClusters.get("humanReadableLastUpdate");
             Cluster c = new Cluster(id, ip, tcpPort, status, lastUpdate, humanReadableLastUpdate);
-            entorno.addCluster(c);
+            Entorno.addCluster(c);
         }
     }
 
@@ -221,7 +216,7 @@ public class JsonManager {
             double cost = 0;
             try {
                 urlPaths = new URL(endpoint + "/paths/"+srcDevice+"/"+dstDevice);
-                String jsonPath = getJSONGet(urlPaths, EntornoTools.user, EntornoTools.password);
+                String jsonPath = HttpTools.doJSONGet(urlPaths);
                 cost = parseoJsonPathGson(gson, jsonPath);
             } catch (MalformedURLException ex) {
                 Logger.getLogger(JsonManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -230,7 +225,7 @@ public class JsonManager {
             }
             
             Link l = new Link(srcDevice, srcPort, dstDevice, dstPort, type, state, cost);
-            entorno.getMapSwitches().get(srcDevice).getListLinks().add(l);
+            Entorno.mapSwitches.get(srcDevice).getListLinks().add(l);
         }
     }
     
@@ -308,7 +303,7 @@ public class JsonManager {
             }
             
             Flow flow = new Flow(id, tableId, appId, groupId, priority, timeout, isPermanent, deviceId, state, life, packets, bytes, liveType, lastSeen, flowTreatment, flowSelector);
-            entorno.getMapSwitches().get(deviceId).addFlow(flow);
+            Entorno.mapSwitches.get(deviceId).addFlow(flow);
             
         }
         
@@ -339,8 +334,48 @@ public class JsonManager {
             }
             
             Host h = new Host(id, mac, vlan, innerVlan, outerTpid, configured, ipAddresses, locations);
-            entorno.addHost(h);
+            Entorno.addHost(h);
         }
+    }
+    
+    static void parseoEntorno(String json){
+        Gson gson = new Gson();
+        //Entorno entorno = gson.fromJson(json, Entorno.class);
+        LinkedTreeMap jsonObject = gson.fromJson(json, LinkedTreeMap.class);
+        
+        // SWITCHES
+        Switch sw = null;
+        Entorno.mapSwitches.clear();
+        LinkedTreeMap mapSw = (LinkedTreeMap)jsonObject.get("switches");
+        for(Object o : mapSw.entrySet()){
+            Map.Entry<String, LinkedTreeMap> entry = (Map.Entry<String, LinkedTreeMap>)o;
+            sw = gson.fromJson(gson.toJson(entry.getValue()), Switch.class);
+            Entorno.mapSwitches.put(sw.getId(), sw);
+        }
+        
+        //CLUSTERS
+        Entorno.listClusters.clear();
+        List mapCluster = (ArrayList)jsonObject.get("clusters");
+        Entorno.listClusters = gson.fromJson(gson.toJson(mapCluster), ArrayList.class);
+        
+        //HOSTS
+        Host h = null;
+        Entorno.mapHosts.clear();
+        LinkedTreeMap mapH = (LinkedTreeMap)jsonObject.get("hosts");
+        for(Object o : mapH.entrySet()){
+            Map.Entry<String, LinkedTreeMap> entry = (Map.Entry<String, LinkedTreeMap>)o;
+            h = gson.fromJson(gson.toJson(entry.getValue()), Host.class);
+            Entorno.mapHosts.put(h.getId(), h);
+        }
+        
+        Map<String , Host> mH = Entorno.mapHosts;
+        Map<String , Switch> mS = Entorno.mapSwitches;
+        List<Cluster> lC = Entorno.listClusters;
+        
+        
+        
+        
+        
     }
 
 }

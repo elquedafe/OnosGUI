@@ -13,7 +13,7 @@ public class Host {
     private String outerTpid;
     private boolean configured;
     private List<String> ipList;
-    private Map<String, String> mapLocations;
+    private Map<String, String> locations;
     
     public Host() {
             this.id = "";
@@ -23,7 +23,7 @@ public class Host {
             this.outerTpid = "";
             this.configured = false;
             this.ipList = new ArrayList<String>();
-            this.mapLocations = new HashMap<String, String>();
+            this.locations = new HashMap<String, String>();
     }
 
     public Host(String nombre) {
@@ -34,7 +34,7 @@ public class Host {
             this.outerTpid = "";
             this.configured = false;
             this.ipList = new ArrayList<String>();
-            this.mapLocations = new HashMap<String, String>();
+            this.locations = new HashMap<String, String>();
     }
 
     public Host(String id, String mac, String vlan, String innerVlan, String outerTpid, boolean configured, List<String> ipList, Map<String, String> mapLocations) {
@@ -45,7 +45,7 @@ public class Host {
         this.outerTpid = outerTpid;
         this.configured = configured;
         this.ipList = ipList;
-        this.mapLocations = mapLocations;
+        this.locations = mapLocations;
     }
     
     public String getId() {
@@ -112,14 +112,14 @@ public class Host {
      * @return the mapLocations
      */
     public Map<String, String> getMapLocations() {
-        return mapLocations;
+        return locations;
     }
 
     /**
      * @param mapLocations the mapLocations to set
      */
     public void setMapLocations(Map<String, String> mapLocations) {
-        this.mapLocations = mapLocations;
+        this.locations = mapLocations;
     }
 
     @Override
