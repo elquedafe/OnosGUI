@@ -11,6 +11,7 @@ import arquitectura.Host;
 import arquitectura.Link;
 import arquitectura.Meter;
 import arquitectura.Switch;
+import arquitectura.Vpls;
 import com.nettopo.boudis.GraphicNode;
 import com.nettopo.boudis.TopologyPanel;
 import com.nettopo.boudis.constants;
@@ -360,6 +361,17 @@ public class EntornoTools {
         
     }
     
+    public static void getVpls() throws IOException{
+        // TODO Auto-generated method stub
+        
+        String json = "";
+        List<Vpls> vplsList = null;
+
+        json = HttpTools.doJSONGet(new URL(EntornoTools.endpoint + "/vpls"));
+        JsonManager.parseoVpls(json);
+
+    }
+    
     public static List<Meter> getMetersBySwitch(String swId){
         List<Meter> list = new ArrayList<Meter>();
         for(Meter m : Entorno.meters){
@@ -369,6 +381,18 @@ public class EntornoTools {
         if(list.isEmpty())
             list = null;
         return list;
+    }
+
+    public static void actualizarGUIVplsTable(JTable jTableVpls, List<Vpls> vpls) {
+        //Delete table
+        ((DefaultTableModel)jTableVpls.getModel()).setRowCount(0);
+        if(vpls != null){
+            for (Vpls auxVpls : vpls) { 
+                Object[] array = auxVpls.toTableArray();
+                ((DefaultTableModel)jTableVpls.getModel()).addRow(array);
+
+            }
+        }
     }
 
     

@@ -20,6 +20,7 @@ import arquitectura.Link;
 import arquitectura.Meter;
 import arquitectura.Port;
 import arquitectura.Switch;
+import arquitectura.Vpls;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.stream.JsonReader;
@@ -395,5 +396,20 @@ public class JsonManager {
         
     }
 
+    public static void parseoVpls(String json) {
+        Gson gson = new Gson();
+        List<Vpls> vplsList = new ArrayList<Vpls>();
+        Entorno.vpls.clear();
+        ArrayList jsonObject = (ArrayList)gson.fromJson(json, ArrayList.class);
+
+        for(Object ob : jsonObject){
+            LinkedTreeMap vplsNode = (LinkedTreeMap)ob;
+            Vpls v = gson.fromJson(gson.toJson(vplsNode), Vpls.class);
+            vplsList.add(v);
+        }
+        Entorno.vpls = vplsList;
+        
+        List<Vpls> l = Entorno.vpls;
+    }
 }
 

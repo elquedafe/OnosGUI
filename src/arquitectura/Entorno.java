@@ -18,6 +18,7 @@ public class Entorno {
     public static List<Cluster> listClusters = new ArrayList<Cluster>();
     public static Map<String, Host> mapHosts = new HashMap<String, Host>();
     public static List<Meter> meters = new ArrayList<Meter>();
+    public static List<Vpls> vpls = new ArrayList<Vpls>();
     /*public Entorno() {
             //this.nNodos = 0;
             //this.nSwitches = 0;

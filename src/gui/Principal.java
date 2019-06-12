@@ -47,6 +47,8 @@ public class Principal extends javax.swing.JFrame {
     private final int RATE_METER = 3;
     private final int  BURST_METER = 4;
     private final int  BYTES_METER = 5;
+    
+    private final int VPLS_NAME = 0;
    
     private Timer timerDevices;
     private Timer timerFlows;
@@ -99,6 +101,13 @@ public class Principal extends javax.swing.JFrame {
         jButtonEliminar = new javax.swing.JButton();
         jPanelTopologia = new javax.swing.JPanel();
         jPanelVpls = new javax.swing.JPanel();
+        jScrollPaneVpls = new javax.swing.JScrollPane();
+        jTableVpls = new javax.swing.JTable();
+        jPanelDetalleVpls = new javax.swing.JPanel();
+        jComboBoxVpls = new javax.swing.JComboBox<>();
+        jButtonNuevoVpls = new javax.swing.JButton();
+        jLabelVplsName = new javax.swing.JLabel();
+        jButtonEliminarVpls = new javax.swing.JButton();
         jTabbedPaneQoS = new javax.swing.JTabbedPane();
         jPanelMeters = new javax.swing.JPanel();
         jScrollPaneMeters = new javax.swing.JScrollPane();
@@ -119,7 +128,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ONOS QoS");
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/img/Untitled-5.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Untitled-5.png"))); // NOI18N
 
         jButtonDesconexion.setBackground(new java.awt.Color(37, 44, 51));
         jButtonDesconexion.setForeground(new java.awt.Color(255, 255, 255));
@@ -274,9 +283,9 @@ public class Principal extends javax.swing.JFrame {
         jPanelLinks.setLayout(jPanelLinksLayout);
         jPanelLinksLayout.setHorizontalGroup(
             jPanelLinksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 769, Short.MAX_VALUE)
+            .addGap(0, 777, Short.MAX_VALUE)
             .addGroup(jPanelLinksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPaneLinks, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 769, Short.MAX_VALUE))
+                .addComponent(jScrollPaneLinks, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE))
         );
         jPanelLinksLayout.setVerticalGroup(
             jPanelLinksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -398,7 +407,7 @@ public class Principal extends javax.swing.JFrame {
         jPanelFlowsLayout.setHorizontalGroup(
             jPanelFlowsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFlowsLayout.createSequentialGroup()
-                .addComponent(jScrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 526, Short.MAX_VALUE)
+                .addComponent(jScrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
                 .addGap(6, 6, 6)
                 .addComponent(jPanelDetalleFlow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -416,15 +425,115 @@ public class Principal extends javax.swing.JFrame {
 
         jPanelVpls.setName("jPanelVpls"); // NOI18N
 
+        jTableVpls.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Nombre VPLS", "Lista Hosts", "Encapsulación"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPaneVpls.setViewportView(jTableVpls);
+
+        jPanelDetalleVpls.setName("jPanelDetalleFlow"); // NOI18N
+        jPanelDetalleVpls.setPreferredSize(new java.awt.Dimension(237, 160));
+
+        jComboBoxVpls.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos" }));
+        jComboBoxVpls.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxVplsItemStateChanged(evt);
+            }
+        });
+        jComboBoxVpls.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxVplsActionPerformed(evt);
+            }
+        });
+
+        jButtonNuevoVpls.setBackground(new java.awt.Color(37, 44, 51));
+        jButtonNuevoVpls.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonNuevoVpls.setText("Añadir VPLS");
+        jButtonNuevoVpls.setBorderPainted(false);
+        jButtonNuevoVpls.setOpaque(true);
+        jButtonNuevoVpls.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonNuevoVplsMouseClicked(evt);
+            }
+        });
+
+        jLabelVplsName.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        jLabelVplsName.setText("VPLS:");
+
+        jButtonEliminarVpls.setBackground(new java.awt.Color(37, 44, 51));
+        jButtonEliminarVpls.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonEliminarVpls.setText("Eliminar VPLS");
+        jButtonEliminarVpls.setBorderPainted(false);
+        jButtonEliminarVpls.setOpaque(true);
+        jButtonEliminarVpls.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonEliminarVplsMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelDetalleVplsLayout = new javax.swing.GroupLayout(jPanelDetalleVpls);
+        jPanelDetalleVpls.setLayout(jPanelDetalleVplsLayout);
+        jPanelDetalleVplsLayout.setHorizontalGroup(
+            jPanelDetalleVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalleVplsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelDetalleVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelDetalleVplsLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanelDetalleVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonNuevoVpls, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonEliminarVpls, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanelDetalleVplsLayout.createSequentialGroup()
+                        .addComponent(jLabelVplsName)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addComponent(jComboBoxVpls, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+        );
+        jPanelDetalleVplsLayout.setVerticalGroup(
+            jPanelDetalleVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDetalleVplsLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPanelDetalleVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxVpls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelVplsName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 238, Short.MAX_VALUE)
+                .addComponent(jButtonNuevoVpls)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonEliminarVpls)
+                .addGap(20, 20, 20))
+        );
+
+        jLabelVplsName.getAccessibleContext().setAccessibleName("Vpls:");
+
         javax.swing.GroupLayout jPanelVplsLayout = new javax.swing.GroupLayout(jPanelVpls);
         jPanelVpls.setLayout(jPanelVplsLayout);
         jPanelVplsLayout.setHorizontalGroup(
             jPanelVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 769, Short.MAX_VALUE)
+            .addGroup(jPanelVplsLayout.createSequentialGroup()
+                .addComponent(jScrollPaneVpls, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelDetalleVpls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanelVplsLayout.setVerticalGroup(
             jPanelVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 392, Short.MAX_VALUE)
+            .addComponent(jScrollPaneVpls, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanelDetalleVpls, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
         );
 
         jPanelCard.add(jPanelVpls, "jPanelVpls");
@@ -532,7 +641,7 @@ public class Principal extends javax.swing.JFrame {
         jPanelMetersLayout.setHorizontalGroup(
             jPanelMetersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMetersLayout.createSequentialGroup()
-                .addComponent(jScrollPaneMeters, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+                .addComponent(jScrollPaneMeters, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelDetalleMeters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -548,7 +657,7 @@ public class Principal extends javax.swing.JFrame {
         jPanelQueue.setLayout(jPanelQueueLayout);
         jPanelQueueLayout.setHorizontalGroup(
             jPanelQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 748, Short.MAX_VALUE)
+            .addGap(0, 756, Short.MAX_VALUE)
         );
         jPanelQueueLayout.setVerticalGroup(
             jPanelQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -940,6 +1049,12 @@ public class Principal extends javax.swing.JFrame {
         jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
         jLabelQoS.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
         jLabelVpls.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+        try {
+            EntornoTools.getVpls();
+            EntornoTools.actualizarGUIVplsTable(jTableVpls, Entorno.vpls);
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
 //            EntornoTools.descubrirEntorno();
 //            EntornoTools.actualizarGUITopologia(jPanelTopologia);
     }//GEN-LAST:event_jLabelVplsMouseClicked
@@ -1069,6 +1184,50 @@ public class Principal extends javax.swing.JFrame {
             err.pack();
         }
     }//GEN-LAST:event_jButtonEliminarMeterMouseClicked
+
+    private void jComboBoxVplsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxVplsItemStateChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxVplsItemStateChanged
+
+    private void jComboBoxVplsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxVplsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxVplsActionPerformed
+
+    private void jButtonNuevoVplsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNuevoVplsMouseClicked
+        try {
+            // TODO add your handling code here:
+            JDialog newVpls = new NuevaVpls();
+            newVpls.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonNuevoVplsMouseClicked
+
+    private void jButtonEliminarVplsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEliminarVplsMouseClicked
+        try{
+            
+            String vplsName = ((DefaultTableModel)jTableVpls.getModel()).getDataVector().elementAt(jTableVpls.getSelectedRow()).get(VPLS_NAME).toString();
+            try {
+                int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar la VPLS \""+vplsName+"\"?", "Eliminar vpls", WIDTH);
+                if (resultado==JOptionPane.OK_OPTION){
+                    System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpoint+"/vpls/"+vplsName)));
+                    JDialog acp = new NewOkCancelDialog(this, false, "Vpls " + vplsName + " eliminada correctamente");
+                    acp.setVisible(true);
+                    acp.pack();
+                }
+            } catch (IOException ex) {
+                System.err.println(ex.getMessage());
+                JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar la vpls");
+                err.setVisible(true);
+                err.pack();
+            }
+        }
+        catch(NullPointerException ex){
+            JDialog err = new NewOkCancelDialog(this, false, "Elija una vpls de la lista");
+            err.setVisible(true);
+            err.pack();
+        }
+    }//GEN-LAST:event_jButtonEliminarVplsMouseClicked
     
 
 
@@ -1076,10 +1235,13 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButtonDesconexion;
     private javax.swing.JButton jButtonEliminar;
     private javax.swing.JButton jButtonEliminarMeter;
+    private javax.swing.JButton jButtonEliminarVpls;
     private javax.swing.JButton jButtonNewMeter;
     private javax.swing.JButton jButtonNuevo;
+    private javax.swing.JButton jButtonNuevoVpls;
     private javax.swing.JComboBox<String> jComboBoxSwitches;
     private javax.swing.JComboBox<String> jComboBoxSwitchesMeters;
+    private javax.swing.JComboBox<String> jComboBoxVpls;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelEnlaces;
@@ -1089,12 +1251,14 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelSwitch1;
     private javax.swing.JLabel jLabelTopologia;
     private javax.swing.JLabel jLabelVpls;
+    private javax.swing.JLabel jLabelVplsName;
     private javax.swing.JList<Flow> jListFlows;
     private javax.swing.JList<Link> jListLinks;
     private javax.swing.JPanel jPanelBanner;
     private javax.swing.JPanel jPanelCard;
     private javax.swing.JPanel jPanelDetalleFlow;
     private javax.swing.JPanel jPanelDetalleMeters;
+    private javax.swing.JPanel jPanelDetalleVpls;
     private javax.swing.JPanel jPanelFlows;
     private javax.swing.JPanel jPanelLinks;
     private javax.swing.JPanel jPanelMenu;
@@ -1106,8 +1270,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPaneLinks;
     private javax.swing.JScrollPane jScrollPaneMeters;
     private javax.swing.JScrollPane jScrollPaneTable;
+    private javax.swing.JScrollPane jScrollPaneVpls;
     private javax.swing.JTabbedPane jTabbedPaneQoS;
     private javax.swing.JTable jTableFlows;
     private javax.swing.JTable jTableMeters;
+    private javax.swing.JTable jTableVpls;
     // End of variables declaration//GEN-END:variables
 }

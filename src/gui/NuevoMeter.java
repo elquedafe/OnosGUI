@@ -27,7 +27,6 @@ public class NuevoMeter extends javax.swing.JDialog {
      */
     public NuevoMeter() throws IOException {
         super();
-        this.selectedSwitch = selectedSwitch;
         initComponents();
         EntornoTools.descubrirEntorno();
         EntornoTools.getMeters();
