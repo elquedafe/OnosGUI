@@ -9,6 +9,7 @@ import arquitectura.Entorno;
 import arquitectura.Flow;
 import arquitectura.Host;
 import arquitectura.Link;
+import arquitectura.Meter;
 import arquitectura.Switch;
 import com.nettopo.boudis.GraphicNode;
 import com.nettopo.boudis.TopologyPanel;
@@ -193,6 +194,18 @@ public class EntornoTools {
         }
     }
     
+    public static void actualizarGUIMetersTable(JTable table, List<Meter> meters) {
+        //Delete table
+        ((DefaultTableModel)table.getModel()).setRowCount(0);
+        if(meters != null){
+            for (Meter auxMeter : meters) { 
+                Object[] array = auxMeter.toTableArray();
+                ((DefaultTableModel)table.getModel()).addRow(array);
+
+            }
+        }
+    }
+    
     public static void actualizarBoxSwitches(JComboBox box){        
         for(Switch s : Entorno.mapSwitches.values()){
             if(s.getAvailable()){
@@ -339,5 +352,25 @@ public class EntornoTools {
         return b;
             
     }
+    
+    public static void getMeters() throws IOException{
+        String json;
+        json = HttpTools.doJSONGet(new URL(EntornoTools.endpoint+"/meters"));
+        JsonManager.parseoMeters(json);
+        
+    }
+    
+    public static List<Meter> getMetersBySwitch(String swId){
+        List<Meter> list = new ArrayList<Meter>();
+        for(Meter m : Entorno.meters){
+            if(m.getDeviceId().equals(swId))
+                list.add(m);
+        }
+        if(list.isEmpty())
+            list = null;
+        return list;
+    }
+
+    
     
 }

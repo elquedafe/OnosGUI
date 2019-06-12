@@ -42,9 +42,15 @@ public class Principal extends javax.swing.JFrame {
     private final int ESTADO = 4;
     private final int PAQUETES = 5;
     private final int BYTES = 6;
+    
+    private final int ESTADO_METER = 2;
+    private final int RATE_METER = 3;
+    private final int  BURST_METER = 4;
+    private final int  BYTES_METER = 5;
    
     private Timer timerDevices;
     private Timer timerFlows;
+    private Timer timerMeters;
     private Timer timerTopologia;
     /**
      * Creates new form Principal
@@ -53,7 +59,8 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         this.jLabelTopologiaMouseClicked(null);
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
-        this.jTableFlows.setAutoCreateRowSorter(true);
+        //this.jTableFlows.setAutoCreateRowSorter(true);
+        //this.jTableMeters.setAutoCreateRowSorter(true);
         EntornoTools.descubrirEntorno();
     }
 
@@ -72,7 +79,7 @@ public class Principal extends javax.swing.JFrame {
         jButtonDesconexion = new javax.swing.JButton();
         jPanelMenu = new javax.swing.JPanel();
         jLabelEnlaces = new javax.swing.JLabel();
-        jLabelFlows2 = new javax.swing.JLabel();
+        jLabelFlows = new javax.swing.JLabel();
         jLabelTopologia = new javax.swing.JLabel();
         jLabelQoS = new javax.swing.JLabel();
         jLabelVpls = new javax.swing.JLabel();
@@ -94,6 +101,13 @@ public class Principal extends javax.swing.JFrame {
         jPanelVpls = new javax.swing.JPanel();
         jTabbedPaneQoS = new javax.swing.JTabbedPane();
         jPanelMeters = new javax.swing.JPanel();
+        jScrollPaneMeters = new javax.swing.JScrollPane();
+        jTableMeters = new javax.swing.JTable();
+        jPanelDetalleMeters = new javax.swing.JPanel();
+        jComboBoxSwitchesMeters = new javax.swing.JComboBox<>();
+        jButtonNewMeter = new javax.swing.JButton();
+        jLabelSwitch1 = new javax.swing.JLabel();
+        jButtonEliminarMeter = new javax.swing.JButton();
         jPanelQueue = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -160,16 +174,16 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jLabelFlows2.setBackground(new java.awt.Color(96, 97, 106));
-        jLabelFlows2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelFlows2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabelFlows2.setText("     Flujos");
-        jLabelFlows2.setToolTipText("");
-        jLabelFlows2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.darkGray, null, null));
-        jLabelFlows2.setOpaque(true);
-        jLabelFlows2.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabelFlows.setBackground(new java.awt.Color(96, 97, 106));
+        jLabelFlows.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelFlows.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabelFlows.setText("     Flujos");
+        jLabelFlows.setToolTipText("");
+        jLabelFlows.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.darkGray, null, null));
+        jLabelFlows.setOpaque(true);
+        jLabelFlows.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabelFlows2MouseClicked(evt);
+                jLabelFlowsMouseClicked(evt);
             }
         });
 
@@ -204,6 +218,7 @@ public class Principal extends javax.swing.JFrame {
         jLabelVpls.setText("     Vpls");
         jLabelVpls.setToolTipText("");
         jLabelVpls.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.darkGray, null, null));
+        jLabelVpls.setName("vpls"); // NOI18N
         jLabelVpls.setOpaque(true);
         jLabelVpls.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -216,7 +231,7 @@ public class Principal extends javax.swing.JFrame {
         jPanelMenuLayout.setHorizontalGroup(
             jPanelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabelEnlaces, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabelFlows2, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+            .addComponent(jLabelFlows, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
             .addComponent(jLabelTopologia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabelQoS, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
             .addComponent(jLabelVpls, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
@@ -228,7 +243,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(0, 0, 0)
                 .addComponent(jLabelEnlaces, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(jLabelFlows2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabelFlows, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabelQoS, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
@@ -236,7 +251,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jLabelFlows2.getAccessibleContext().setAccessibleName("FlujosTabla");
+        jLabelFlows.getAccessibleContext().setAccessibleName("FlujosTabla");
 
         jPanelCard.setBackground(new java.awt.Color(255, 255, 255));
         jPanelCard.setLayout(new java.awt.CardLayout());
@@ -276,6 +291,7 @@ public class Principal extends javax.swing.JFrame {
 
         jScrollPaneTable.setName("jScrollPaneTable"); // NOI18N
 
+        jTableFlows.setAutoCreateRowSorter(true);
         jTableFlows.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -302,6 +318,7 @@ public class Principal extends javax.swing.JFrame {
         jTableFlows.setName(""); // NOI18N
         jTableFlows.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jTableFlows.setShowGrid(false);
+        jTableFlows.setShowVerticalLines(true);
         jScrollPaneTable.setViewportView(jTableFlows);
 
         jPanelDetalleFlow.setName("jPanelDetalleFlow"); // NOI18N
@@ -397,6 +414,8 @@ public class Principal extends javax.swing.JFrame {
         jPanelTopologia.setLayout(new java.awt.GridLayout(1, 0));
         jPanelCard.add(jPanelTopologia, "jPanelTopologia");
 
+        jPanelVpls.setName("jPanelVpls"); // NOI18N
+
         javax.swing.GroupLayout jPanelVplsLayout = new javax.swing.GroupLayout(jPanelVpls);
         jPanelVpls.setLayout(jPanelVplsLayout);
         jPanelVplsLayout.setHorizontalGroup(
@@ -408,17 +427,119 @@ public class Principal extends javax.swing.JFrame {
             .addGap(0, 392, Short.MAX_VALUE)
         );
 
-        jPanelCard.add(jPanelVpls, "card7");
+        jPanelCard.add(jPanelVpls, "jPanelVpls");
+
+        jTabbedPaneQoS.setName("jTabbedPaneQoS"); // NOI18N
+
+        jTableMeters.setAutoCreateRowSorter(true);
+        jTableMeters.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Switch", "Meter Id", "State", "Rate", "Burst", "Nº Bytes"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jTableMeters.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTableMeters.setShowHorizontalLines(false);
+        jScrollPaneMeters.setViewportView(jTableMeters);
+
+        jPanelDetalleMeters.setName("jPanelDetalleFlow"); // NOI18N
+
+        jComboBoxSwitchesMeters.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos" }));
+        jComboBoxSwitchesMeters.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxSwitchesMetersItemStateChanged(evt);
+            }
+        });
+        jComboBoxSwitchesMeters.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxSwitchesMetersActionPerformed(evt);
+            }
+        });
+
+        jButtonNewMeter.setBackground(new java.awt.Color(37, 44, 51));
+        jButtonNewMeter.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonNewMeter.setText("Añadir meter");
+        jButtonNewMeter.setBorderPainted(false);
+        jButtonNewMeter.setOpaque(true);
+        jButtonNewMeter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonNewMeterMouseClicked(evt);
+            }
+        });
+
+        jLabelSwitch1.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
+        jLabelSwitch1.setText("Switch:");
+
+        jButtonEliminarMeter.setBackground(new java.awt.Color(37, 44, 51));
+        jButtonEliminarMeter.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonEliminarMeter.setText("Eliminar meter");
+        jButtonEliminarMeter.setBorderPainted(false);
+        jButtonEliminarMeter.setOpaque(true);
+        jButtonEliminarMeter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonEliminarMeterMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelDetalleMetersLayout = new javax.swing.GroupLayout(jPanelDetalleMeters);
+        jPanelDetalleMeters.setLayout(jPanelDetalleMetersLayout);
+        jPanelDetalleMetersLayout.setHorizontalGroup(
+            jPanelDetalleMetersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalleMetersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelDetalleMetersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanelDetalleMetersLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanelDetalleMetersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonNewMeter, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonEliminarMeter, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanelDetalleMetersLayout.createSequentialGroup()
+                        .addComponent(jLabelSwitch1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jComboBoxSwitchesMeters, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+        );
+        jPanelDetalleMetersLayout.setVerticalGroup(
+            jPanelDetalleMetersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDetalleMetersLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanelDetalleMetersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxSwitchesMeters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelSwitch1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonNewMeter)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonEliminarMeter)
+                .addGap(20, 20, 20))
+        );
 
         javax.swing.GroupLayout jPanelMetersLayout = new javax.swing.GroupLayout(jPanelMeters);
         jPanelMeters.setLayout(jPanelMetersLayout);
         jPanelMetersLayout.setHorizontalGroup(
             jPanelMetersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 748, Short.MAX_VALUE)
+            .addGroup(jPanelMetersLayout.createSequentialGroup()
+                .addComponent(jScrollPaneMeters, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelDetalleMeters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanelMetersLayout.setVerticalGroup(
             jPanelMetersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 346, Short.MAX_VALUE)
+            .addComponent(jPanelDetalleMeters, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPaneMeters, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
         );
 
         jTabbedPaneQoS.addTab("Meters", jPanelMeters);
@@ -436,7 +557,7 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPaneQoS.addTab("Queues", jPanelQueue);
 
-        jPanelCard.add(jTabbedPaneQoS, "card7");
+        jPanelCard.add(jTabbedPaneQoS, "jTabbedPaneQoS");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -465,9 +586,11 @@ public class Principal extends javax.swing.JFrame {
             // TODO add your handling code here:
             CardLayout card = (CardLayout)jPanelCard.getLayout();
             card.show(jPanelCard, jPanelLinks.getName());
-            jLabelEnlaces.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
-            jLabelFlows2.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelFlows.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
             jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelVpls.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelQoS.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelEnlaces.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             if(timerFlows != null && timerFlows.isRunning())
                 timerFlows.stop();
             EntornoTools.descubrirEntorno();
@@ -516,15 +639,17 @@ public class Principal extends javax.swing.JFrame {
         login.pack();
     }//GEN-LAST:event_jButtonDesconexionActionPerformed
 
-    private void jLabelFlows2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelFlows2MouseClicked
+    private void jLabelFlowsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelFlowsMouseClicked
         try {
             // TODO add your handling code here:
             CardLayout card = (CardLayout)jPanelCard.getLayout();
             card.show(jPanelCard, jPanelFlows.getName());
             
             jLabelEnlaces.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
-            jLabelFlows2.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+            jLabelVpls.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelQoS.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
             jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelFlows.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             EntornoTools.descubrirEntorno();
             EntornoTools.actualizarGUIFlowsTable(jTableFlows, Entorno.mapSwitches.values());
             EntornoTools.actualizarBoxSwitches(jComboBoxSwitches);
@@ -569,11 +694,10 @@ public class Principal extends javax.swing.JFrame {
         
         
         
-    }//GEN-LAST:event_jLabelFlows2MouseClicked
+    }//GEN-LAST:event_jLabelFlowsMouseClicked
 
     private void jComboBoxSwitchesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxSwitchesItemStateChanged
             
-            // TODO add your handling code here:
         if(evt.getStateChange() == ItemEvent.SELECTED){
             if(timerFlows != null && timerFlows.isRunning())
                 timerFlows.stop();
@@ -707,7 +831,9 @@ public class Principal extends javax.swing.JFrame {
             card.show(jPanelCard, this.jPanelTopologia.getName());
             
             jLabelEnlaces.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
-            jLabelFlows2.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelFlows.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelVpls.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelQoS.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
             jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             EntornoTools.descubrirEntorno();
             EntornoTools.actualizarGUITopologia(jPanelTopologia);
@@ -733,26 +859,234 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabelTopologiaMouseClicked
 
     private void jLabelQoSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelQoSMouseClicked
-        // TODO add your handling code here:
+        //try{
+            CardLayout card = (CardLayout)jPanelCard.getLayout();
+            card.show(jPanelCard, jTabbedPaneQoS.getName());
+            
+            jLabelEnlaces.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelFlows.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelVpls.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            jLabelQoS.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+//            EntornoTools.descubrirEntorno();
+//            EntornoTools.actualizarGUITopologia(jPanelTopologia);
+            jTabbedPaneQoS.setSelectedIndex(0);
+            
+            
+        try {
+            EntornoTools.descubrirEntorno();
+            EntornoTools.getMeters();
+            EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.meters);
+            EntornoTools.actualizarBoxSwitches(jComboBoxSwitchesMeters);
+            
+            
+//        } catch (IOException ex) {
+//            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ActionListener metersTimeout = new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    try {
+                        EntornoTools.descubrirEntorno();
+                        EntornoTools.getMeters();
+                        String idMeterSelected = null;
+                        String idSwitchSelected = null;
+                        ///
+                        //SI SE SLEECCIONA FILA, SE GUARDA
+                        ///
+                        if(jTableMeters.getSelectedRow() != -1){
+                            idMeterSelected = ((DefaultTableModel)jTableMeters.getModel()).getDataVector().get(jTableMeters.getSelectedRow()).get(ID).toString();
+                            idSwitchSelected = ((DefaultTableModel)jTableMeters.getModel()).getDataVector().get(jTableMeters.getSelectedRow()).get(SWITCH).toString();
+                        }
+                        //Actualizar listas
+                        EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.meters);
+                        EntornoTools.actualizarBoxSwitches(jComboBoxSwitchesMeters);
+                        for(int i=0; i<jTableMeters.getRowCount(); i++){
+                            if( ((DefaultTableModel)jTableMeters.getModel()).getDataVector().get(i).get(ID).toString().equals(idMeterSelected) && ((DefaultTableModel)jTableMeters.getModel()).getDataVector().get(i).get(SWITCH).toString().equals(idSwitchSelected))
+                                jTableMeters.setRowSelectionInterval(i, i);
+                        }
+                        //Reseleccionar elemento de la lista
+                        /*if(flowSelected != null)
+                            (DefaultTableModel)jTableFlows
+                            jListFlows.setSelectedIndex(((DefaultListModel)jListFlows.getModel()).indexOf(flowSelected));
+                            */
+                        
+                        
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    
+                }
+            };
+        if(timerMeters == null){
+            timerMeters = new Timer(5000 ,metersTimeout);
+            timerMeters.setRepeats(true); //Se repite cuando TRUE
+            timerMeters.start();
+        }
     }//GEN-LAST:event_jLabelQoSMouseClicked
 
     private void jLabelVplsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelVplsMouseClicked
         // TODO add your handling code here:
+        CardLayout card = (CardLayout)jPanelCard.getLayout();
+        System.out.println("NAME CARD " + jPanelVpls.getName());
+        card.show(jPanelCard, jPanelVpls.getName());
+
+        jLabelEnlaces.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+        jLabelFlows.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+        jLabelTopologia.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+        jLabelQoS.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+        jLabelVpls.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+//            EntornoTools.descubrirEntorno();
+//            EntornoTools.actualizarGUITopologia(jPanelTopologia);
     }//GEN-LAST:event_jLabelVplsMouseClicked
+
+    private void jComboBoxSwitchesMetersItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxSwitchesMetersItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED){
+            if(timerMeters != null && timerMeters.isRunning())
+                timerMeters.stop();
+            String sw = (String)jComboBoxSwitchesMeters.getSelectedItem();
+            
+            if(!sw.equals("Todos")){
+                try {
+                    EntornoTools.descubrirEntorno();
+                    EntornoTools.getMeters();
+                    
+                    EntornoTools.actualizarGUIMetersTable(jTableMeters, EntornoTools.getMetersBySwitch(sw));
+                    ActionListener metersTimeout;
+                    metersTimeout = new ActionListener() {
+                        public void actionPerformed(ActionEvent evt) {
+                            try {
+                                EntornoTools.descubrirEntorno();
+                                Meter meterSelected = null;
+                                ///
+                                //SI SE SLEECCIONA FILA, SE GUARDA
+                                ///
+
+                                //Actualizar listas
+                                EntornoTools.actualizarGUIMetersTable(jTableMeters, EntornoTools.getMetersBySwitch(sw));
+
+                                //Reseleccionar elemento de la lista
+                                /*if(flowSelected != null)
+                                (DefaultTableModel)jTableFlows
+                                jListFlows.setSelectedIndex(((DefaultListModel)jListFlows.getModel()).indexOf(flowSelected));
+                                */
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    };
+                    if(timerMeters!=null && !timerMeters.isRunning()){
+                        timerMeters = new Timer(5000 ,metersTimeout);
+                        timerMeters.setRepeats(true); //Se repite cuando TRUE
+                        timerMeters.start();
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            else{
+             try{
+                EntornoTools.descubrirEntorno();
+                EntornoTools.getMeters();
+                EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.meters);
+                ActionListener flowsTimeout = new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        try {
+                            EntornoTools.descubrirEntorno();
+                            Meter meterSelected = null;
+                            ///
+                            //SI SE SLEECCIONA FILA, SE GUARDA
+                            ///
+
+                            //Actualizar listas
+                            EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.meters);
+
+                            //Reseleccionar elemento de la lista
+                            /*if(flowSelected != null)
+                                (DefaultTableModel)jTableFlows
+                                jListFlows.setSelectedIndex(((DefaultListModel)jListFlows.getModel()).indexOf(flowSelected));
+                                */
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                };
+                if(!timerMeters.isRunning()){
+                    timerMeters = new Timer(5000 ,flowsTimeout);
+                    timerMeters.setRepeats(true); //Se repite cuando TRUE
+                    timerMeters.start();
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            }
+        }
+    }//GEN-LAST:event_jComboBoxSwitchesMetersItemStateChanged
+
+    private void jComboBoxSwitchesMetersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSwitchesMetersActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxSwitchesMetersActionPerformed
+
+    private void jButtonNewMeterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNewMeterMouseClicked
+        try {
+            // TODO add your handling code here:
+            JDialog newMeter = new NuevoMeter();
+            newMeter.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButtonNewMeterMouseClicked
+
+    private void jButtonEliminarMeterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEliminarMeterMouseClicked
+        try{
+            
+            String id = ((DefaultTableModel)jTableMeters.getModel()).getDataVector().elementAt(jTableMeters.getSelectedRow()).get(ID).toString();
+            String sw = ((DefaultTableModel)jTableMeters.getModel()).getDataVector().elementAt(jTableMeters.getSelectedRow()).get(SWITCH).toString();
+            try {
+                int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar el meter "+id+" del switch "+sw+"?", "Eliminar meter", WIDTH);
+                if (resultado==JOptionPane.OK_OPTION){
+                    System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpoint+"/meter/"+sw+"/"+id)));
+                    JDialog acp = new NewOkCancelDialog(this, false, "Meter " + id + " eliminado correctamente");
+                    acp.setVisible(true);
+                    acp.pack();
+                }
+            } catch (IOException ex) {
+                System.err.println(ex.getMessage());
+                JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar el meter");
+                err.setVisible(true);
+                err.pack();
+            }
+        }
+        catch(NullPointerException ex){
+            JDialog err = new NewOkCancelDialog(this, false, "Elija un meter de la lista");
+            err.setVisible(true);
+            err.pack();
+        }
+    }//GEN-LAST:event_jButtonEliminarMeterMouseClicked
     
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDesconexion;
     private javax.swing.JButton jButtonEliminar;
+    private javax.swing.JButton jButtonEliminarMeter;
+    private javax.swing.JButton jButtonNewMeter;
     private javax.swing.JButton jButtonNuevo;
     private javax.swing.JComboBox<String> jComboBoxSwitches;
+    private javax.swing.JComboBox<String> jComboBoxSwitchesMeters;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelEnlaces;
-    private javax.swing.JLabel jLabelFlows2;
+    private javax.swing.JLabel jLabelFlows;
     private javax.swing.JLabel jLabelQoS;
     private javax.swing.JLabel jLabelSwitch;
+    private javax.swing.JLabel jLabelSwitch1;
     private javax.swing.JLabel jLabelTopologia;
     private javax.swing.JLabel jLabelVpls;
     private javax.swing.JList<Flow> jListFlows;
@@ -760,6 +1094,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelBanner;
     private javax.swing.JPanel jPanelCard;
     private javax.swing.JPanel jPanelDetalleFlow;
+    private javax.swing.JPanel jPanelDetalleMeters;
     private javax.swing.JPanel jPanelFlows;
     private javax.swing.JPanel jPanelLinks;
     private javax.swing.JPanel jPanelMenu;
@@ -769,8 +1104,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelVpls;
     private javax.swing.JScrollPane jScrollPaneFlows;
     private javax.swing.JScrollPane jScrollPaneLinks;
+    private javax.swing.JScrollPane jScrollPaneMeters;
     private javax.swing.JScrollPane jScrollPaneTable;
     private javax.swing.JTabbedPane jTabbedPaneQoS;
     private javax.swing.JTable jTableFlows;
+    private javax.swing.JTable jTableMeters;
     // End of variables declaration//GEN-END:variables
 }

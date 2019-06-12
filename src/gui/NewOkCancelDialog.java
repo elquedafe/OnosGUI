@@ -68,6 +68,7 @@ public class NewOkCancelDialog extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(121, 130, 139));
+        setModal(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 closeDialog(evt);

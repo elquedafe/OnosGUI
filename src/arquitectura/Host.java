@@ -125,10 +125,10 @@ public class Host {
     @Override
     public String toString(){
         String str = "";
-        str += this.mac;
         for(String s : ipList){
-            str += "/"+s;
+            str += s + "/";
         }
+        str += this.mac;
         return str;
     }
     

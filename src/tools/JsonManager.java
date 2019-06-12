@@ -17,6 +17,7 @@ import arquitectura.FlowSelector;
 import arquitectura.FlowTreatment;
 import arquitectura.Host;
 import arquitectura.Link;
+import arquitectura.Meter;
 import arquitectura.Port;
 import arquitectura.Switch;
 import com.google.gson.Gson;
@@ -36,6 +37,22 @@ import java.util.logging.Logger;
 import static tools.EntornoTools.endpoint;
 
 public class JsonManager {
+
+    static void parseoMeters(String json) {
+        Gson gson = new Gson();
+        List<Meter> listMeters = new ArrayList<Meter>();
+        Meter m = null;
+        List auxList = (ArrayList)gson.fromJson(json, ArrayList.class);
+        for(Object o : auxList){
+            m = gson.fromJson(gson.toJson(o), Meter.class);
+            listMeters.add(m);
+        }
+        
+        
+        
+        Entorno.meters = listMeters;
+        List<Meter> l = Entorno.meters;
+    }
     //private static JsonReader reader;
 
     /*public String getJSONGet(URL url, String usuario, String password) throws IOException{
