@@ -54,6 +54,7 @@ public class Principal extends javax.swing.JFrame {
     private Timer timerFlows;
     private Timer timerMeters;
     private Timer timerTopologia;
+    private Timer timerVpls;
     /**
      * Creates new form Principal
      */
@@ -907,21 +908,23 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEliminarMouseClicked
         // TODO add your handling code here:
         try{
-            String id = ((DefaultTableModel)jTableFlows.getModel()).getDataVector().elementAt(jTableFlows.getSelectedRow()).get(ID).toString();
-            String sw = ((DefaultTableModel)jTableFlows.getModel()).getDataVector().elementAt(jTableFlows.getSelectedRow()).get(SWITCH).toString();
-            try {
-                int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar el flujo "+id+" del switch "+sw+"?", "Eliminar flujo", WIDTH);
-                if (resultado==JOptionPane.OK_OPTION){
-                    System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpoint+"/flows/"+sw+"/"+id)));
-                    JDialog acp = new NewOkCancelDialog(this, false, "Flujo " + id + " eliminado correctamente");
-                    acp.setVisible(true);
-                    acp.pack();
+            if(jTableFlows.getSelectedRow() != -1){
+                String id = ((DefaultTableModel)jTableFlows.getModel()).getDataVector().elementAt(jTableFlows.getSelectedRow()).get(ID).toString();
+                String sw = ((DefaultTableModel)jTableFlows.getModel()).getDataVector().elementAt(jTableFlows.getSelectedRow()).get(SWITCH).toString();
+                try {
+                    int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar el flujo "+id+" del switch "+sw+"?", "Eliminar flujo", WIDTH);
+                    if (resultado==JOptionPane.OK_OPTION){
+                        System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpoint+"/flows/"+sw+"/"+id)));
+                        JDialog acp = new NewOkCancelDialog(this, false, "Flujo " + id + " eliminado correctamente");
+                        acp.setVisible(true);
+                        acp.pack();
+                    }
+                } catch (IOException ex) {
+                    System.err.println(ex.getMessage());
+                    JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar el flujo");
+                    err.setVisible(true);
+                    err.pack();
                 }
-            } catch (IOException ex) {
-                System.err.println(ex.getMessage());
-                JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar el flujo");
-                err.setVisible(true);
-                err.pack();
             }
         }
         catch(NullPointerException ex){
@@ -1052,6 +1055,44 @@ public class Principal extends javax.swing.JFrame {
         try {
             EntornoTools.getVpls();
             EntornoTools.actualizarGUIVplsTable(jTableVpls, Entorno.vpls);
+            ActionListener vplsTimeout = new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    try {
+                        EntornoTools.descubrirEntorno();
+                        String idVplsSelected = null;
+                        ///
+                        //SI SE SLEECCIONA FILA, SE GUARDA
+                        ///
+                        if(jTableVpls.getSelectedRow() != -1)
+                            idVplsSelected = ((DefaultTableModel)jTableVpls.getModel()).getDataVector().get(jTableVpls.getSelectedRow()).get(VPLS_NAME).toString();
+                        
+                        //Actualizar listas
+                        EntornoTools.getVpls();
+                        EntornoTools.actualizarGUIVplsTable(jTableVpls, Entorno.vpls);
+                        
+                        //Reseleccionar
+                        for(int i=0; i<jTableVpls.getRowCount(); i++){
+                            if( ((DefaultTableModel)jTableVpls.getModel()).getDataVector().get(i).get(ID).toString().equals(idVplsSelected) )
+                                jTableVpls.setRowSelectionInterval(i, i);
+                        }
+                        //Reseleccionar elemento de la lista
+                        /*if(flowSelected != null)
+                            (DefaultTableModel)jTableFlows
+                            jListFlows.setSelectedIndex(((DefaultListModel)jListFlows.getModel()).indexOf(flowSelected));
+                            */
+                        
+                        
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    
+                }
+            };
+            if(timerVpls == null){
+                timerVpls = new Timer(5000 ,vplsTimeout);
+                timerVpls.setRepeats(true); //Se repite cuando TRUE
+                timerVpls.start();
+            }
         } catch (IOException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1160,22 +1201,23 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButtonEliminarMeterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEliminarMeterMouseClicked
         try{
-            
-            String id = ((DefaultTableModel)jTableMeters.getModel()).getDataVector().elementAt(jTableMeters.getSelectedRow()).get(ID).toString();
-            String sw = ((DefaultTableModel)jTableMeters.getModel()).getDataVector().elementAt(jTableMeters.getSelectedRow()).get(SWITCH).toString();
-            try {
-                int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar el meter "+id+" del switch "+sw+"?", "Eliminar meter", WIDTH);
-                if (resultado==JOptionPane.OK_OPTION){
-                    System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpoint+"/meter/"+sw+"/"+id)));
-                    JDialog acp = new NewOkCancelDialog(this, false, "Meter " + id + " eliminado correctamente");
-                    acp.setVisible(true);
-                    acp.pack();
+            if(jTableMeters.getSelectedRow() != -1){
+                String id = ((DefaultTableModel)jTableMeters.getModel()).getDataVector().elementAt(jTableMeters.getSelectedRow()).get(ID).toString();
+                String sw = ((DefaultTableModel)jTableMeters.getModel()).getDataVector().elementAt(jTableMeters.getSelectedRow()).get(SWITCH).toString();
+                try {
+                    int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar el meter "+id+" del switch "+sw+"?", "Eliminar meter", WIDTH);
+                    if (resultado==JOptionPane.OK_OPTION){
+                        System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpoint+"/meter/"+sw+"/"+id)));
+                        JDialog acp = new NewOkCancelDialog(this, false, "Meter " + id + " eliminado correctamente");
+                        acp.setVisible(true);
+                        acp.pack();
+                    }
+                } catch (IOException ex) {
+                    System.err.println(ex.getMessage());
+                    JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar el meter");
+                    err.setVisible(true);
+                    err.pack();
                 }
-            } catch (IOException ex) {
-                System.err.println(ex.getMessage());
-                JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar el meter");
-                err.setVisible(true);
-                err.pack();
             }
         }
         catch(NullPointerException ex){
@@ -1205,21 +1247,22 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButtonEliminarVplsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEliminarVplsMouseClicked
         try{
-            
-            String vplsName = ((DefaultTableModel)jTableVpls.getModel()).getDataVector().elementAt(jTableVpls.getSelectedRow()).get(VPLS_NAME).toString();
-            try {
-                int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar la VPLS \""+vplsName+"\"?", "Eliminar vpls", WIDTH);
-                if (resultado==JOptionPane.OK_OPTION){
-                    System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpoint+"/vpls/"+vplsName)));
-                    JDialog acp = new NewOkCancelDialog(this, false, "Vpls " + vplsName + " eliminada correctamente");
-                    acp.setVisible(true);
-                    acp.pack();
+            if(jTableVpls.getSelectedRow() != -1){
+                String vplsName = ((DefaultTableModel)jTableVpls.getModel()).getDataVector().elementAt(jTableVpls.getSelectedRow()).get(VPLS_NAME).toString();
+                try {
+                    int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar la VPLS \""+vplsName+"\"?", "Eliminar vpls", WIDTH);
+                    if (resultado==JOptionPane.OK_OPTION){
+                        System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpoint+"/vpls/"+vplsName)));
+                        JDialog acp = new NewOkCancelDialog(this, false, "Vpls " + vplsName + " eliminada correctamente");
+                        acp.setVisible(true);
+                        acp.pack();
+                    }
+                } catch (IOException ex) {
+                    System.err.println(ex.getMessage());
+                    JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar la vpls");
+                    err.setVisible(true);
+                    err.pack();
                 }
-            } catch (IOException ex) {
-                System.err.println(ex.getMessage());
-                JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar la vpls");
-                err.setVisible(true);
-                err.pack();
             }
         }
         catch(NullPointerException ex){
