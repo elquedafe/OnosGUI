@@ -32,11 +32,15 @@ public class NuevoFlujo extends javax.swing.JDialog {
      * @param parser
      * @throws java.io.IOException
      */
-    public NuevoFlujo(String selectedSwitch) throws IOException {
+    public NuevoFlujo(String selectedSwitch){
         this.setTitle("Nuevo Flujo");
         this.selectedSwitch = selectedSwitch;
         initComponents();
-        EntornoTools.descubrirEntorno();
+        try {
+            EntornoTools.descubrirEntorno();
+        } catch (IOException ex) {
+            Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
+        }
         fillComboBoxes();
         if(selectedSwitch!=null)
             jComboBoxSwitch.setSelectedItem(selectedSwitch);
