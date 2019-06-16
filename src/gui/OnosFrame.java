@@ -30,6 +30,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import tools.EntornoTools;
 import static tools.EntornoTools.descubrirEntorno;
+import static tools.EntornoTools.endpoint;
 import tools.HttpTools;
 import tools.JsonManager;
 
@@ -38,16 +39,16 @@ import tools.JsonManager;
  * @author alvaroluismartinez
  */
 public class OnosFrame extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form OnosFrame
      */
     public OnosFrame() {
         initComponents();
-        
+
         // Set window centered
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -60,8 +61,7 @@ public class OnosFrame extends javax.swing.JFrame {
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
         //Deafult credentials
         jTextFieldUsuario.setText("onos");
         jPasswordField.setText("rocks");
@@ -238,14 +238,13 @@ public class OnosFrame extends javax.swing.JFrame {
 
     private void jTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             jButtonConectar.doClick();
             conectar();
         }
     }//GEN-LAST:event_jTextFieldKeyPressed
-    
-   
-    private boolean ping(String ip) throws IOException{
+
+    private boolean ping(String ip) throws IOException {
         try {
             boolean ret = false;
             Socket t = new Socket();
@@ -254,10 +253,9 @@ public class OnosFrame extends javax.swing.JFrame {
             PrintStream ps = new PrintStream(t.getOutputStream());
             ps.println("Hello");
             String str = dis.readLine();
-            if (str.equals("Hello")){
-                System.out.println("Alive!") ;
-            }
-            else{
+            if (str.equals("Hello")) {
+                System.out.println("Alive!");
+            } else {
                 System.out.println("Dead or echo port not responding");
             }
             ret = true;
@@ -267,41 +265,47 @@ public class OnosFrame extends javax.swing.JFrame {
             Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
             throw new IOException("Socket error");
         }
-        
+
     }
-    private void conectar(){
+
+    private void conectar() {
 //        Conectando conectando = new Conectando(this, true);
 //        conectando.setVisible(true);
 //        conectando.pack();
-        
+
         String user = String.valueOf(jTextFieldUsuario.getText());
         String password = String.valueOf(jPasswordField.getPassword());
         String onosHost = String.valueOf(jTextFieldControlador.getText());
         EntornoTools.apiHost = String.valueOf(jTextFieldControlador.getText());
         EntornoTools.endpoint = "http://" + EntornoTools.apiHost + ":8080/onosapp-v1/rest";
-        
-        String json = "{\n" +
-            "	\"user\":\""+ user +"\",\n" +
-            "	\"password\":\""+ password +"\",\n" +
-            "	\"onosHost\": \""+ onosHost +"\"\n" +
-            "}";
+        EntornoTools.endpointEnvironment = endpoint + "/environment";
+        EntornoTools.endpointFlows = endpoint + "/flows";
+        EntornoTools.endpointVpls = endpoint + "/vpls";
+        EntornoTools.endpointMeters = endpoint + "/meters";
+        EntornoTools.endpointSwitches = endpoint + "/switches";
+        EntornoTools.endpointAuth = endpoint + "/authorization";
+
+        String json = "{\n"
+                + "	\"user\":\"" + user + "\",\n"
+                + "	\"password\":\"" + password + "\",\n"
+                + "	\"onosHost\": \"" + onosHost + "\"\n"
+                + "}";
         //JOptionPane.showMessageDialog(this, "Conectando con el controlador...", "Conectando...", JOptionPane.INFORMATION_MESSAGE);
         JDialog dialog = mostrarDialogo();
         try {
-            
-            int response = HttpTools.doJSONPost(new URL((EntornoTools.endpoint + "/authorization")), json);
-            if(response == 200){
+
+            int response = HttpTools.doJSONPost(new URL((EntornoTools.endpointAuth)), json);
+            if (response == 200) {
                 EntornoTools.descubrirEntorno();
-    //            conectando.dispose();
-    //            conectando.doAceptar();
+                //            conectando.dispose();
+                //            conectando.doAceptar();
                 dialog.setVisible(false);
                 JFrame principal = new Principal();
                 principal.setVisible(true);
                 principal.pack();
                 this.dispose();
-            }
-            else{
-                 dialog.setVisible(false);
+            } else {
+                dialog.setVisible(false);
                 JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
             }
             // Check connetivity
@@ -321,9 +325,9 @@ public class OnosFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión con el controlador", "Error de conexión", JOptionPane.ERROR_MESSAGE);
             
             }*/
-            
+
         } catch (IOException e1) {
-                //COMPLETAR VENTANA DE AVISO
+            //COMPLETAR VENTANA DE AVISO
 //            conectando.dispose();
             dialog.setVisible(false);
             System.err.println(e1.getMessage());
@@ -333,6 +337,7 @@ public class OnosFrame extends javax.swing.JFrame {
             errorOnos.pack();*/
         }
     }
+
     /**
      * @param args the command line arguments
      */
@@ -367,8 +372,7 @@ public class OnosFrame extends javax.swing.JFrame {
             }
         });
     }
-    
-   
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConectar;
@@ -396,9 +400,4 @@ public class OnosFrame extends javax.swing.JFrame {
         return dialog;
     }
 
-    
 }
-
-
-
-

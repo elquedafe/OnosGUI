@@ -19,10 +19,10 @@ public class GuiTools {
     public static void pressLabel(JLabel label, List<JLabel> labels){
         for(JLabel l : labels){
             if(l.getName().equals(label.getName())){
-                label.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+                l.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
             }
             else
-                label.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+                l.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
         }
     }
     

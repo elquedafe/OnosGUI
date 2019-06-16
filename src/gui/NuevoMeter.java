@@ -197,7 +197,7 @@ public class NuevoMeter extends javax.swing.JDialog {
         String respuesta = "";
         System.err.println("\n****\n"+json);
         try {
-            HttpTools.doJSONPost(new URL(EntornoTools.endpoint+"/meter"), json);
+            HttpTools.doJSONPost(new URL(EntornoTools.endpointMeters), json);
             JDialog respuestaPost = new NewOkCancelDialog(null, true, "Meter añadido correctamente");
             respuestaPost.setVisible(true);
             respuestaPost.pack();

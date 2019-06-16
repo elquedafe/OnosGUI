@@ -188,7 +188,7 @@ public class NuevaVpls extends javax.swing.JDialog {
         "}";
         System.out.println(EntornoTools.endpoint+"/vpls/"+this.jTextFieldVplsName.getText()+ " -->" +json);
         try {
-            HttpTools.doJSONPost(new URL(EntornoTools.endpoint+"/vpls/"+this.jTextFieldVplsName.getText()), json);
+            HttpTools.doJSONPost(new URL(EntornoTools.endpointVpls + "/" + this.jTextFieldVplsName.getText()), json);
         } catch (MalformedURLException ex) {
             Logger.getLogger(NuevaVpls.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

@@ -63,12 +63,12 @@ public class EntornoTools {
 
     // OSRA url endpoints 
     public static String endpoint;
-    public static String endpointEnvironment = endpoint + "/environment";
-    public static String endpointFlows = endpoint + "/flows";
-    public static String endpointVpls = endpoint + "/vpls";
-    public static String endpointMeters = endpoint + "/meters";
-    public static String endpointSwitches = endpoint + "/switches";
-    public static String endpointAuth = endpoint + "/authorization";
+    public static String endpointEnvironment;
+    public static String endpointFlows;
+    public static String endpointVpls;
+    public static String endpointMeters;
+    public static String endpointSwitches;
+    public static String endpointAuth;
     public static String apiHost;
 
     private static Graph graph;
@@ -303,7 +303,7 @@ public class EntornoTools {
 
     public static void getMeters() throws IOException {
         String json;
-        json = HttpTools.doJSONGet(new URL(EntornoTools.endpoint + "/meters"));
+        json = HttpTools.doJSONGet(new URL(EntornoTools.endpointMeters));
         JsonManager.parseoMeters(json);
 
     }
@@ -314,7 +314,7 @@ public class EntornoTools {
         String json = "";
         List<Vpls> vplsList = null;
 
-        json = HttpTools.doJSONGet(new URL(EntornoTools.endpoint + "/vpls"));
+        json = HttpTools.doJSONGet(new URL(EntornoTools.endpointVpls));
         JsonManager.parseoVpls(json);
 
     }

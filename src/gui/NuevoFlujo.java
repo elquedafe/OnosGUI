@@ -330,7 +330,7 @@ public class NuevoFlujo extends javax.swing.JDialog {
         String respuesta = "";
         System.err.println("\n****\n"+json);
         try {
-            HttpTools.doJSONPost(new URL(EntornoTools.endpoint+"/flows/"+sw), json);
+            HttpTools.doJSONPost(new URL(EntornoTools.endpointFlows + "/" + sw), json);
             JDialog respuestaPost = new NewOkCancelDialog(null, true, "Flujo añadido correctamente");
             respuestaPost.setVisible(true);
             respuestaPost.pack();

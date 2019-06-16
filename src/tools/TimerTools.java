@@ -13,14 +13,16 @@ import javax.swing.Timer;
  * @author alvaroluismartinez
  */
 public class TimerTools {
-    public static void runTimer(Timer timer, ActionListener timeout){
+    public static Timer runTimer(Timer timer, ActionListener timeout){
         if(timer == null || !timer.isRunning()){
                 timer = new Timer(5000 ,timeout);
                 timer.setRepeats(true); //Se repite cuando TRUE
                 if(!timer.isRunning())
                     timer.start();
             }
+        return timer;
     }
+    
     
     public static void stopTimer(Timer timer){
         if(timer != null && timer.isRunning())
