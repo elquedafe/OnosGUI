@@ -24,7 +24,7 @@ import tools.JsonManager;
  *
  * @author alvaroluismartinez
  */
-public class NuevoFlujo extends javax.swing.JDialog {
+public class NuevoFlujo extends NuevoDialog {
     String selectedSwitch;
     /**
      * Creates new form NuevoFlujo
@@ -41,7 +41,7 @@ public class NuevoFlujo extends javax.swing.JDialog {
         } catch (IOException ex) {
             Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
         }
-        fillComboBoxes();
+        fillComponents();
         if(selectedSwitch!=null)
             jComboBoxSwitch.setSelectedItem(selectedSwitch);
         pack();
@@ -61,7 +61,7 @@ public class NuevoFlujo extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jTextFieldPrioridad = new javax.swing.JTextField();
         jComboBoxSwitch = new javax.swing.JComboBox<>();
-        jButtonOk = new javax.swing.JButton();
+        jButtonAdd = new javax.swing.JButton();
         jButtonCancelar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -125,17 +125,17 @@ public class NuevoFlujo extends javax.swing.JDialog {
             }
         });
 
-        jButtonOk.setText("Añadir");
-        jButtonOk.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButtonAdd.setText("Añadir");
+        jButtonAdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonOkMouseClicked(evt);
+                jButtonAddMouseClicked(evt);
             }
         });
 
         jButtonCancelar.setText("Cancelar");
         jButtonCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonCancelarMouseClicked(evt);
+                jButtonCancelMouseClicked(evt);
             }
         });
 
@@ -218,7 +218,7 @@ public class NuevoFlujo extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonOk, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonCancelar)
                 .addContainerGap())
@@ -257,7 +257,7 @@ public class NuevoFlujo extends javax.swing.JDialog {
                     .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonOk)
+                    .addComponent(jButtonAdd)
                     .addComponent(jButtonCancelar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -265,7 +265,8 @@ public class NuevoFlujo extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void fillComboBoxes(){
+    @Override
+    protected void fillComponents(){
         //Llenar sw y puertos
         Entorno.mapSwitches.values().forEach((s) -> {
             this.jComboBoxSwitch.addItem(s.getId());
@@ -277,12 +278,14 @@ public class NuevoFlujo extends javax.swing.JDialog {
         }
     }
     
-    private void jButtonCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelarMouseClicked
+    @Override
+    protected void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
         // TODO add your handling code here:
         this.dispose();
-    }//GEN-LAST:event_jButtonCancelarMouseClicked
+    }//GEN-LAST:event_jButtonCancelMouseClicked
 
-    private void jButtonOkMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonOkMouseClicked
+    @Override
+    protected void jButtonAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMouseClicked
         // TODO add your handling code here:
         String sw = (String)jComboBoxSwitch.getSelectedItem();
         Port srcPort = (Port)jComboBoxSrcPort.getSelectedItem();
@@ -340,7 +343,7 @@ public class NuevoFlujo extends javax.swing.JDialog {
             errorPost.pack();
             Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButtonOkMouseClicked
+    }//GEN-LAST:event_jButtonAddMouseClicked
 
     private void jComboBoxSwitchItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxSwitchItemStateChanged
         // TODO add your handling code here:
@@ -365,8 +368,8 @@ public class NuevoFlujo extends javax.swing.JDialog {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonCancelar;
-    private javax.swing.JButton jButtonOk;
     private javax.swing.JComboBox<Host> jComboBoxDstHost;
     private javax.swing.JComboBox<Port> jComboBoxDstPort;
     private javax.swing.JComboBox<Host> jComboBoxSrcHost;

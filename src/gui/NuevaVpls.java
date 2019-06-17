@@ -25,7 +25,7 @@ import tools.HttpTools;
  *
  * @author alvaroluismartinez
  */
-public class NuevaVpls extends javax.swing.JDialog {
+public class NuevaVpls extends NuevoDialog {
 
     /**
      * Creates new form NuevaVpls
@@ -34,7 +34,7 @@ public class NuevaVpls extends javax.swing.JDialog {
         super();
         initComponents();
         EntornoTools.descubrirEntorno();
-        fillList();
+        fillComponents();
     }
 
     /**
@@ -171,11 +171,8 @@ public class NuevaVpls extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
-        dispose();
-    }//GEN-LAST:event_jButtonCancelMouseClicked
-
-    private void jButtonAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMouseClicked
+    @Override
+    protected void jButtonAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMouseClicked
         String json = "{\n" +
         "	\"vplsName\":\""+ this.jTextFieldVplsName.getText() +"\",\n" +
         "	\"hosts\" : [";
@@ -197,11 +194,16 @@ public class NuevaVpls extends javax.swing.JDialog {
         
     }//GEN-LAST:event_jButtonAddMouseClicked
 
+    @Override
+    protected void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
+        dispose();
+    }//GEN-LAST:event_jButtonCancelMouseClicked
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
-    private javax.swing.JButton jButtonCancel;
+    public javax.swing.JButton jButtonCancel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -212,7 +214,8 @@ public class NuevaVpls extends javax.swing.JDialog {
     private javax.swing.JTextField jTextFieldVplsName;
     // End of variables declaration//GEN-END:variables
 
-    private void fillList() {
+    @Override
+    protected void fillComponents() {
 //        DefaultListModel listModel = (DefaultListModel) jListHosts.getModel();
 //        for(Host h : Entorno.mapHosts.values()){
 //            listModel.addElement(h.toString());

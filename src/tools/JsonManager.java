@@ -51,8 +51,8 @@ public class JsonManager {
         
         
         
-        Entorno.meters = listMeters;
-        List<Meter> l = Entorno.meters;
+        Entorno.addMeters(listMeters);
+        List<Meter> l = Entorno.getAllMeters();
     }
     //private static JsonReader reader;
 

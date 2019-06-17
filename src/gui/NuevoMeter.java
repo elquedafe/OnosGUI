@@ -20,7 +20,7 @@ import tools.HttpTools;
  *
  * @author alvaroluismartinez
  */
-public class NuevoMeter extends javax.swing.JDialog {
+public class NuevoMeter extends NuevoDialog {
     private String selectedSwitch;
     /**
      * Creates new form NuevoMeter
@@ -30,7 +30,7 @@ public class NuevoMeter extends javax.swing.JDialog {
         initComponents();
         EntornoTools.descubrirEntorno();
         EntornoTools.getMeters();
-        fillComboBox();
+        fillComponents();
         jComboBoxHost.setSelectedIndex(0);
         pack();
         
@@ -48,7 +48,7 @@ public class NuevoMeter extends javax.swing.JDialog {
         jPanelBanner = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jButtonAddMeter = new javax.swing.JButton();
+        jButtonAdd = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
         jComboBoxHost = new javax.swing.JComboBox<>();
         jLabelHost = new javax.swing.JLabel();
@@ -94,10 +94,10 @@ public class NuevoMeter extends javax.swing.JDialog {
                 .addGap(16, 16, 16))
         );
 
-        jButtonAddMeter.setText("Añadir");
-        jButtonAddMeter.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButtonAdd.setText("Añadir");
+        jButtonAdd.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButtonAddMeterMouseClicked(evt);
+                jButtonAddMouseClicked(evt);
             }
         });
 
@@ -129,7 +129,7 @@ public class NuevoMeter extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButtonAddMeter)
+                        .addComponent(jButtonAdd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonCancel)
                         .addContainerGap())
@@ -171,7 +171,7 @@ public class NuevoMeter extends javax.swing.JDialog {
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonAddMeter)
+                    .addComponent(jButtonAdd)
                     .addComponent(jButtonCancel))
                 .addContainerGap())
         );
@@ -179,12 +179,14 @@ public class NuevoMeter extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
+    @Override
+    protected void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jButtonCancelMouseClicked
 
-    private void jButtonAddMeterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMeterMouseClicked
+    @Override
+    protected void jButtonAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMouseClicked
         Host hostOrigen = (Host)this.jComboBoxHost.getSelectedItem();
         int rate = Integer.parseInt(jTextFieldRate.getText());
         int burst = Integer.parseInt(jTextFieldBurst.getText());
@@ -197,7 +199,7 @@ public class NuevoMeter extends javax.swing.JDialog {
         String respuesta = "";
         System.err.println("\n****\n"+json);
         try {
-            HttpTools.doJSONPost(new URL(EntornoTools.endpointMeters), json);
+            HttpTools.doJSONPost(new URL(EntornoTools.endpointMeters+"/"+hostOrigen.getIpList().get(0)), json);
             JDialog respuestaPost = new NewOkCancelDialog(null, true, "Meter añadido correctamente");
             respuestaPost.setVisible(true);
             respuestaPost.pack();
@@ -207,17 +209,17 @@ public class NuevoMeter extends javax.swing.JDialog {
             errorPost.pack();
             Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_jButtonAddMeterMouseClicked
+    }//GEN-LAST:event_jButtonAddMouseClicked
 
-
-    private void fillComboBox() {
+    @Override
+    protected void fillComponents() {
         for(Host h : Entorno.mapHosts.values()){
             this.jComboBoxHost.addItem(h);
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonAddMeter;
+    private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonCancel;
     private javax.swing.JComboBox<Host> jComboBoxHost;
     private javax.swing.JLabel jLabel1;

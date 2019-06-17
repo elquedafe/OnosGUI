@@ -15,6 +15,8 @@ public class Conectando extends javax.swing.JDialog {
 
     /**
      * Creates new form Conectando
+     * @param parent
+     * @param modal 
      */
     public Conectando(java.awt.Frame parent, boolean modal) {
         super(parent, modal);

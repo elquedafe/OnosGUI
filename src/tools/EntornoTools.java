@@ -305,12 +305,10 @@ public class EntornoTools {
         String json;
         json = HttpTools.doJSONGet(new URL(EntornoTools.endpointMeters));
         JsonManager.parseoMeters(json);
-
     }
 
     public static void getVpls() throws IOException {
         // TODO Auto-generated method stub
-
         String json = "";
         List<Vpls> vplsList = null;
 
@@ -321,7 +319,7 @@ public class EntornoTools {
 
     public static List<Meter> getMetersBySwitch(String swId) {
         List<Meter> list = new ArrayList<Meter>();
-        for (Meter m : Entorno.meters) {
+        for (Meter m : Entorno.getAllMeters()) {
             if (m.getDeviceId().equals(swId)) {
                 list.add(m);
             }

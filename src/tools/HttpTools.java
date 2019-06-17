@@ -87,9 +87,16 @@ public class HttpTools {
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("DELETE");
             connection.setDoOutput(true);
-            //connection.setRequestProperty("Authorization", "Basic " + encoding);
-            connection.getInputStream();
-            response = String.valueOf(connection.getResponseCode());
+            
+            InputStream content = (InputStream)connection.getInputStream();
+            in  = new BufferedReader (new InputStreamReader (content));
+            while ((line = in.readLine()) != null) {
+            //System.out.println(line);
+                response += line+"\n";
+            }
+            
+//            connection.getInputStream();
+//            response = String.valueOf(connection.getResponseCode());
             
             
         } catch (IOException e) {

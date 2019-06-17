@@ -72,7 +72,8 @@ public class Principal extends javax.swing.JFrame {
                 this.jLabelFlows,
                 this.jLabelQoS,
                 this.jLabelTopologia,
-                this.jLabelVpls
+                this.jLabelVpls,
+                this.jLabelStatistics
         ));
         this.jLabelTopologiaMouseClicked(null);
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
@@ -99,6 +100,7 @@ public class Principal extends javax.swing.JFrame {
         jLabelTopologia = new javax.swing.JLabel();
         jLabelQoS = new javax.swing.JLabel();
         jLabelVpls = new javax.swing.JLabel();
+        jLabelStatistics = new javax.swing.JLabel();
         jPanelCard = new javax.swing.JPanel();
         jScrollPaneFlows = new javax.swing.JScrollPane();
         jListFlows = new javax.swing.JList<>();
@@ -132,6 +134,8 @@ public class Principal extends javax.swing.JFrame {
         jLabelSwitch1 = new javax.swing.JLabel();
         jButtonEliminarMeter = new javax.swing.JButton();
         jPanelQueue = new javax.swing.JPanel();
+        jPanelStatistics = new javax.swing.JPanel();
+        jScrollPaneStatistics = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ONOS QoS");
@@ -253,6 +257,20 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jLabelStatistics.setBackground(new java.awt.Color(96, 97, 106));
+        jLabelStatistics.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelStatistics.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabelStatistics.setText("     Estadístcas");
+        jLabelStatistics.setToolTipText("");
+        jLabelStatistics.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, java.awt.Color.darkGray, null, null));
+        jLabelStatistics.setName("Estadísticas"); // NOI18N
+        jLabelStatistics.setOpaque(true);
+        jLabelStatistics.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabelStatisticsMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelMenuLayout = new javax.swing.GroupLayout(jPanelMenu);
         jPanelMenu.setLayout(jPanelMenuLayout);
         jPanelMenuLayout.setHorizontalGroup(
@@ -262,6 +280,7 @@ public class Principal extends javax.swing.JFrame {
             .addComponent(jLabelTopologia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabelQoS, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
             .addComponent(jLabelVpls, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+            .addComponent(jLabelStatistics, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
         );
         jPanelMenuLayout.setVerticalGroup(
             jPanelMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -275,10 +294,13 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jLabelQoS, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabelVpls, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jLabelStatistics, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jLabelFlows.getAccessibleContext().setAccessibleName("FlujosTabla");
+        jLabelStatistics.getAccessibleContext().setAccessibleName("     Estadísticas");
 
         jPanelCard.setBackground(new java.awt.Color(255, 255, 255));
         jPanelCard.setLayout(new java.awt.CardLayout());
@@ -681,6 +703,32 @@ public class Principal extends javax.swing.JFrame {
 
         jPanelCard.add(jTabbedPaneQoS, "jTabbedPaneQoS");
 
+        jPanelStatistics.setName("jPanelStatistics"); // NOI18N
+
+        javax.swing.GroupLayout jPanelStatisticsLayout = new javax.swing.GroupLayout(jPanelStatistics);
+        jPanelStatistics.setLayout(jPanelStatisticsLayout);
+        jPanelStatisticsLayout.setHorizontalGroup(
+            jPanelStatisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 777, Short.MAX_VALUE)
+            .addGroup(jPanelStatisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelStatisticsLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneStatistics, javax.swing.GroupLayout.PREFERRED_SIZE, 777, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        jPanelStatisticsLayout.setVerticalGroup(
+            jPanelStatisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 392, Short.MAX_VALUE)
+            .addGroup(jPanelStatisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelStatisticsLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneStatistics, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        jPanelCard.add(jPanelStatistics, "jPanelStatistics");
+        jPanelStatistics.getAccessibleContext().setAccessibleName("jPanelStatistics");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -1080,7 +1128,7 @@ public class Principal extends javax.swing.JFrame {
         }
 
         //Update GUI
-        EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.meters);
+        EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.getAllMeters());
         EntornoTools.actualizarBoxSwitches(jComboBoxSwitchesMeters);
 
         //Timeout method
@@ -1104,7 +1152,7 @@ public class Principal extends javax.swing.JFrame {
                 }
 
                 //Update GUI
-                EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.meters);
+                EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.getAllMeters());
                 EntornoTools.actualizarBoxSwitches(jComboBoxSwitchesMeters);
 
                 // Reselect meter in table
@@ -1229,7 +1277,7 @@ public class Principal extends javax.swing.JFrame {
                 try {
                     EntornoTools.descubrirEntorno();
                     EntornoTools.getMeters();
-                    EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.meters);
+                    EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.getAllMeters());
                     ActionListener flowsTimeout = new ActionListener() {
                         public void actionPerformed(ActionEvent evt) {
                             try {
@@ -1240,7 +1288,7 @@ public class Principal extends javax.swing.JFrame {
                                 ///
 
                                 //Actualizar listas
-                                EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.meters);
+                                EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.getAllMeters());
 
                                 //Reseleccionar elemento de la lista
                                 /*if(flowSelected != null)
@@ -1350,6 +1398,21 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonEliminarVplsMouseClicked
 
+    private void jLabelStatisticsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelStatisticsMouseClicked
+        // TODO add your handling code here:
+        CardLayout card = (CardLayout) jPanelCard.getLayout();
+        card.show(jPanelCard, jPanelStatistics.getName());
+
+        // Change label appearence
+        GuiTools.pressLabel(jLabelEnlaces, labels);
+
+        // If any of these timers are, running stop them
+        TimerTools.stopTimer(timerFlows);
+        TimerTools.stopTimer(timerMeters);
+        TimerTools.stopTimer(timerDevices);
+        TimerTools.stopTimer(timerVpls);
+    }//GEN-LAST:event_jLabelStatisticsMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDesconexion;
@@ -1367,6 +1430,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelEnlaces;
     private javax.swing.JLabel jLabelFlows;
     private javax.swing.JLabel jLabelQoS;
+    private javax.swing.JLabel jLabelStatistics;
     private javax.swing.JLabel jLabelSwitch;
     private javax.swing.JLabel jLabelSwitch1;
     private javax.swing.JLabel jLabelTopologia;
@@ -1384,11 +1448,13 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelMenu;
     private javax.swing.JPanel jPanelMeters;
     private javax.swing.JPanel jPanelQueue;
+    private javax.swing.JPanel jPanelStatistics;
     private javax.swing.JPanel jPanelTopologia;
     private javax.swing.JPanel jPanelVpls;
     private javax.swing.JScrollPane jScrollPaneFlows;
     private javax.swing.JScrollPane jScrollPaneLinks;
     private javax.swing.JScrollPane jScrollPaneMeters;
+    private javax.swing.JScrollPane jScrollPaneStatistics;
     private javax.swing.JScrollPane jScrollPaneTable;
     private javax.swing.JScrollPane jScrollPaneVpls;
     private javax.swing.JTabbedPane jTabbedPaneQoS;

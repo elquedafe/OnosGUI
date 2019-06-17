@@ -17,7 +17,6 @@ public class Entorno {
     //private List<Switch> listSwitches;
     public static List<Cluster> listClusters = new ArrayList<Cluster>();
     public static Map<String, Host> mapHosts = new HashMap<String, Host>();
-    public static List<Meter> meters = new ArrayList<Meter>();
     public static List<Vpls> vpls = new ArrayList<Vpls>();
     /*public Entorno() {
             //this.nNodos = 0;
@@ -87,5 +86,35 @@ public class Entorno {
         mapHosts.put(host.getId(), host);
     }
 	
+    public static List<Meter> getAllMeters(){
+        List<Meter> meters = new ArrayList<Meter>();
+        List<Meter> swMeters = null;
+        for(Switch s : mapSwitches.values()){
+           swMeters = s.getMeters();
+           for(Meter m : swMeters){
+               meters.add(m);
+           }
+        }
+        return meters;
+    }
+    
+    
+    
+    public static void addMeters(List<Meter> meters){
+        cleanMeters();
+        for(Meter m : meters){
+            addMeter(m);
+        }
+    }
+    
+    private static void addMeter(Meter meter){
+        mapSwitches.get(meter.getDeviceId()).getMeters().add(meter);
+    }
+    
+    private static void cleanMeters(){
+        for(Switch s : mapSwitches.values()){
+            s.getMeters().clear();
+        }
+    }
 	
 }
