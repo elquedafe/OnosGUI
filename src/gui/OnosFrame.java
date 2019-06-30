@@ -63,8 +63,8 @@ public class OnosFrame extends javax.swing.JFrame {
         }
 
         //Deafult credentials
-        jTextFieldUsuario.setText("onos");
-        jPasswordField.setText("rocks");
+        jTextFieldUsuarioOnos.setText("onos");
+        jTextFieldPasswordOnos.setText("rocks");
         jTextFieldControlador.setText("localhost");
         jTextFieldApiHost.setText("localhost");
     }
@@ -82,15 +82,22 @@ public class OnosFrame extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jButtonConectar = new javax.swing.JButton();
         jLabelUsuario = new javax.swing.JLabel();
-        jTextFieldUsuario = new javax.swing.JTextField();
+        jTextFieldUsuarioOnos = new javax.swing.JTextField();
         jLabelPassword = new javax.swing.JLabel();
         jLabelControlador = new javax.swing.JLabel();
         jTextFieldControlador = new javax.swing.JTextField();
-        jPasswordField = new javax.swing.JPasswordField();
+        jTextFieldPasswordOnos = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
         jLabelImagen = new javax.swing.JLabel();
         jTextFieldApiHost = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jLabelONOS = new javax.swing.JLabel();
+        jLabelOSRA = new javax.swing.JLabel();
+        jLabelUsuario1 = new javax.swing.JLabel();
+        jTextFieldUsuarioOSRA = new javax.swing.JTextField();
+        jTextFieldPasswordOSRA = new javax.swing.JPasswordField();
+        jLabelPassword1 = new javax.swing.JLabel();
+        jButtonRegistrar = new javax.swing.JButton();
 
         jFormattedTextField1.setText("jFormattedTextField1");
 
@@ -114,7 +121,7 @@ public class OnosFrame extends javax.swing.JFrame {
         jLabelUsuario.setForeground(new java.awt.Color(255, 255, 255));
         jLabelUsuario.setText("Usuario");
 
-        jTextFieldUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+        jTextFieldUsuarioOnos.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextFieldKeyPressed(evt);
             }
@@ -133,7 +140,7 @@ public class OnosFrame extends javax.swing.JFrame {
             }
         });
 
-        jPasswordField.addKeyListener(new java.awt.event.KeyAdapter() {
+        jTextFieldPasswordOnos.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jTextFieldKeyPressed(evt);
             }
@@ -150,6 +157,43 @@ public class OnosFrame extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("API host");
 
+        jLabelONOS.setFont(new java.awt.Font("Lucida Grande", 1, 15)); // NOI18N
+        jLabelONOS.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelONOS.setText("ONOS Login");
+
+        jLabelOSRA.setFont(new java.awt.Font("Lucida Grande", 1, 15)); // NOI18N
+        jLabelOSRA.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelOSRA.setText("OSRA Login");
+
+        jLabelUsuario1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelUsuario1.setText("Usuario");
+
+        jTextFieldUsuarioOSRA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldUsuarioOSRAjTextFieldKeyPressed(evt);
+            }
+        });
+
+        jTextFieldPasswordOSRA.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldPasswordOSRAjTextFieldKeyPressed(evt);
+            }
+        });
+
+        jLabelPassword1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabelPassword1.setText("Contraseña");
+
+        jButtonRegistrar.setBackground(new java.awt.Color(37, 44, 51));
+        jButtonRegistrar.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonRegistrar.setText("Registrar");
+        jButtonRegistrar.setBorderPainted(false);
+        jButtonRegistrar.setOpaque(true);
+        jButtonRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonRegistrarMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -157,70 +201,93 @@ public class OnosFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jLabelImagen)
-                .addGap(58, 58, 58)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelUsuario1)
+                                    .addComponent(jLabelPassword1)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jTextFieldApiHost, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
+                                    .addComponent(jTextFieldPasswordOSRA)
+                                    .addComponent(jTextFieldUsuarioOSRA, javax.swing.GroupLayout.Alignment.LEADING)))
+                            .addComponent(jLabelOSRA))
+                        .addGap(42, 42, 42)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelUsuario)
                             .addComponent(jLabelPassword)
-                            .addComponent(jLabelControlador))
-                        .addGap(30, 30, 30))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelControlador)
+                            .addComponent(jLabelONOS))
+                        .addGap(42, 42, 42))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(324, 324, 324)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(jButtonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextFieldControlador)
-                    .addComponent(jPasswordField)
-                    .addComponent(jTextFieldUsuario)
-                    .addComponent(jButtonConectar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextFieldApiHost, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jTextFieldPasswordOnos, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                        .addComponent(jTextFieldControlador)
+                        .addComponent(jTextFieldUsuarioOnos)))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel4)
-                        .addGap(9, 9, 9))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextFieldUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabelUsuario))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabelPassword)
-                                    .addComponent(jPasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabelControlador)
-                                    .addComponent(jTextFieldControlador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jTextFieldApiHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                                .addComponent(jButtonConectar))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabelImagen)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addGap(25, 25, 25)
+                .addComponent(jLabelImagen)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabelONOS)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldUsuarioOnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelUsuario))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelPassword)
+                    .addComponent(jTextFieldPasswordOnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelControlador)
+                    .addComponent(jTextFieldControlador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonConectar)
+                    .addComponent(jButtonRegistrar))
                 .addGap(15, 15, 15))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabelOSRA)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldUsuarioOSRA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelUsuario1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelPassword1)
+                    .addComponent(jTextFieldPasswordOSRA, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextFieldApiHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(24, 24, 24))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,12 +297,6 @@ public class OnosFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonConectarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonConectarMouseClicked
-        // TODO add your handling code here:
-        //DESCUBRIR ENTORNO
-        conectar();
-    }//GEN-LAST:event_jButtonConectarMouseClicked
-
     private void jTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -243,6 +304,26 @@ public class OnosFrame extends javax.swing.JFrame {
             conectar();
         }
     }//GEN-LAST:event_jTextFieldKeyPressed
+
+    private void jButtonConectarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonConectarMouseClicked
+        // TODO add your handling code here:
+        //DESCUBRIR ENTORNO
+        conectar();
+    }//GEN-LAST:event_jButtonConectarMouseClicked
+
+    private void jTextFieldUsuarioOSRAjTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioOSRAjTextFieldKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldUsuarioOSRAjTextFieldKeyPressed
+
+    private void jTextFieldPasswordOSRAjTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldPasswordOSRAjTextFieldKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldPasswordOSRAjTextFieldKeyPressed
+
+    private void jButtonRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRegistrarMouseClicked
+        Registro reg = new Registro();
+        reg.setVisible(true);
+        reg.pack();
+    }//GEN-LAST:event_jButtonRegistrarMouseClicked
 
     private boolean ping(String ip) throws IOException {
         try {
@@ -273,8 +354,8 @@ public class OnosFrame extends javax.swing.JFrame {
 //        conectando.setVisible(true);
 //        conectando.pack();
 
-        String user = String.valueOf(jTextFieldUsuario.getText());
-        String password = String.valueOf(jPasswordField.getPassword());
+        String user = String.valueOf(jTextFieldUsuarioOnos.getText());
+        String password = String.valueOf(jTextFieldPasswordOnos.getPassword());
         String onosHost = String.valueOf(jTextFieldControlador.getText());
         EntornoTools.apiHost = String.valueOf(jTextFieldControlador.getText());
         EntornoTools.endpoint = "http://" + EntornoTools.apiHost + ":8080/onosapp-v1/rest";
@@ -376,18 +457,25 @@ public class OnosFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConectar;
+    private javax.swing.JButton jButtonRegistrar;
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelControlador;
     private javax.swing.JLabel jLabelImagen;
+    private javax.swing.JLabel jLabelONOS;
+    private javax.swing.JLabel jLabelOSRA;
     private javax.swing.JLabel jLabelPassword;
+    private javax.swing.JLabel jLabelPassword1;
     private javax.swing.JLabel jLabelUsuario;
+    private javax.swing.JLabel jLabelUsuario1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField;
     private javax.swing.JTextField jTextFieldApiHost;
     private javax.swing.JTextField jTextFieldControlador;
-    private javax.swing.JTextField jTextFieldUsuario;
+    private javax.swing.JPasswordField jTextFieldPasswordOSRA;
+    private javax.swing.JPasswordField jTextFieldPasswordOnos;
+    private javax.swing.JTextField jTextFieldUsuarioOSRA;
+    private javax.swing.JTextField jTextFieldUsuarioOnos;
     // End of variables declaration//GEN-END:variables
 
     private JDialog mostrarDialogo() {
