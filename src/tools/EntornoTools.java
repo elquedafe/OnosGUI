@@ -62,6 +62,8 @@ import org.graphstream.ui.view.ViewerPipe;
 public class EntornoTools {
 
     // OSRA url endpoints 
+    public static String user;
+    public static String password;
     public static String endpoint;
     public static String endpointEnvironment;
     public static String endpointFlows;

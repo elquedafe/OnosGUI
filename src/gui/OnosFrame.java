@@ -357,18 +357,20 @@ public class OnosFrame extends javax.swing.JFrame {
         String user = String.valueOf(jTextFieldUsuarioOnos.getText());
         String password = String.valueOf(jTextFieldPasswordOnos.getPassword());
         String onosHost = String.valueOf(jTextFieldControlador.getText());
+        EntornoTools.user = String.valueOf(jTextFieldUsuarioOSRA.getText());
+        EntornoTools.password = String.valueOf(jTextFieldUsuarioOSRA.getText());     
         EntornoTools.apiHost = String.valueOf(jTextFieldControlador.getText());
-        EntornoTools.endpoint = "http://" + EntornoTools.apiHost + ":8080/onosapp-v1/rest";
-        EntornoTools.endpointEnvironment = endpoint + "/environment";
-        EntornoTools.endpointFlows = endpoint + "/flows";
-        EntornoTools.endpointVpls = endpoint + "/vpls";
-        EntornoTools.endpointMeters = endpoint + "/meters";
-        EntornoTools.endpointSwitches = endpoint + "/switches";
-        EntornoTools.endpointAuth = endpoint + "/authorization";
+        EntornoTools.endpoint = "http://" + EntornoTools.apiHost + ":8080/onosapp-v1";
+        EntornoTools.endpointEnvironment = endpoint + "/users/environment";
+        EntornoTools.endpointFlows = endpoint + "/users/flows";
+        EntornoTools.endpointVpls = endpoint + "/users/vpls";
+        EntornoTools.endpointMeters = endpoint + "/users/meters";
+        EntornoTools.endpointSwitches = endpoint + "/users/switches";
+        EntornoTools.endpointAuth = endpoint + "/rest/authorization";
 
         String json = "{\n"
-                + "	\"user\":\"" + user + "\",\n"
-                + "	\"password\":\"" + password + "\",\n"
+                + "	\"userOnos\":\"" + user + "\",\n"
+                + "	\"passwordOnos\":\"" + password + "\",\n"
                 + "	\"onosHost\": \"" + onosHost + "\"\n"
                 + "}";
         //JOptionPane.showMessageDialog(this, "Conectando con el controlador...", "Conectando...", JOptionPane.INFORMATION_MESSAGE);

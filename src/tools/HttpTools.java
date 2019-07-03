@@ -18,7 +18,7 @@ import java.util.Base64;
 public class HttpTools {
 	
 	public static int doJSONPost(URL url, String body) throws IOException{
-        //String encoding;
+        String encoding;
         String line;
         int response=-1;
         HttpURLConnection connection = null;
@@ -29,13 +29,13 @@ public class HttpTools {
         
         try {
         	System.out.println("en dopostjson BODY:\n"+body);
-            //encoding = Base64.getEncoder().encodeToString((EntornoTools.user + ":"+ EntornoTools.password).getBytes("UTF-8"));
+            encoding = Base64.getEncoder().encodeToString((EntornoTools.user + ":"+ EntornoTools.password).getBytes("UTF-8"));
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
             connection.setRequestProperty("Accept", "application/json");
-            //connection.setRequestProperty("Authorization", "Basic " + encoding);
+            connection.setRequestProperty("Authorization", "Basic " + encoding);
             OutputStream os = connection.getOutputStream();
             osw = new OutputStreamWriter(os, "UTF-8");    
             osw.write(body);
@@ -74,7 +74,7 @@ public class HttpTools {
     }
     
     public static String doDelete(URL url) throws IOException{
-        //String encoding;
+        String encoding;
         String line;
         String response="";
         HttpURLConnection connection = null;
@@ -83,7 +83,7 @@ public class HttpTools {
         BufferedReader in = null;
         BufferedReader inError = null;
         try {
-            //encoding = Base64.getEncoder().encodeToString((EntornoTools.user + ":"+ EntornoTools.password).getBytes("UTF-8"));
+            encoding = Base64.getEncoder().encodeToString((EntornoTools.user + ":"+ EntornoTools.password).getBytes("UTF-8"));
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("DELETE");
             connection.setDoOutput(true);
@@ -116,16 +116,16 @@ public class HttpTools {
     }
     
     public static String doJSONGet(URL url) throws IOException{
-        //String encoding;
+        String encoding;
         String line;
         String json="";
         HttpURLConnection connection = null;
         try {
-            //encoding = Base64.getEncoder().encodeToString((EntornoTools.user + ":"+ EntornoTools.password).getBytes("UTF-8"));
+            encoding = Base64.getEncoder().encodeToString((EntornoTools.user + ":"+ EntornoTools.password).getBytes("UTF-8"));
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setDoOutput(true);
-            //connection.setRequestProperty("Authorization", "Basic " + encoding);
+            connection.setRequestProperty("Authorization", "Basic " + encoding);
             InputStream content = (InputStream)connection.getInputStream();
             BufferedReader in   = 
             new BufferedReader (new InputStreamReader (content));

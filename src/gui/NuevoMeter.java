@@ -31,7 +31,7 @@ public class NuevoMeter extends NuevoDialog {
         EntornoTools.descubrirEntorno();
         EntornoTools.getMeters();
         fillComponents();
-        jComboBoxHost.setSelectedIndex(0);
+        jComboBoxSrcHost.setSelectedIndex(0);
         pack();
         
     }
@@ -50,14 +50,24 @@ public class NuevoMeter extends NuevoDialog {
         jLabel1 = new javax.swing.JLabel();
         jButtonAdd = new javax.swing.JButton();
         jButtonCancel = new javax.swing.JButton();
-        jComboBoxHost = new javax.swing.JComboBox<>();
-        jLabelHost = new javax.swing.JLabel();
+        jComboBoxSrcHost = new javax.swing.JComboBox<>();
+        jLabelSrcHost = new javax.swing.JLabel();
         jLabelRate = new javax.swing.JLabel();
         jLabelBurst = new javax.swing.JLabel();
         jTextFieldRate = new javax.swing.JTextField();
         jTextFieldBurst = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jLabelKbps1 = new javax.swing.JLabel();
+        jLabelKbps2 = new javax.swing.JLabel();
+        jLabelDstHost = new javax.swing.JLabel();
+        jComboBoxDstHost = new javax.swing.JComboBox<>();
+        jLabelSrcPort = new javax.swing.JLabel();
+        jLabelDstPort = new javax.swing.JLabel();
+        jTextFieldSrcPort = new javax.swing.JTextField();
+        jTextFieldDstPort = new javax.swing.JTextField();
+        jLabelRate1 = new javax.swing.JLabel();
+        jComboBoxPortType = new javax.swing.JComboBox<>();
+        jLabelSrcHost1 = new javax.swing.JLabel();
+        jComboBoxIpVersion = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nuevo Meter");
@@ -67,7 +77,7 @@ public class NuevoMeter extends NuevoDialog {
 
         jLabel2.setFont(new java.awt.Font("Lucida Sans Typewriter", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("ONOS QoS");
+        jLabel2.setText("Meters");
 
         jLabel1.setIcon(new javax.swing.ImageIcon("/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/img/Untitled-5.png")); // NOI18N
 
@@ -80,7 +90,7 @@ public class NuevoMeter extends NuevoDialog {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelBannerLayout.setVerticalGroup(
             jPanelBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,17 +118,35 @@ public class NuevoMeter extends NuevoDialog {
             }
         });
 
-        jLabelHost.setText("Host");
+        jLabelSrcHost.setText("Host origen:");
 
-        jLabelRate.setText("Tasa Máxima");
+        jLabelRate.setText("Tasa máxima:");
 
-        jLabelBurst.setText("Rafaga");
+        jLabelBurst.setText("Rafaga:");
 
         jTextFieldRate.setToolTipText("");
 
-        jLabel3.setText("kbps");
+        jLabelKbps1.setText("kbps");
 
-        jLabel4.setText("kbps");
+        jLabelKbps2.setText("kbps");
+
+        jLabelDstHost.setText("Host destino:");
+
+        jLabelSrcPort.setText("Puerto origen:");
+
+        jLabelDstPort.setText("Puerto destino:");
+
+        jTextFieldSrcPort.setToolTipText("");
+
+        jTextFieldDstPort.setToolTipText("");
+
+        jLabelRate1.setText("Tipo de puerto:");
+
+        jComboBoxPortType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TCP", "UDP" }));
+
+        jLabelSrcHost1.setText("Version IP:");
+
+        jComboBoxIpVersion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "IPv4", "IPv6" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -126,50 +154,96 @@ public class NuevoMeter extends NuevoDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelBanner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButtonAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonCancel)
-                        .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelDstHost)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBoxDstHost, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelSrcHost)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBoxSrcHost, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabelSrcHost1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBoxIpVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(67, 67, 67))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabelHost)
-                            .addComponent(jLabelRate)
-                            .addComponent(jLabelBurst))
+                            .addComponent(jLabelSrcPort)
+                            .addComponent(jLabelDstPort)
+                            .addComponent(jLabelRate1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextFieldRate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldSrcPort, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldDstPort, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jComboBoxPortType, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(67, 67, 67))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButtonAdd)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel3))
-                            .addComponent(jComboBoxHost, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextFieldBurst, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4)))
-                        .addGap(30, 30, 30))))
+                                .addComponent(jButtonCancel))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabelBurst)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jTextFieldBurst, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabelKbps2))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabelRate)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jTextFieldRate, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabelKbps1)))
+                                .addGap(24, 24, 24)))
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanelBanner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelHost))
-                .addGap(18, 18, 18)
+                    .addComponent(jComboBoxIpVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelSrcHost1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxSrcHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelSrcHost))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelSrcPort)
+                    .addComponent(jTextFieldSrcPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxDstHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelDstHost))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelDstPort)
+                    .addComponent(jTextFieldDstPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxPortType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelRate1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelRate)
                     .addComponent(jTextFieldRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabelKbps1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelBurst)
                     .addComponent(jTextFieldBurst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                    .addComponent(jLabelKbps2))
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAdd)
                     .addComponent(jButtonCancel))
@@ -187,19 +261,44 @@ public class NuevoMeter extends NuevoDialog {
 
     @Override
     protected void jButtonAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMouseClicked
-        Host hostOrigen = (Host)this.jComboBoxHost.getSelectedItem();
+        String ipVersionBox = (String)this.jComboBoxIpVersion.getSelectedItem();
+        String ipVersion = "";
+        Host srcHost = (Host)this.jComboBoxSrcHost.getSelectedItem();
+        String srcPort = this.jTextFieldSrcPort.getText().toString();
+        Host dstHost = (Host)this.jComboBoxDstHost.getSelectedItem();
+        String dstPort = this.jTextFieldDstPort.getText().toString();
+        String portType = (String)this.jComboBoxPortType.getSelectedItem();
         int rate = Integer.parseInt(jTextFieldRate.getText());
         int burst = Integer.parseInt(jTextFieldBurst.getText());
+        
+        
+        switch(ipVersionBox){
+            case "IPv4":
+                ipVersion = "4";
+                break;
+            case "IPv6":
+                ipVersion = "6";
+                break;
+            default:
+                ipVersion = "4";
+        }
+        
         String json = "";
         json = "{" +
-        "\"host\": \""+ hostOrigen.getIpList().get(0) +"\"," +
+        "\"ipVersion\": \""+ ipVersion +"\"," +       
+        "\"srcHost\": \""+ srcHost.getIpList().get(0) +"\"," +
+        "\"srcPort\": \""+ srcPort +"\"," +
+        "\"dstHost\": \""+ dstHost.getIpList().get(0) +"\"," +
+        "\"dstPort\": \""+ dstPort +"\"," +
+        "\"portType\": \"" + portType + "\"," +
         "\"rate\": " + rate + "," +
         "\"burst\": "+ burst +
         "}";    
+        
         String respuesta = "";
         System.err.println("\n****\n"+json);
         try {
-            HttpTools.doJSONPost(new URL(EntornoTools.endpointMeters+"/"+hostOrigen.getIpList().get(0)), json);
+            HttpTools.doJSONPost(new URL(EntornoTools.endpointMeters+"/"+srcHost.getIpList().get(0)+"/"+dstHost.getIpList().get(0)), json);
             JDialog respuestaPost = new NewOkCancelDialog(null, true, "Meter añadido correctamente");
             respuestaPost.setVisible(true);
             respuestaPost.pack();
@@ -214,23 +313,33 @@ public class NuevoMeter extends NuevoDialog {
     @Override
     protected void fillComponents() {
         for(Host h : Entorno.mapHosts.values()){
-            this.jComboBoxHost.addItem(h);
+            this.jComboBoxSrcHost.addItem(h);
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
     private javax.swing.JButton jButtonCancel;
-    private javax.swing.JComboBox<Host> jComboBoxHost;
+    private javax.swing.JComboBox<Host> jComboBoxDstHost;
+    private javax.swing.JComboBox<String> jComboBoxIpVersion;
+    private javax.swing.JComboBox<String> jComboBoxPortType;
+    private javax.swing.JComboBox<Host> jComboBoxSrcHost;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelBurst;
-    private javax.swing.JLabel jLabelHost;
+    private javax.swing.JLabel jLabelDstHost;
+    private javax.swing.JLabel jLabelDstPort;
+    private javax.swing.JLabel jLabelKbps1;
+    private javax.swing.JLabel jLabelKbps2;
     private javax.swing.JLabel jLabelRate;
+    private javax.swing.JLabel jLabelRate1;
+    private javax.swing.JLabel jLabelSrcHost;
+    private javax.swing.JLabel jLabelSrcHost1;
+    private javax.swing.JLabel jLabelSrcPort;
     private javax.swing.JPanel jPanelBanner;
     private javax.swing.JTextField jTextFieldBurst;
+    private javax.swing.JTextField jTextFieldDstPort;
     private javax.swing.JTextField jTextFieldRate;
+    private javax.swing.JTextField jTextFieldSrcPort;
     // End of variables declaration//GEN-END:variables
 }

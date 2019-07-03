@@ -1004,7 +1004,7 @@ public class Principal extends javax.swing.JFrame {
      */
     private void jButtonNuevoFlujoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNuevoFlujoMouseClicked
         // Open a new window wth the selected item in the swtich combo box
-        JDialog newFlow = new NuevoFlujo((String) jComboBoxSwitches.getSelectedItem());
+        JDialog newFlow = new NuevoFlujoSocket();
         newFlow.setVisible(true);
     }//GEN-LAST:event_jButtonNuevoFlujoMouseClicked
 

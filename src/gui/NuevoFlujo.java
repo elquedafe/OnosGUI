@@ -329,7 +329,18 @@ public class NuevoFlujo extends NuevoDialog {
         "}" +
         "]" +
         "}" +
-        "}";    
+        "}";   
+        
+        json = "{\n" +
+                "	\"switchId\": \""+sw+"\",\n" +
+                "	\"priority\": "+prioridad+",\n" +
+                "	\"timeout\": "+timeout+", \n" +
+                "	\"isPermanent\": "+true+",\n" +
+                "	\"srcPort\": \""+srcPort.getPortNumber()+"\",\n" +
+                "	\"dstPort\": \""+dstPort.getPortNumber()+"\",\n" +
+                "	\"srcHost\": \""+hostDestino.getMac()+"\",\n" +
+                "	\"dstHost\": \""+hostOrigen.getMac()+"\"\n" +
+                "}";
         String respuesta = "";
         System.err.println("\n****\n"+json);
         try {
@@ -341,7 +352,7 @@ public class NuevoFlujo extends NuevoDialog {
             JDialog errorPost = new NewOkCancelDialog(null, true, "ERROR. No se ha podido añadir el flujo de forma correcta");
             errorPost.setVisible(true);
             errorPost.pack();
-            Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonAddMouseClicked
 
