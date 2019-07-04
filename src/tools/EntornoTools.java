@@ -12,6 +12,8 @@ import arquitectura.Link;
 import arquitectura.Meter;
 import arquitectura.Switch;
 import arquitectura.Vpls;
+import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 import com.nettopo.boudis.GraphicNode;
 import com.nettopo.boudis.TopologyPanel;
 import com.nettopo.boudis.constants;
@@ -21,6 +23,7 @@ import java.awt.Container;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -306,7 +309,8 @@ public class EntornoTools {
     public static void getMeters() throws IOException {
         String json;
         json = HttpTools.doJSONGet(new URL(EntornoTools.endpointMeters));
-        JsonManager.parseoMeters(json);
+        if(json != null && !json.isEmpty() && !json.equals("null\n"))
+            JsonManager.parseoMeters(json);
     }
 
     public static void getVpls() throws IOException {
@@ -342,6 +346,21 @@ public class EntornoTools {
 
             }
         }
+    }
+
+    public static boolean isAdmin() {
+        Gson gson = new Gson();
+        String json;
+        try {
+            json = HttpTools.doJSONGet(new URL(EntornoTools.endpointAuth));
+        } catch (MalformedURLException ex) {
+            return false;
+        } catch (IOException ex) {
+            return false;
+        }
+        
+        LinkedTreeMap jsonObject = gson.fromJson(json, LinkedTreeMap.class);
+        return (boolean)jsonObject.get("isAdmin");
     }
 
 }

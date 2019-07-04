@@ -314,6 +314,7 @@ public class NuevoMeter extends NuevoDialog {
     protected void fillComponents() {
         for(Host h : Entorno.mapHosts.values()){
             this.jComboBoxSrcHost.addItem(h);
+            this.jComboBoxDstHost.addItem(h);
         }
     }
 

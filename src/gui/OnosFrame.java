@@ -361,12 +361,17 @@ public class OnosFrame extends javax.swing.JFrame {
         EntornoTools.password = String.valueOf(jTextFieldUsuarioOSRA.getText());     
         EntornoTools.apiHost = String.valueOf(jTextFieldControlador.getText());
         EntornoTools.endpoint = "http://" + EntornoTools.apiHost + ":8080/onosapp-v1";
-        EntornoTools.endpointEnvironment = endpoint + "/users/environment";
-        EntornoTools.endpointFlows = endpoint + "/users/flows";
-        EntornoTools.endpointVpls = endpoint + "/users/vpls";
-        EntornoTools.endpointMeters = endpoint + "/users/meters";
-        EntornoTools.endpointSwitches = endpoint + "/users/switches";
         EntornoTools.endpointAuth = endpoint + "/rest/authorization";
+        String sufix = "";
+        if(EntornoTools.isAdmin())
+           sufix = "administration";
+        else
+            sufix = "users";
+        EntornoTools.endpointEnvironment = endpoint + "/"+sufix+"/environment";
+        EntornoTools.endpointFlows = endpoint + "/"+sufix+"/flows";
+        EntornoTools.endpointVpls = endpoint + "/"+sufix+"/vpls";
+        EntornoTools.endpointMeters = endpoint + "/"+sufix+"/meters";
+        EntornoTools.endpointSwitches = endpoint + "/"+sufix+"/switches";
 
         String json = "{\n"
                 + "	\"userOnos\":\"" + user + "\",\n"
