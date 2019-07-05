@@ -181,14 +181,14 @@ public class EntornoTools {
         //Graph graph = new SingleGraph("Topologia", false, true);
         if (graph == null) {
             System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
-            graph = new SingleGraph("Topologia", false, true);
-            graph.addAttribute("ui.stylesheet", "url('css/estilo.css')");
+            graph = new MultiGraph("Topologia", false, true);
+            graph.addAttribute("ui.stylesheet", "url('src/css/estilo.css')");
             graph.addAttribute("ui.antialias");
             graph.addAttribute("ui.quality");
         } else {
 
             graph.clear();
-            graph.addAttribute("ui.stylesheet", "url('css/estilo.css')");
+            graph.addAttribute("ui.stylesheet", "url('src/css/estilo.css')");
             graph.addAttribute("ui.antialias");
             graph.addAttribute("ui.quality");
 

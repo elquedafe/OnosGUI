@@ -201,11 +201,11 @@ public class NuevaVpls extends NuevoDialog {
                             .addComponent(jTextFieldRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelKbps))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelBurst)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jTextFieldBurst, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabelKbps2)))
+                                .addComponent(jLabelKbps2))
+                            .addComponent(jLabelBurst))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
 
@@ -222,8 +222,14 @@ public class NuevaVpls extends NuevoDialog {
         }
         if(json.endsWith(","))
             json = json.substring(0, json.length()-1);
-        json += "]\n" +
-        "}";
+        json += "]\n";
+        if(!this.jTextFieldRate.getText().isEmpty() && !this.jTextFieldBurst.getText().isEmpty()){
+            json += ",\n"
+                    + "\"rate\":"+this.jTextFieldRate.getText().toString()+",\n" +
+                    "\"burst\":"+this.jTextFieldBurst.getText().toString();
+        }
+        json += "}";
+        
         System.out.println(EntornoTools.endpoint+"/vpls/"+this.jTextFieldVplsName.getText()+ " -->" +json);
         try {
             HttpTools.doJSONPost(new URL(EntornoTools.endpointVpls + "/" + this.jTextFieldVplsName.getText()), json);
