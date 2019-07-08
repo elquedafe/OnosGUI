@@ -69,6 +69,8 @@ public class NuevoFlujoSocket extends NuevoDialog {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jComboBoxDstHost = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
+        jComboBoxPortType = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setModal(true);
@@ -145,23 +147,35 @@ public class NuevoFlujoSocket extends NuevoDialog {
 
         jLabel11.setText("Host Destino:");
 
+        jLabel12.setText("Tipo de puerto:");
+
+        jComboBoxPortType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TCP", "UDP" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelBanner, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonCancelar)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+                        .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel10)
-                            .addComponent(jLabel11))
+                            .addComponent(jLabel11)
+                            .addComponent(jLabel12))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBoxDstHost, 0, 140, Short.MAX_VALUE)
-                            .addComponent(jComboBoxSrcHost, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jComboBoxSrcHost, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBoxPortType, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(7, 7, 7)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -180,12 +194,6 @@ public class NuevoFlujoSocket extends NuevoDialog {
                         .addComponent(jTextFieldDstPort)
                         .addGap(8, 8, 8)))
                 .addGap(40, 40, 40))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonCancelar)
-                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,7 +219,11 @@ public class NuevoFlujoSocket extends NuevoDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxDstHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel11))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxPortType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel12))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonCancelar)
                     .addComponent(jButtonAdd))
@@ -245,19 +257,21 @@ public class NuevoFlujoSocket extends NuevoDialog {
         String dstPort = String.valueOf(this.jTextFieldDstPort.getText());
         Host hostOrigen = (Host)this.jComboBoxSrcHost.getSelectedItem();
         Host hostDestino = (Host)this.jComboBoxDstHost.getSelectedItem();
+        String portType = (String)this.jComboBoxPortType.getSelectedItem();
         String json = ""; 
         
         json = "{\n" +
                 "	\"ipVersion\": "+ipVersion+",\n" +
-                "	\"srcHost\": \""+hostOrigen.getMapLocations().get(0)+"\",\n" +
+                "	\"srcHost\": \""+hostOrigen.getIpList().get(0)+"\",\n" +
                 "	\"srcPort\": \""+srcPort+"\",\n" +
-                "	\"dstHost\": \""+hostDestino.getMapLocations().get(0)+"\",\n" +
-                "	\"dstPort\": \""+dstPort+"\"\n" +
+                "	\"dstHost\": \""+hostDestino.getIpList().get(0)+"\",\n" +
+                "	\"dstPort\": \""+dstPort+"\",\n" +
+                "	\"portType\": \""+portType+"\"\n" +
                 "}";
         String respuesta = "";
         System.err.println("\n****\n"+json);
         try {
-            HttpTools.doJSONPost(new URL(EntornoTools.endpointFlows + "/" + hostOrigen.getMapLocations().get(0) +"/"+hostDestino.getMapLocations().get(0)), json);
+            HttpTools.doJSONPost(new URL(EntornoTools.endpointFlows + "/" + hostOrigen.getIpList().get(0) +"/"+hostDestino.getIpList().get(0)), json);
             JDialog respuestaPost = new NewOkCancelDialog(null, true, "Flujo añadido correctamente");
             respuestaPost.setVisible(true);
             respuestaPost.pack();
@@ -280,10 +294,12 @@ public class NuevoFlujoSocket extends NuevoDialog {
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JComboBox<Host> jComboBoxDstHost;
     private javax.swing.JComboBox<String> jComboBoxIpVersion;
+    private javax.swing.JComboBox<String> jComboBoxPortType;
     private javax.swing.JComboBox<Host> jComboBoxSrcHost;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel8;
