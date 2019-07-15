@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import javax.swing.Timer;
 import arquitectura.*;
+import com.google.gson.internal.LinkedTreeMap;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -21,6 +22,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +31,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.DefaultTableModel;
@@ -39,7 +42,7 @@ import tools.*;
  * @author alvaroluismartinez
  */
 public class Principal extends javax.swing.JFrame {
-
+    
     private final int SWITCH = 0;
     private final int ID = 1;
     private final int ID_GRUPO = 2;
@@ -47,20 +50,20 @@ public class Principal extends javax.swing.JFrame {
     private final int ESTADO = 4;
     private final int PAQUETES = 5;
     private final int BYTES = 6;
-
+    
     private final int ESTADO_METER = 2;
     private final int RATE_METER = 3;
     private final int BURST_METER = 4;
     private final int BYTES_METER = 5;
-
+    
     private final int VPLS_NAME = 0;
-
+    
     private Timer timerDevices;
     private Timer timerFlows;
     private Timer timerMeters;
     private Timer timerVpls;
     private Timer timerLinks;
-
+    
     private List<JLabel> labels;
 
     /**
@@ -75,10 +78,12 @@ public class Principal extends javax.swing.JFrame {
                 this.jLabelVpls,
                 this.jLabelStatistics
         ));
+        this.jLabelStatistics.setVisible(false);
         this.jLabelTopologiaMouseClicked(null);
+        this.jLabelUserName.setText("Usuario: " + EntornoTools.user);
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         EntornoTools.descubrirEntorno();
-
+        
     }
 
     /**
@@ -94,6 +99,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jButtonDesconexion = new javax.swing.JButton();
+        jLabelUserName = new javax.swing.JLabel();
         jPanelMenu = new javax.swing.JPanel();
         jLabelEnlaces = new javax.swing.JLabel();
         jLabelFlows = new javax.swing.JLabel();
@@ -115,6 +121,7 @@ public class Principal extends javax.swing.JFrame {
         jButtonNuevo = new javax.swing.JButton();
         jLabelSwitch = new javax.swing.JLabel();
         jButtonEliminar = new javax.swing.JButton();
+        jButtonEliminarAll = new javax.swing.JButton();
         jPanelTopologia = new javax.swing.JPanel();
         jPanelVpls = new javax.swing.JPanel();
         jScrollPaneVpls = new javax.swing.JScrollPane();
@@ -159,6 +166,10 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jLabelUserName.setFont(new java.awt.Font("Lucida Grande", 2, 13)); // NOI18N
+        jLabelUserName.setForeground(new java.awt.Color(204, 204, 204));
+        jLabelUserName.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+
         javax.swing.GroupLayout jPanelBannerLayout = new javax.swing.GroupLayout(jPanelBanner);
         jPanelBanner.setLayout(jPanelBannerLayout);
         jPanelBannerLayout.setHorizontalGroup(
@@ -169,6 +180,8 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelUserName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonDesconexion)
                 .addGap(19, 19, 19))
         );
@@ -182,7 +195,8 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(9, 9, 9)
                         .addGroup(jPanelBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jButtonDesconexion))
+                            .addComponent(jButtonDesconexion)
+                            .addComponent(jLabelUserName))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -346,11 +360,11 @@ public class Principal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Switch", "Id", "Id grupo", "Prioridad", "Estado", "Nº Paquetes", "Nº Bytes"
+                "Switch", "Id", "Prioridad", "Estado", "Selector", "Nº Paquetes", "Nº Bytes"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false
@@ -364,8 +378,10 @@ public class Principal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTableFlows.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         jTableFlows.setName(""); // NOI18N
-        jTableFlows.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTableFlows.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        jTableFlows.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jTableFlows.setShowGrid(false);
         jTableFlows.setShowVerticalLines(true);
         jScrollPaneTable.setViewportView(jTableFlows);
@@ -404,24 +420,34 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jButtonEliminarAll.setBackground(new java.awt.Color(37, 44, 51));
+        jButtonEliminarAll.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonEliminarAll.setText("Eliminar todos");
+        jButtonEliminarAll.setBorderPainted(false);
+        jButtonEliminarAll.setOpaque(true);
+        jButtonEliminarAll.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonEliminarAllFlujoMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelDetalleFlowLayout = new javax.swing.GroupLayout(jPanelDetalleFlow);
         jPanelDetalleFlow.setLayout(jPanelDetalleFlowLayout);
         jPanelDetalleFlowLayout.setHorizontalGroup(
             jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalleFlowLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanelDetalleFlowLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18))
-                    .addGroup(jPanelDetalleFlowLayout.createSequentialGroup()
-                        .addComponent(jLabelSwitch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jComboBoxSwitches, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                .addComponent(jLabelSwitch)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jComboBoxSwitches, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalleFlowLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonEliminarAll, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21))
         );
         jPanelDetalleFlowLayout.setVerticalGroup(
             jPanelDetalleFlowLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -434,7 +460,9 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jButtonNuevo)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonEliminar)
-                .addGap(20, 20, 20))
+                .addGap(18, 18, 18)
+                .addComponent(jButtonEliminarAll)
+                .addGap(22, 22, 22))
         );
 
         javax.swing.GroupLayout jPanelFlowsLayout = new javax.swing.GroupLayout(jPanelFlows);
@@ -768,7 +796,7 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerMeters);
         TimerTools.stopTimer(timerDevices);
         TimerTools.stopTimer(timerVpls);
-
+        
         try {
             // Update data
             EntornoTools.descubrirEntorno();
@@ -801,7 +829,7 @@ public class Principal extends javax.swing.JFrame {
                 if (linkSelected != null) {
                     jListLinks.setSelectedIndex(((DefaultListModel) jListLinks.getModel()).indexOf(linkSelected));
                 }
-
+                
             }
         };
 
@@ -849,7 +877,7 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerLinks);
         TimerTools.stopTimer(timerVpls);
         TimerTools.stopTimer(timerMeters);
-
+        
         try {
             //Update data
             EntornoTools.descubrirEntorno();
@@ -866,19 +894,32 @@ public class Principal extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     EntornoTools.descubrirEntorno();
-                    String idFlowSelected = null;
+                    List<String> idFlowsSeletedId = new ArrayList<String>();
+                    int[] selectedRowsIndex = null;
                     ///
                     //SI SE SLEECCIONA FILA, SE GUARDA
                     ///
+
                     if (jTableFlows.getSelectedRow() != -1) {
-                        idFlowSelected = ((DefaultTableModel) jTableFlows.getModel()).getDataVector().get(jTableFlows.getSelectedRow()).get(ID).toString();
+                        selectedRowsIndex = jTableFlows.getSelectedRows();
+                        for (int i = 0; i < selectedRowsIndex.length; i++) {
+                            idFlowsSeletedId.add(((DefaultTableModel) jTableFlows.getModel()).getDataVector().get(selectedRowsIndex[i]).get(ID).toString());
+                        }
+                        
                     }
                     //Actualizar listas
+
                     EntornoTools.actualizarGUIFlowsTable(jTableFlows, Entorno.mapSwitches.values());
                     EntornoTools.actualizarBoxSwitches(jComboBoxSwitches);
+                    String idActual = "";
+                    ListSelectionModel model = jTableFlows.getSelectionModel();
+                    model.clearSelection();
                     for (int i = 0; i < jTableFlows.getRowCount(); i++) {
-                        if (((DefaultTableModel) jTableFlows.getModel()).getDataVector().get(i).get(ID).toString().equals(idFlowSelected)) {
-                            jTableFlows.setRowSelectionInterval(i, i);
+                        for (String idFlowSelected : idFlowsSeletedId) {
+                            idActual = ((DefaultTableModel) jTableFlows.getModel()).getDataVector().get(i).get(ID).toString();
+                            if (idActual.equals(idFlowSelected)) {
+                                model.addSelectionInterval(i, i);
+                            }
                         }
                     }
                     //Reseleccionar elemento de la lista
@@ -886,14 +927,14 @@ public class Principal extends javax.swing.JFrame {
                             (DefaultTableModel)jTableFlows
                             jListFlows.setSelectedIndex(((DefaultListModel)jListFlows.getModel()).indexOf(flowSelected));
                      */
-
+                    
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
+                
             }
         };
-
+        
         timerFlows = TimerTools.runTimer(timerFlows, flowsTimeout);
     }//GEN-LAST:event_jLabelFlowsMouseClicked
 
@@ -947,13 +988,13 @@ public class Principal extends javax.swing.JFrame {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
+                        
                     }
                 };
 
                 // If timer is not running starts it
                 TimerTools.runTimer(timerFlows, flowsTimeout);
-
+                
             } //If "todos" (all) is selected
             else {
                 try {
@@ -1016,21 +1057,47 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonEliminarFlujoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEliminarFlujoMouseClicked
         try {
             if (jTableFlows.getSelectedRow() != -1) {
-                String id = ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(jTableFlows.getSelectedRow()).get(ID).toString();
-                String sw = ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(jTableFlows.getSelectedRow()).get(SWITCH).toString();
-                try {
-                    int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar el flujo " + id + " del switch " + sw + "?", "Eliminar flujo", WIDTH);
-                    if (resultado == JOptionPane.OK_OPTION) {
-                        System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointFlows + "/" + sw + "/" + id)));
-                        JDialog acp = new NewOkCancelDialog(this, false, "Flujo " + id + " eliminado correctamente");
-                        acp.setVisible(true);
-                        acp.pack();
+                int[] selected = jTableFlows.getSelectedRows();
+                int resultado = -1;
+                if (selected.length == 1) {
+                    resultado = JOptionPane.showConfirmDialog(rootPane, "¿Desea eliminar el flujo " + ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(selected[0]).get(ID).toString() + " del switch " + ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(selected[0]).get(SWITCH).toString() + "?", "Eliminar flujo", WIDTH);
+                } else if (selected.length > 1) {
+                    resultado = JOptionPane.showConfirmDialog(rootPane, "¿Desea eliminar los " + selected.length + " flujos selecionados de la red?", "Eliminar flujo", WIDTH);
+                }
+                if (resultado == JOptionPane.OK_OPTION) {
+                    String id = "";
+                    try {
+                        for (int i = 0; i < selected.length; i++) {
+                            id = ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(selected[i]).get(ID).toString();
+                            String sw = ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(selected[i]).get(SWITCH).toString();
+                            
+                            System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointFlows + "/" + sw + "/" + id)));
+                            if (selected.length == 1) {
+                                JDialog acp = new NewOkCancelDialog(this, false, "Flujo " + id + " eliminado correctamente");
+                                acp.setVisible(true);
+                                acp.pack();
+                            }
+                            
+                        }
+                        if (selected.length > 1) {
+                            JDialog acp = new NewOkCancelDialog(this, false, "Flujos eliminados correctamente");
+                            acp.setVisible(true);
+                            acp.pack();
+                        }
+                    } catch (IOException ex) {
+                        System.err.println(ex.getMessage());
+                        if (selected.length > 1) {
+                            JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se han podido eliminar los flujos");
+                            err.pack();
+                            err.setVisible(true);
+                        } else if (selected.length == 1) {
+                            JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar el flujo");
+                            err.pack();
+                            err.setVisible(true);
+                            
+                        }
                     }
-                } catch (IOException ex) {
-                    System.err.println(ex.getMessage());
-                    JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar el flujo");
-                    err.pack();
-                    err.setVisible(true);
+                    
                 }
             } else {
                 JDialog err = new NewOkCancelDialog(this, false, "Elija un flujo de la lista");
@@ -1051,7 +1118,7 @@ public class Principal extends javax.swing.JFrame {
      * @param evt
      */
     private void jLabelTopologiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelTopologiaMouseClicked
-
+        
         CardLayout card = (CardLayout) jPanelCard.getLayout();
         card.show(jPanelCard, this.jPanelTopologia.getName());
 
@@ -1064,7 +1131,7 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerVpls);
         TimerTools.stopTimer(timerMeters);
         TimerTools.stopTimer(timerFlows);
-
+        
         try {
             //Update data
             EntornoTools.descubrirEntorno();
@@ -1116,7 +1183,7 @@ public class Principal extends javax.swing.JFrame {
 //            EntornoTools.actualizarGUITopologia(jPanelTopologia);
         // Select meter Tab
         jTabbedPaneQoS.setSelectedIndex(0);
-
+        
         try {
             //Update data
             EntornoTools.descubrirEntorno();
@@ -1136,7 +1203,7 @@ public class Principal extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent evt) {
                 String idMeterSelected = null;
                 String idSwitchSelected = null;
-
+                
                 try {
                     //Update data
                     EntornoTools.descubrirEntorno();
@@ -1180,11 +1247,11 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerLinks);
         TimerTools.stopTimer(timerMeters);
         TimerTools.stopTimer(timerFlows);
-
+        
         try {
             EntornoTools.getVpls();
             EntornoTools.actualizarGUIVplsTable(jTableVpls, Entorno.vpls);
-
+            
         } catch (IOException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1215,14 +1282,14 @@ public class Principal extends javax.swing.JFrame {
                             (DefaultTableModel)jTableFlows
                             jListFlows.setSelectedIndex(((DefaultListModel)jListFlows.getModel()).indexOf(flowSelected));
                      */
-
+                    
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
+                
             }
         };
-
+        
         timerVpls = TimerTools.runTimer(timerVpls, vplsTimeout);
 //            EntornoTools.descubrirEntorno();
 //            EntornoTools.actualizarGUITopologia(jPanelTopologia);
@@ -1234,12 +1301,12 @@ public class Principal extends javax.swing.JFrame {
                 timerMeters.stop();
             }
             String sw = (String) jComboBoxSwitchesMeters.getSelectedItem();
-
+            
             if (!sw.equals("Todos")) {
                 try {
                     EntornoTools.descubrirEntorno();
                     EntornoTools.getMeters();
-
+                    
                     EntornoTools.actualizarGUIMetersTable(jTableMeters, EntornoTools.getMetersBySwitch(sw));
                     ActionListener metersTimeout;
                     metersTimeout = new ActionListener() {
@@ -1262,7 +1329,7 @@ public class Principal extends javax.swing.JFrame {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-
+                            
                         }
                     };
                     if (timerMeters != null && !timerMeters.isRunning()) {
@@ -1298,7 +1365,7 @@ public class Principal extends javax.swing.JFrame {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-
+                            
                         }
                     };
                     if (!timerMeters.isRunning()) {
@@ -1328,17 +1395,35 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonNewMeterMouseClicked
 
     private void jButtonEliminarMeterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEliminarMeterMouseClicked
+        String meterId = "";
         try {
             if (jTableMeters.getSelectedRow() != -1) {
                 String id = ((DefaultTableModel) jTableMeters.getModel()).getDataVector().elementAt(jTableMeters.getSelectedRow()).get(ID).toString();
                 String sw = ((DefaultTableModel) jTableMeters.getModel()).getDataVector().elementAt(jTableMeters.getSelectedRow()).get(SWITCH).toString();
+                Flow flow = null;
                 try {
                     int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar el meter " + id + " del switch " + sw + "?", "Eliminar meter", WIDTH);
                     if (resultado == JOptionPane.OK_OPTION) {
+                        for (Flow f : Entorno.mapSwitches.get(sw).getMapFlows().values()) {
+                            FlowTreatment treatment = f.getFlowTreatment();
+                            List<FlowInstruction> l = treatment.getListInstructions();
+                            for (FlowInstruction instruction : l) {
+//                                Map<String, Object> inst = instruction.getInstructions();
+                                if (instruction.getType().equals("METER")) {
+                                    Map<String, Object> inst = instruction.getInstructions();
+                                    meterId = (String) inst.get("meterId");
+//                                    meterId = (String)instruc.get("meterId");
+                                    if (meterId.equals(id)) {
+                                        flow = f;
+                                    }
+                                }
+                            }
+                        }
                         System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointMeters + "/" + sw + "/" + id)));
                         JDialog acp = new NewOkCancelDialog(this, false, "Meter " + id + " eliminado correctamente");
                         acp.setVisible(true);
                         acp.pack();
+                        
                     }
                 } catch (IOException ex) {
                     System.err.println(ex.getMessage());
@@ -1367,8 +1452,10 @@ public class Principal extends javax.swing.JFrame {
             // TODO add your handling code here:
             JDialog newVpls = new NuevaVpls();
             newVpls.setVisible(true);
+            
         } catch (IOException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Principal.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonNuevoVplsMouseClicked
 
@@ -1413,10 +1500,49 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerVpls);
     }//GEN-LAST:event_jLabelStatisticsMouseClicked
 
+    private void jButtonEliminarAllFlujoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEliminarAllFlujoMouseClicked
+        // TODO add your handling code here:
+        try {
+//            if (jTableFlows.getSelectedRow() != -1) {
+//            String id = ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(jTableFlows.getSelectedRow()).get(ID).toString();
+//            String sw = ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(jTableFlows.getSelectedRow()).get(SWITCH).toString();
+            try {
+                int resultado = JOptionPane.showConfirmDialog(rootPane, "¿Desea eliminar todos los flujos?");
+                if (resultado == JOptionPane.OK_OPTION) {
+                    for (Switch s : Entorno.mapSwitches.values()) {
+                        for (Flow f : s.getMapFlows().values()) {
+                            if (f.getAppId().contains("fwd") || f.getAppId().contains("intent")) {
+                                System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointFlows + "/" + s.getId() + "/" + f.getId())));
+                            }
+                        }
+                    }
+                }
+                JDialog acp = new NewOkCancelDialog(this, false, "Todos los flujos eliminados correctamente");
+                acp.setVisible(true);
+                acp.pack();
+            } catch (IOException ex) {
+                System.err.println(ex.getMessage());
+                JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se han podido eliminar los flujos");
+                err.pack();
+                err.setVisible(true);
+            }
+//            } else {
+//                JDialog err = new NewOkCancelDialog(this, false, "Elija un flujo de la lista");
+//                err.setVisible(true);
+//                err.pack();
+//            }
+        } catch (NullPointerException ex) {
+            JDialog err = new NewOkCancelDialog(this, false, "Elija un flujo de la lista");
+            err.setVisible(true);
+            err.pack();
+        }
+    }//GEN-LAST:event_jButtonEliminarAllFlujoMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDesconexion;
     private javax.swing.JButton jButtonEliminar;
+    private javax.swing.JButton jButtonEliminarAll;
     private javax.swing.JButton jButtonEliminarMeter;
     private javax.swing.JButton jButtonEliminarVpls;
     private javax.swing.JButton jButtonNewMeter;
@@ -1434,6 +1560,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelSwitch;
     private javax.swing.JLabel jLabelSwitch1;
     private javax.swing.JLabel jLabelTopologia;
+    private javax.swing.JLabel jLabelUserName;
     private javax.swing.JLabel jLabelVpls;
     private javax.swing.JLabel jLabelVplsName;
     private javax.swing.JList<Flow> jListFlows;

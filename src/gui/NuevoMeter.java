@@ -142,7 +142,7 @@ public class NuevoMeter extends NuevoDialog {
 
         jLabelRate1.setText("Tipo de puerto:");
 
-        jComboBoxPortType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TCP", "UDP" }));
+        jComboBoxPortType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-", "TCP", "UDP" }));
 
         jLabelSrcHost1.setText("Version IP:");
 
@@ -268,6 +268,8 @@ public class NuevoMeter extends NuevoDialog {
         Host dstHost = (Host)this.jComboBoxDstHost.getSelectedItem();
         String dstPort = this.jTextFieldDstPort.getText().toString();
         String portType = (String)this.jComboBoxPortType.getSelectedItem();
+        if(portType.equals("-"))
+            portType="";
         int rate = Integer.parseInt(jTextFieldRate.getText());
         int burst = Integer.parseInt(jTextFieldBurst.getText());
         

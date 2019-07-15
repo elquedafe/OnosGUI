@@ -13,7 +13,9 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
@@ -21,6 +23,7 @@ import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -61,10 +64,10 @@ public class OnosFrame extends javax.swing.JFrame {
         }
 
         //Deafult credentials
-        jTextFieldUsuarioOnos.setText("onos");
-        jTextFieldPasswordOnos.setText("rocks");
-        jTextFieldControlador.setText("localhost");
-        jTextFieldApiHost.setText("localhost");
+//        jTextFieldUsuarioOnos.setText("onos");
+//        jTextFieldPasswordOnos.setText("rocks");
+//        jTextFieldControlador.setText("localhost");
+//        jTextFieldApiHost.setText("localhost");
     }
 
     /**
@@ -79,17 +82,10 @@ public class OnosFrame extends javax.swing.JFrame {
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jPanel1 = new javax.swing.JPanel();
         jButtonConectar = new javax.swing.JButton();
-        jLabelUsuario = new javax.swing.JLabel();
-        jTextFieldUsuarioOnos = new javax.swing.JTextField();
-        jLabelPassword = new javax.swing.JLabel();
-        jLabelControlador = new javax.swing.JLabel();
-        jTextFieldControlador = new javax.swing.JTextField();
-        jTextFieldPasswordOnos = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
         jLabelImagen = new javax.swing.JLabel();
         jTextFieldApiHost = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabelONOS = new javax.swing.JLabel();
         jLabelOSRA = new javax.swing.JLabel();
         jLabelUsuario1 = new javax.swing.JLabel();
         jTextFieldUsuarioOSRA = new javax.swing.JTextField();
@@ -116,34 +112,6 @@ public class OnosFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabelUsuario.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelUsuario.setText("Usuario");
-
-        jTextFieldUsuarioOnos.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextFieldKeyPressed(evt);
-            }
-        });
-
-        jLabelPassword.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelPassword.setText("Contraseña");
-
-        jLabelControlador.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelControlador.setText("Controlador");
-
-        jTextFieldControlador.setLocation(new java.awt.Point(-32411, -32581));
-        jTextFieldControlador.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextFieldKeyPressed(evt);
-            }
-        });
-
-        jTextFieldPasswordOnos.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextFieldKeyPressed(evt);
-            }
-        });
-
         jLabelImagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/gui/Untitled-1.png"))); // NOI18N
 
         jTextFieldApiHost.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -155,13 +123,9 @@ public class OnosFrame extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("API host");
 
-        jLabelONOS.setFont(new java.awt.Font("Lucida Grande", 1, 15)); // NOI18N
-        jLabelONOS.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelONOS.setText("ONOS Login");
-
         jLabelOSRA.setFont(new java.awt.Font("Lucida Grande", 1, 15)); // NOI18N
         jLabelOSRA.setForeground(new java.awt.Color(255, 255, 255));
-        jLabelOSRA.setText("OSRA Login");
+        jLabelOSRA.setText("Login");
 
         jLabelUsuario1.setForeground(new java.awt.Color(255, 255, 255));
         jLabelUsuario1.setText("Usuario");
@@ -199,7 +163,7 @@ public class OnosFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jLabelImagen)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(78, 78, 78)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,54 +177,23 @@ public class OnosFrame extends javax.swing.JFrame {
                                     .addComponent(jTextFieldApiHost, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                                     .addComponent(jTextFieldPasswordOSRA)
                                     .addComponent(jTextFieldUsuarioOSRA, javax.swing.GroupLayout.Alignment.LEADING)))
-                            .addComponent(jLabelOSRA))
-                        .addGap(42, 42, 42)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabelUsuario)
-                            .addComponent(jLabelPassword)
-                            .addComponent(jLabelControlador)
-                            .addComponent(jLabelONOS))
-                        .addGap(42, 42, 42))
+                            .addComponent(jLabelOSRA)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(324, 324, 324)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(jLabel4))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
                         .addComponent(jButtonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextFieldPasswordOnos, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
-                        .addComponent(jTextFieldControlador)
-                        .addComponent(jTextFieldUsuarioOnos)))
-                .addContainerGap(27, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabelImagen)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jLabelONOS)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextFieldUsuarioOnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelUsuario))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelPassword)
-                    .addComponent(jTextFieldPasswordOnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelControlador)
-                    .addComponent(jTextFieldControlador, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonConectar)
-                    .addComponent(jButtonRegistrar))
-                .addGap(15, 15, 15))
+                .addGap(0, 40, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabelOSRA)
@@ -278,7 +211,11 @@ public class OnosFrame extends javax.swing.JFrame {
                     .addComponent(jTextFieldApiHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel4)
-                .addGap(24, 24, 24))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonConectar)
+                    .addComponent(jButtonRegistrar))
+                .addGap(18, 18, 18))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -352,12 +289,36 @@ public class OnosFrame extends javax.swing.JFrame {
 //        conectando.setVisible(true);
 //        conectando.pack();
 
-        String user = String.valueOf(jTextFieldUsuarioOnos.getText());
-        String password = String.valueOf(jTextFieldPasswordOnos.getPassword());
-        String onosHost = String.valueOf(jTextFieldControlador.getText());
+        
+        Properties prop = new Properties();
+        InputStream is = null;
+        String user = null;
+        String password = null;
+        String onosHost = null;
+//        String user = String.valueOf(jTextFieldUsuarioOnos.getText());
+//        String password = String.valueOf(jTextFieldPasswordOnos.getPassword());
+//        String onosHost = String.valueOf(jTextFieldControlador.getText());
+        
+        try {
+            is = new FileInputStream("onosConfig.properties");
+            prop.load(is);
+            user = prop.getProperty("onos.user");
+            password = prop.getProperty("onos.password");
+            onosHost = prop.getProperty("onos.host");
+        } catch(IOException e) {
+            System.out.println(e.toString());
+        }
+        finally{
+            if(is!=null)
+                try {
+                    is.close();
+            } catch (IOException ex) {
+                Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
         EntornoTools.user = String.valueOf(jTextFieldUsuarioOSRA.getText());
-        EntornoTools.password = String.valueOf(jTextFieldUsuarioOSRA.getText());     
-        EntornoTools.apiHost = String.valueOf(jTextFieldControlador.getText());
+        EntornoTools.password = new String(jTextFieldPasswordOSRA.getPassword());     
+        EntornoTools.apiHost = String.valueOf(jTextFieldApiHost.getText());
         EntornoTools.endpoint = "http://" + EntornoTools.apiHost + ":8080/onosapp-v1";
         EntornoTools.endpointAuth = endpoint + "/rest/authorization";
         String sufix = "";
@@ -466,21 +427,14 @@ public class OnosFrame extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabelControlador;
     private javax.swing.JLabel jLabelImagen;
-    private javax.swing.JLabel jLabelONOS;
     private javax.swing.JLabel jLabelOSRA;
-    private javax.swing.JLabel jLabelPassword;
     private javax.swing.JLabel jLabelPassword1;
-    private javax.swing.JLabel jLabelUsuario;
     private javax.swing.JLabel jLabelUsuario1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextFieldApiHost;
-    private javax.swing.JTextField jTextFieldControlador;
     private javax.swing.JPasswordField jTextFieldPasswordOSRA;
-    private javax.swing.JPasswordField jTextFieldPasswordOnos;
     private javax.swing.JTextField jTextFieldUsuarioOSRA;
-    private javax.swing.JTextField jTextFieldUsuarioOnos;
     // End of variables declaration//GEN-END:variables
 
     private JDialog mostrarDialogo() {

@@ -22,16 +22,18 @@ import tools.HttpTools;
  * @author alvaroluismartinez
  */
 public class Registro extends JDialog {
+
     private String selectedSwitch;
+
     /**
      * Creates new form NuevoMeter
      */
-    public Registro(){
+    public Registro() {
         super();
         initComponents();
-        
+
         pack();
-        
+
     }
 
     /**
@@ -51,7 +53,9 @@ public class Registro extends JDialog {
         jLabelUser = new javax.swing.JLabel();
         jLabelBurst = new javax.swing.JLabel();
         jTextFieldUser = new javax.swing.JTextField();
-        jTextFieldPassword = new javax.swing.JTextField();
+        jTextFieldPassword2 = new javax.swing.JPasswordField();
+        jTextFieldPassword1 = new javax.swing.JPasswordField();
+        jLabelBurst1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro");
@@ -74,7 +78,7 @@ public class Registro extends JDialog {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         jPanelBannerLayout.setVerticalGroup(
             jPanelBannerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -102,11 +106,13 @@ public class Registro extends JDialog {
             }
         });
 
-        jLabelUser.setText("Usuario");
+        jLabelUser.setText("Usuario:");
 
-        jLabelBurst.setText("Contraseña");
+        jLabelBurst.setText("Contraseña:");
 
         jTextFieldUser.setToolTipText("");
+
+        jLabelBurst1.setText(" Reescriba contraseña:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -126,9 +132,13 @@ public class Registro extends JDialog {
                                 .addComponent(jButtonCancel))
                             .addComponent(jTextFieldUser, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelBurst)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabelBurst)
+                            .addComponent(jLabelBurst1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldPassword2)
+                            .addComponent(jTextFieldPassword1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE))
                         .addGap(24, 24, 24)))
                 .addGap(19, 19, 19))
         );
@@ -142,13 +152,17 @@ public class Registro extends JDialog {
                     .addComponent(jTextFieldUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelBurst)
-                    .addComponent(jTextFieldPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldPassword1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelBurst))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldPassword2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelBurst1))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonRegister)
                     .addComponent(jButtonCancel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         pack();
@@ -160,14 +174,29 @@ public class Registro extends JDialog {
     }//GEN-LAST:event_jButtonCancelMouseClicked
 
     protected void jButtonRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRegisterMouseClicked
-        String json = "{\n" +
-                        "   \"user\":\""+this.jTextFieldUser.getText().toString()+"\",\n" +
-                        "   \"password\":\""+this.jTextFieldPassword.getText().toString()+"\"\n" +
-                        "}";
-        try {
-            HttpTools.doJSONPost(new URL("http://localhost:8080/onosapp-v1/rest/register"), json);
-        } catch (IOException ex) {
-            Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+        String user = this.jTextFieldUser.getText().toString();
+        String pass1 = new String(this.jTextFieldPassword1.getPassword());
+        String pass2 = new String(this.jTextFieldPassword2.getPassword());
+        if (pass1.equals(pass2)) {
+            String json = "{\n"
+                    + "   \"user\":\"" + user + "\",\n"
+                    + "   \"password\":\"" + pass1 + "\"\n"
+                    + "}";
+            try {
+                HttpTools.doJSONPost(new URL("http://10.0.1.3:8080/onosapp-v1/rest/register"), json);
+                JDialog respuestaReg = new NewOkCancelDialog(null, true, "Usuario " + this.jTextFieldUser.getText().toString() + " registrado correctamente");
+                respuestaReg.setVisible(true);
+                respuestaReg.pack();
+            } catch (IOException ex) {
+                Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
+                JDialog respuestaReg = new NewOkCancelDialog(null, true, "Error al registrar el usuario.");
+                respuestaReg.pack();
+                respuestaReg.setVisible(true);
+            }
+        } else {
+            JDialog respuestaReg = new NewOkCancelDialog(null, true, "Los campos de contraseña no coinciden. Vuelva a escribirlos");
+            respuestaReg.pack();
+            respuestaReg.setVisible(true);
         }
     }//GEN-LAST:event_jButtonRegisterMouseClicked
 
@@ -178,11 +207,12 @@ public class Registro extends JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelBurst;
+    private javax.swing.JLabel jLabelBurst1;
     private javax.swing.JLabel jLabelUser;
     private javax.swing.JPanel jPanelBanner;
-    private javax.swing.JTextField jTextFieldPassword;
+    private javax.swing.JPasswordField jTextFieldPassword1;
+    private javax.swing.JPasswordField jTextFieldPassword2;
     private javax.swing.JTextField jTextFieldUser;
     // End of variables declaration//GEN-END:variables
 
-    
 }

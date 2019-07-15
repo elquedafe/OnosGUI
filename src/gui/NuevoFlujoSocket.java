@@ -149,7 +149,7 @@ public class NuevoFlujoSocket extends NuevoDialog {
 
         jLabel12.setText("Tipo de puerto:");
 
-        jComboBoxPortType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TCP", "UDP" }));
+        jComboBoxPortType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-", "TCP", "UDP" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -259,6 +259,8 @@ public class NuevoFlujoSocket extends NuevoDialog {
         Host hostDestino = (Host)this.jComboBoxDstHost.getSelectedItem();
         String portType = (String)this.jComboBoxPortType.getSelectedItem();
         String json = ""; 
+        if(portType.equals("-")) 
+            portType = "";
         
         json = "{\n" +
                 "	\"ipVersion\": "+ipVersion+",\n" +
@@ -271,7 +273,7 @@ public class NuevoFlujoSocket extends NuevoDialog {
         String respuesta = "";
         System.err.println("\n****\n"+json);
         try {
-            HttpTools.doJSONPost(new URL(EntornoTools.endpointFlows + "/" + hostOrigen.getIpList().get(0) +"/"+hostDestino.getIpList().get(0)), json);
+            HttpTools.doJSONPost(new URL(EntornoTools.endpointFlows + "/" + hostOrigen.getIpList().get(0) +"/"+hostDestino.getIpList().get(0)+"?element=host"), json);
             JDialog respuestaPost = new NewOkCancelDialog(null, true, "Flujo añadido correctamente");
             respuestaPost.setVisible(true);
             respuestaPost.pack();

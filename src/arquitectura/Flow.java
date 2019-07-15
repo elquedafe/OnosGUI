@@ -1,6 +1,8 @@
 package arquitectura;
 
 import com.google.gson.internal.LinkedTreeMap;
+import java.util.List;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 public class Flow {
@@ -189,6 +191,12 @@ public class Flow {
     public void setFlowSelector(FlowSelector flowSelector) {
         this.flowSelector = flowSelector;
     }
+    
+    public FlowTreatment getFlowTreatment(){
+        return this.flowTreatment;
+    }
+    
+    
 
     
     /*public String getId() {
@@ -276,8 +284,15 @@ public class Flow {
 
     public Object[] toArray(){
         Vector<Object> v = new Vector<Object>();
-        v.add(this.deviceId); v.add(this.id); v.add(this.groupId);
-        v.add(this.priority); v.add(this.state); v.add(this.packets); v.add(this.bytes);
+//        v.add(this.deviceId); v.add(this.id); v.add(this.groupId);
+//        v.add(this.priority); v.add(this.state); v.add(this.packets); v.add(this.bytes);
+        v.add(this.deviceId); v.add(this.id); v.add(this.priority); v.add(this.state);
+        String crits = "";
+        for(FlowCriteria criteria : flowSelector.getListFlowCriteria()){
+            Entry<String, String> c = criteria.getCriteria();
+            crits += criteria.getType() +"="+ c.getValue() +"; \n";
+        }
+        v.add(crits); v.add(this.packets); v.add(this.bytes);
         Object[] array = v.toArray();
         return array;
     }
