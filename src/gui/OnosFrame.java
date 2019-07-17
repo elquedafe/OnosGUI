@@ -48,9 +48,12 @@ public class OnosFrame extends javax.swing.JFrame {
      */
     public OnosFrame() {
         initComponents();
+
         // Set window centered
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+
+        //Set System Look&Feel as default
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
@@ -62,12 +65,6 @@ public class OnosFrame extends javax.swing.JFrame {
         } catch (UnsupportedLookAndFeelException ex) {
             Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        //Deafult credentials
-//        jTextFieldUsuarioOnos.setText("onos");
-//        jTextFieldPasswordOnos.setText("rocks");
-//        jTextFieldControlador.setText("localhost");
-//        jTextFieldApiHost.setText("localhost");
     }
 
     /**
@@ -82,7 +79,6 @@ public class OnosFrame extends javax.swing.JFrame {
         jFormattedTextField1 = new javax.swing.JFormattedTextField();
         jPanel1 = new javax.swing.JPanel();
         jButtonConectar = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
         jLabelImagen = new javax.swing.JLabel();
         jTextFieldApiHost = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -179,14 +175,11 @@ public class OnosFrame extends javax.swing.JFrame {
                                     .addComponent(jTextFieldUsuarioOSRA, javax.swing.GroupLayout.Alignment.LEADING)))
                             .addComponent(jLabelOSRA)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(324, 324, 324)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addComponent(jButtonRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButtonConectar, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,8 +203,6 @@ public class OnosFrame extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jTextFieldApiHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonConectar)
                     .addComponent(jButtonRegistrar))
@@ -233,7 +224,6 @@ public class OnosFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldKeyPressed
-        // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             jButtonConectar.doClick();
             conectar();
@@ -247,11 +237,17 @@ public class OnosFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonConectarMouseClicked
 
     private void jTextFieldUsuarioOSRAjTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioOSRAjTextFieldKeyPressed
-        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jButtonConectar.doClick();
+            conectar();
+        }
     }//GEN-LAST:event_jTextFieldUsuarioOSRAjTextFieldKeyPressed
 
     private void jTextFieldPasswordOSRAjTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldPasswordOSRAjTextFieldKeyPressed
-        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jButtonConectar.doClick();
+            conectar();
+        }
     }//GEN-LAST:event_jTextFieldPasswordOSRAjTextFieldKeyPressed
 
     private void jButtonRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRegistrarMouseClicked
@@ -259,131 +255,6 @@ public class OnosFrame extends javax.swing.JFrame {
         reg.setVisible(true);
         reg.pack();
     }//GEN-LAST:event_jButtonRegistrarMouseClicked
-
-    private boolean ping(String ip) throws IOException {
-        try {
-            boolean ret = false;
-            Socket t = new Socket();
-            t.connect(new InetSocketAddress(ip, 8181), 2000);
-            DataInputStream dis = new DataInputStream(t.getInputStream());
-            PrintStream ps = new PrintStream(t.getOutputStream());
-            ps.println("Hello");
-            String str = dis.readLine();
-            if (str.equals("Hello")) {
-                System.out.println("Alive!");
-            } else {
-                System.out.println("Dead or echo port not responding");
-            }
-            ret = true;
-            t.close();
-            return ret;
-        } catch (IOException ex) {
-            Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
-            throw new IOException("Socket error");
-        }
-
-    }
-
-    private void conectar() {
-//        Conectando conectando = new Conectando(this, true);
-//        conectando.setVisible(true);
-//        conectando.pack();
-
-        
-        Properties prop = new Properties();
-        InputStream is = null;
-        String user = null;
-        String password = null;
-        String onosHost = null;
-//        String user = String.valueOf(jTextFieldUsuarioOnos.getText());
-//        String password = String.valueOf(jTextFieldPasswordOnos.getPassword());
-//        String onosHost = String.valueOf(jTextFieldControlador.getText());
-        
-        try {
-            is = new FileInputStream("onosConfig.properties");
-            prop.load(is);
-            user = prop.getProperty("onos.user");
-            password = prop.getProperty("onos.password");
-            onosHost = prop.getProperty("onos.host");
-        } catch(IOException e) {
-            System.out.println(e.toString());
-        }
-        finally{
-            if(is!=null)
-                try {
-                    is.close();
-            } catch (IOException ex) {
-                Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        EntornoTools.user = String.valueOf(jTextFieldUsuarioOSRA.getText());
-        EntornoTools.password = new String(jTextFieldPasswordOSRA.getPassword());     
-        EntornoTools.apiHost = String.valueOf(jTextFieldApiHost.getText());
-        EntornoTools.endpoint = "http://" + EntornoTools.apiHost + ":8080/onosapp-v1";
-        EntornoTools.endpointAuth = endpoint + "/rest/authorization";
-        String sufix = "";
-        if(EntornoTools.isAdmin())
-           sufix = "administration";
-        else
-            sufix = "users";
-        EntornoTools.endpointEnvironment = endpoint + "/"+sufix+"/environment";
-        EntornoTools.endpointFlows = endpoint + "/"+sufix+"/flows";
-        EntornoTools.endpointVpls = endpoint + "/"+sufix+"/vpls";
-        EntornoTools.endpointMeters = endpoint + "/"+sufix+"/meters";
-        EntornoTools.endpointSwitches = endpoint + "/"+sufix+"/switches";
-
-        String json = "{\n"
-                + "	\"userOnos\":\"" + user + "\",\n"
-                + "	\"passwordOnos\":\"" + password + "\",\n"
-                + "	\"onosHost\": \"" + onosHost + "\"\n"
-                + "}";
-        //JOptionPane.showMessageDialog(this, "Conectando con el controlador...", "Conectando...", JOptionPane.INFORMATION_MESSAGE);
-        JDialog dialog = mostrarDialogo();
-        try {
-
-            int response = HttpTools.doJSONPost(new URL((EntornoTools.endpointAuth)), json);
-            if (response == 200) {
-                EntornoTools.descubrirEntorno();
-                //            conectando.dispose();
-                //            conectando.doAceptar();
-                dialog.setVisible(false);
-                JFrame principal = new Principal();
-                principal.setVisible(true);
-                principal.pack();
-                this.dispose();
-            } else {
-                dialog.setVisible(false);
-                JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
-            }
-            // Check connetivity
-            /*if(ping(EntornoTools.onosHost)){
-                EntornoTools.descubrirEntorno();
-    //            conectando.dispose();
-    //            conectando.doAceptar();
-                dialog.setVisible(false);
-                JFrame principal = new Principal();
-                principal.setVisible(true);
-                principal.pack();
-                this.dispose();
-            }
-            else{
-                dialog.setVisible(false);
-                System.err.println("No conexion con controlador");
-                JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión con el controlador", "Error de conexión", JOptionPane.ERROR_MESSAGE);
-            
-            }*/
-
-        } catch (IOException e1) {
-            //COMPLETAR VENTANA DE AVISO
-//            conectando.dispose();
-            dialog.setVisible(false);
-            System.err.println(e1.getMessage());
-            JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
-            /*JDialog errorOnos = new NewOkCancelDialog(this, true, "ERROR. No se ha podido establecer conexión con el controlador");
-            errorOnos.setVisible(true);
-            errorOnos.pack();*/
-        }
-    }
 
     /**
      * @param args the command line arguments
@@ -420,23 +291,10 @@ public class OnosFrame extends javax.swing.JFrame {
         });
     }
 
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonConectar;
-    private javax.swing.JButton jButtonRegistrar;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabelImagen;
-    private javax.swing.JLabel jLabelOSRA;
-    private javax.swing.JLabel jLabelPassword1;
-    private javax.swing.JLabel jLabelUsuario1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextFieldApiHost;
-    private javax.swing.JPasswordField jTextFieldPasswordOSRA;
-    private javax.swing.JTextField jTextFieldUsuarioOSRA;
-    // End of variables declaration//GEN-END:variables
-
+    /**
+     *
+     * @return
+     */
     private JDialog mostrarDialogo() {
         JOptionPane pane = new JOptionPane("Conectando con el controlador...", JOptionPane.INFORMATION_MESSAGE);
         JDialog dialog;
@@ -446,5 +304,145 @@ public class OnosFrame extends javax.swing.JFrame {
         dialog.pack();
         return dialog;
     }
+
+    private boolean ping(String ip) throws IOException {
+        try {
+            boolean ret = false;
+            Socket t = new Socket();
+            t.connect(new InetSocketAddress(ip, 8181), 2000);
+            DataInputStream dis = new DataInputStream(t.getInputStream());
+            PrintStream ps = new PrintStream(t.getOutputStream());
+            ps.println("Hello");
+            String str = dis.readLine();
+            if (str.equals("Hello")) {
+                System.out.println("Alive!");
+            } else {
+                System.out.println("Dead or echo port not responding");
+            }
+            ret = true;
+            t.close();
+            return ret;
+        } catch (IOException ex) {
+            Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
+            throw new IOException("Socket error");
+        }
+
+    }
+
+    private void conectar() {
+//        Conectando conectando = new Conectando(this, true);
+//        conectando.setVisible(true);
+//        conectando.pack();
+
+        Properties prop = new Properties();
+        InputStream is = null;
+        String user = null;
+        String password = null;
+        String onosHost = null;
+//        String user = String.valueOf(jTextFieldUsuarioOnos.getText());
+//        String password = String.valueOf(jTextFieldPasswordOnos.getPassword());
+//        String onosHost = String.valueOf(jTextFieldControlador.getText());
+
+        try {
+            is = new FileInputStream("onosConfig.properties");
+            prop.load(is);
+            user = prop.getProperty("onos.user");
+            password = prop.getProperty("onos.password");
+            onosHost = prop.getProperty("onos.host");
+        } catch (IOException e) {
+            System.out.println(e.toString());
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        EntornoTools.user = String.valueOf(jTextFieldUsuarioOSRA.getText());
+        EntornoTools.password = new String(jTextFieldPasswordOSRA.getPassword());
+        EntornoTools.apiHost = String.valueOf(jTextFieldApiHost.getText());
+        EntornoTools.endpoint = "http://" + EntornoTools.apiHost + ":8080/onosapp-v1";
+        EntornoTools.endpointAuth = endpoint + "/rest/authorization";
+        String sufix = "";
+        if (EntornoTools.isAdmin()) {
+            sufix = "administration";
+        } else {
+            sufix = "users";
+        }
+        EntornoTools.endpointEnvironment = endpoint + "/" + sufix + "/environment";
+        EntornoTools.endpointFlows = endpoint + "/" + sufix + "/flows";
+        EntornoTools.endpointVpls = endpoint + "/" + sufix + "/vpls";
+        EntornoTools.endpointMeters = endpoint + "/" + sufix + "/meters";
+        EntornoTools.endpointSwitches = endpoint + "/" + sufix + "/switches";
+
+        String json = "{\n"
+                + "	\"userOnos\":\"" + user + "\",\n"
+                + "	\"passwordOnos\":\"" + password + "\",\n"
+                + "	\"onosHost\": \"" + onosHost + "\"\n"
+                + "}";
+        //JOptionPane.showMessageDialog(this, "Conectando con el controlador...", "Conectando...", JOptionPane.INFORMATION_MESSAGE);
+        JDialog dialog = mostrarDialogo();
+        try {
+
+            int response = HttpTools.doJSONPost(new URL((EntornoTools.endpointAuth)), json);
+            if (response == 200) {
+                EntornoTools.descubrirEntorno();
+                //            conectando.dispose();
+                //            conectando.doAceptar();
+                dialog.setVisible(false);
+                JFrame principal = new Principal();
+                principal.setVisible(true);
+                principal.pack();
+                this.dispose();
+            } else {
+                dialog.setVisible(false);
+                JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+            }
+            // Check connetivity
+//            if(ping(EntornoTools.onosHost)){
+//                EntornoTools.descubrirEntorno();
+//    //            conectando.dispose();
+//    //            conectando.doAceptar();
+//                dialog.setVisible(false);
+//                JFrame principal = new Principal();
+//                principal.setVisible(true);
+//                principal.pack();
+//                this.dispose();
+//            }
+//            else{
+//                dialog.setVisible(false);
+//                System.err.println("No conexion con controlador");
+//                JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión con el controlador", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+//            
+//            }
+
+        } catch (IOException e1) {
+            //COMPLETAR VENTANA DE AVISO
+//            conectando.dispose();
+            dialog.setVisible(false);
+            System.err.println(e1.getMessage());
+            JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+//            JDialog errorOnos = new NewOkCancelDialog(this, true, "ERROR. No se ha podido establecer conexión con el controlador");
+//            errorOnos.setVisible(true);
+//            errorOnos.pack();
+        }
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonConectar;
+    private javax.swing.JButton jButtonRegistrar;
+    private javax.swing.JFormattedTextField jFormattedTextField1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabelImagen;
+    private javax.swing.JLabel jLabelOSRA;
+    private javax.swing.JLabel jLabelPassword1;
+    private javax.swing.JLabel jLabelUsuario1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jTextFieldApiHost;
+    private javax.swing.JPasswordField jTextFieldPasswordOSRA;
+    private javax.swing.JTextField jTextFieldUsuarioOSRA;
+    // End of variables declaration//GEN-END:variables
 
 }
