@@ -322,6 +322,11 @@ public class Principal extends javax.swing.JFrame {
         jScrollPaneFlows.setName("jScrollPaneFlows"); // NOI18N
 
         jListFlows.setModel(new javax.swing.DefaultListModel<Flow>());
+        jListFlows.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListFlowsMouseClicked(evt);
+            }
+        });
         jScrollPaneFlows.setViewportView(jListFlows);
 
         jPanelCard.add(jScrollPaneFlows, "jScrollPaneFlows");
@@ -384,6 +389,11 @@ public class Principal extends javax.swing.JFrame {
         jTableFlows.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         jTableFlows.setShowGrid(false);
         jTableFlows.setShowVerticalLines(true);
+        jTableFlows.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableFlowsMouseClicked(evt);
+            }
+        });
         jScrollPaneTable.setViewportView(jTableFlows);
 
         jPanelDetalleFlow.setName("jPanelDetalleFlow"); // NOI18N
@@ -1537,6 +1547,24 @@ public class Principal extends javax.swing.JFrame {
             err.pack();
         }
     }//GEN-LAST:event_jButtonEliminarAllFlujoMouseClicked
+
+    private void jListFlowsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListFlowsMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jListFlowsMouseClicked
+
+    private void jTableFlowsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableFlowsMouseClicked
+        // TODO add your handling code here:
+        if(evt.getClickCount() == 2){
+            System.out.println("DOUBLE CLICK!!");
+            Vector v = ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(jTableFlows.getSelectedRow());
+            String idFlow = v.get(ID).toString();
+            String idSwitch = v.get(SWITCH).toString();
+            Flow f = Entorno.mapSwitches.get(idSwitch).getMapFlows().get(idFlow);
+            FlowInfo info = new FlowInfo(this, true, f);
+            info.setVisible(true);
+        }
+    }//GEN-LAST:event_jTableFlowsMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -285,7 +285,7 @@ public class JsonManager {
             
             LinkedTreeMap treatment = (LinkedTreeMap)mapFlows.get("treatment");
             ArrayList instructions = (ArrayList)treatment.get("instructions");
-            Map<String,String> hashMapInstructions = new HashMap<String,String>();
+            Map<String,Object> hashMapInstructions = new HashMap<String,Object>();
             for(Object ob : instructions){
                 LinkedTreeMap mapInstructions = (LinkedTreeMap)ob;
                 Set keys = mapInstructions.keySet();

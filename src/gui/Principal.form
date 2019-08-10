@@ -358,6 +358,9 @@
                   <Connection code="new javax.swing.DefaultListModel&lt;Flow&gt;()" type="code"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jListFlowsMouseClicked"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Flow&gt;"/>
               </AuxValues>
@@ -472,6 +475,9 @@
                     <Property name="showGrid" type="boolean" value="false"/>
                     <Property name="showVerticalLines" type="boolean" value="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTableFlowsMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

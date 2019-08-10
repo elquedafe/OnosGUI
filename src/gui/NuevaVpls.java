@@ -131,6 +131,11 @@ public class NuevaVpls extends NuevoDialog {
                 jButtonAddMouseClicked(evt);
             }
         });
+        jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddActionPerformed(evt);
+            }
+        });
 
         jLabelRate.setText("Rate:");
 
@@ -245,6 +250,10 @@ public class NuevaVpls extends NuevoDialog {
     protected void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
         dispose();
     }//GEN-LAST:event_jButtonCancelMouseClicked
+
+    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonAddActionPerformed
 
     
 
