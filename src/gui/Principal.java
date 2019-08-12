@@ -1068,6 +1068,8 @@ public class Principal extends javax.swing.JFrame {
         try {
             if (jTableFlows.getSelectedRow() != -1) {
                 int[] selected = jTableFlows.getSelectedRows();
+                for (int i = 0; i < selected.length; i++) 
+                    selected[i] = jTableFlows.convertRowIndexToModel(selected[i]);
                 int resultado = -1;
                 if (selected.length == 1) {
                     resultado = JOptionPane.showConfirmDialog(rootPane, "¿Desea eliminar el flujo " + ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(selected[0]).get(ID).toString() + " del switch " + ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(selected[0]).get(SWITCH).toString() + "?", "Eliminar flujo", WIDTH);
@@ -1557,12 +1559,15 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(evt.getClickCount() == 2){
             System.out.println("DOUBLE CLICK!!");
-            Vector v = ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(jTableFlows.getSelectedRow());
+            Vector<Vector> vA = ((DefaultTableModel) jTableFlows.getModel()).getDataVector();
+            int row = jTableFlows.convertRowIndexToModel(jTableFlows.getSelectedRow());
+            Vector v = vA.elementAt(row);
             String idFlow = v.get(ID).toString();
             String idSwitch = v.get(SWITCH).toString();
             Flow f = Entorno.mapSwitches.get(idSwitch).getMapFlows().get(idFlow);
             FlowInfo info = new FlowInfo(this, true, f);
             info.setVisible(true);
+            
         }
     }//GEN-LAST:event_jTableFlowsMouseClicked
 
