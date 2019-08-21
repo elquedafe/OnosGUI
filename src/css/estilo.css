@@ -13,20 +13,20 @@ node.switch {
 	shape: box;
 	/*shape: box; */
 	text-alignment: center;
-	size: 20px;
+	size: 25px;
 	fill-mode: image-scaled; 
 	fill-image: url("img/ovs.png");
-	
+        text-style: bold;
 }
 
 node.switchUnavailable{
 	text-mode: normal; 
 	shape: box;
 	padding: 30px, 20px, 30px;
-	size: 20px;
+	size: 25px;
 	shape: box; 
 	fill-color: rgb(255,100,100); 
-
+        text-style: bold;
 }
 
 node.host{
@@ -34,21 +34,30 @@ node.host{
 	text-alignment: center;
 	padding: 0px, 20px, 0px;
 	shape: box;
-	size: 20px;
+	size: 25px;
 	fill-mode: image-scaled; 
 	fill-image: url("img/host.png");
+        text-style: bold-italic;
 }
 
-node.switch:hover{
-	text-mode: normal; 
-	padding: 30px, 30px, 30px;
+node.switch:clicked{
+	padding: 30px, 20px, 30px;
 	shape: box;
 	size: 20px, 20px;
 	shape: box; 
-	fill-color: rgb(255,100,100); 
+	fill-color: rgb(100,100,200); 
 }
 
 edge{
 	padding:10px, 10px, 10px;
 	text-size: 8;
+        text-style: italic;
+        text-mode: truncated;
+}
+
+edge:clicked{
+    padding:10px, 10px, 10px;
+    text-size: 8;
+    text-style: italic;
+    text-mode: normal;
 }

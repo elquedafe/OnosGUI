@@ -380,17 +380,17 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="777" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="811" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPaneLinks" alignment="1" pref="777" max="32767" attributes="0"/>
+                      <Component id="jScrollPaneLinks" alignment="1" pref="811" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="392" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="407" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPaneLinks" alignment="0" pref="392" max="32767" attributes="0"/>
+                      <Component id="jScrollPaneLinks" alignment="0" pref="407" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -431,7 +431,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jScrollPaneTable" pref="534" max="32767" attributes="0"/>
+                      <Component id="jScrollPaneTable" pref="568" max="32767" attributes="0"/>
                       <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                       <Component id="jPanelDetalleFlow" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -439,7 +439,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPaneTable" pref="392" max="32767" attributes="0"/>
+                  <Component id="jScrollPaneTable" pref="407" max="32767" attributes="0"/>
                   <Component id="jPanelDetalleFlow" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
@@ -631,7 +631,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jScrollPaneVpls" pref="534" max="32767" attributes="0"/>
+                      <Component id="jScrollPaneVpls" pref="568" max="32767" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="jPanelDetalleVpls" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -640,7 +640,7 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="jScrollPaneVpls" pref="0" max="32767" attributes="0"/>
-                  <Component id="jPanelDetalleVpls" pref="392" max="32767" attributes="0"/>
+                  <Component id="jPanelDetalleVpls" pref="407" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -653,9 +653,9 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="3" rowCount="4">
-                        <Column editable="true" title="Nombre VPLS" type="java.lang.String"/>
-                        <Column editable="true" title="Lista Hosts" type="java.lang.String"/>
-                        <Column editable="true" title="Encapsulaci&#xf3;n" type="java.lang.String"/>
+                        <Column editable="false" title="Nombre VPLS" type="java.lang.String"/>
+                        <Column editable="false" title="Lista Hosts" type="java.lang.String"/>
+                        <Column editable="false" title="Encapsulaci&#xf3;n" type="java.lang.String"/>
                       </Table>
                     </Property>
                   </Properties>
@@ -702,7 +702,7 @@
                               <Component id="jComboBoxVpls" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelVplsName" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="238" max="32767" attributes="0"/>
+                          <EmptySpace pref="253" max="32767" attributes="0"/>
                           <Component id="jButtonNuevoVpls" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jButtonEliminarVpls" min="-2" max="-2" attributes="0"/>
@@ -800,7 +800,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="jScrollPaneMeters" pref="513" max="32767" attributes="0"/>
+                          <Component id="jScrollPaneMeters" pref="547" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jPanelDetalleMeters" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -809,7 +809,7 @@
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jPanelDetalleMeters" max="32767" attributes="0"/>
-                      <Component id="jScrollPaneMeters" pref="346" max="32767" attributes="0"/>
+                      <Component id="jScrollPaneMeters" pref="361" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -823,12 +823,12 @@
                         <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="6" rowCount="4">
-                            <Column editable="true" title="Switch" type="java.lang.String"/>
-                            <Column editable="true" title="Meter Id" type="java.lang.String"/>
-                            <Column editable="true" title="State" type="java.lang.String"/>
-                            <Column editable="true" title="Rate" type="java.lang.Integer"/>
-                            <Column editable="true" title="Burst" type="java.lang.Integer"/>
-                            <Column editable="true" title="N&#xba; Bytes" type="java.lang.Integer"/>
+                            <Column editable="false" title="Switch" type="java.lang.String"/>
+                            <Column editable="false" title="Meter Id" type="java.lang.String"/>
+                            <Column editable="false" title="State" type="java.lang.String"/>
+                            <Column editable="false" title="Rate" type="java.lang.Integer"/>
+                            <Column editable="false" title="Burst" type="java.lang.Integer"/>
+                            <Column editable="false" title="N&#xba; Bytes" type="java.lang.Integer"/>
                           </Table>
                         </Property>
                         <Property name="selectionMode" type="int" value="0"/>
@@ -956,15 +956,118 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="756" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jScrollPaneQueues" pref="569" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jPanelQueueDetails" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="346" max="32767" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPaneQueues" min="-2" pref="349" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="jPanelQueueDetails" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                 </DimensionLayout>
               </Layout>
+              <SubComponents>
+                <Container class="javax.swing.JScrollPane" name="jScrollPaneQueues">
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                  <SubComponents>
+                    <Component class="javax.swing.JTable" name="jTableQueues">
+                      <Properties>
+                        <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                          <Table columnCount="4" rowCount="4">
+                            <Column editable="false" title="Switch" type="java.lang.Object"/>
+                            <Column editable="false" title="Puerto" type="java.lang.Object"/>
+                            <Column editable="false" title="Max. rate" type="java.lang.Object"/>
+                            <Column editable="false" title="Min. rate" type="java.lang.Object"/>
+                          </Table>
+                        </Property>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+                <Container class="javax.swing.JPanel" name="jPanelQueueDetails">
+
+                  <Layout>
+                    <DimensionLayout dim="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace pref="12" max="32767" attributes="0"/>
+                              <Component id="jButtonDeleteQueue" min="-2" pref="186" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace pref="13" max="32767" attributes="0"/>
+                                  <Component id="jButtonNewQueue" min="-2" pref="186" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                    <DimensionLayout dim="1">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jButtonDeleteQueue" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace pref="278" max="32767" attributes="0"/>
+                                  <Component id="jButtonNewQueue" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                  </Layout>
+                  <SubComponents>
+                    <Component class="javax.swing.JButton" name="jButtonDeleteQueue">
+                      <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="33" green="2c" red="25" type="rgb"/>
+                        </Property>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="Eliminar cola"/>
+                        <Property name="borderPainted" type="boolean" value="false"/>
+                        <Property name="opaque" type="boolean" value="true"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonDeleteQueueMouseClicked"/>
+                      </Events>
+                    </Component>
+                    <Component class="javax.swing.JButton" name="jButtonNewQueue">
+                      <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="33" green="2c" red="25" type="rgb"/>
+                        </Property>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="A&#xf1;adir cola"/>
+                        <Property name="borderPainted" type="boolean" value="false"/>
+                        <Property name="opaque" type="boolean" value="true"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonNewQueueMouseClicked"/>
+                      </Events>
+                    </Component>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
             </Container>
           </SubComponents>
         </Container>
@@ -984,7 +1087,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="777" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="811" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -996,7 +1099,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="392" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="407" max="32767" attributes="0"/>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>

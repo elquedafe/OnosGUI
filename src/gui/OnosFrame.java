@@ -12,6 +12,7 @@ import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -22,7 +23,9 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -305,11 +308,11 @@ public class OnosFrame extends javax.swing.JFrame {
         return dialog;
     }
 
-    private boolean ping(String ip) throws IOException {
+    private boolean ping(String ip) {
         try {
             boolean ret = false;
             Socket t = new Socket();
-            t.connect(new InetSocketAddress(ip, 8181), 2000);
+            t.connect(new InetSocketAddress(ip, 8080), 1000);
             DataInputStream dis = new DataInputStream(t.getInputStream());
             PrintStream ps = new PrintStream(t.getOutputStream());
             ps.println("Hello");
@@ -322,9 +325,12 @@ public class OnosFrame extends javax.swing.JFrame {
             ret = true;
             t.close();
             return ret;
+        } catch (SocketTimeoutException ex) {
+            Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         } catch (IOException ex) {
             Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
-            throw new IOException("Socket error");
+            return false;
         }
 
     }
@@ -366,41 +372,44 @@ public class OnosFrame extends javax.swing.JFrame {
         EntornoTools.endpoint = "http://" + EntornoTools.apiHost + ":8080/onosapp-v1";
         EntornoTools.endpointAuth = endpoint + "/rest/authorization";
         String sufix = "";
-        if (EntornoTools.isAdmin()) {
-            sufix = "administration";
-        } else {
-            sufix = "users";
-        }
-        EntornoTools.endpointEnvironment = endpoint + "/" + sufix + "/environment";
-        EntornoTools.endpointFlows = endpoint + "/" + sufix + "/flows";
-        EntornoTools.endpointVpls = endpoint + "/" + sufix + "/vpls";
-        EntornoTools.endpointMeters = endpoint + "/" + sufix + "/meters";
-        EntornoTools.endpointSwitches = endpoint + "/" + sufix + "/switches";
 
-        String json = "{\n"
-                + "	\"userOnos\":\"" + user + "\",\n"
-                + "	\"passwordOnos\":\"" + password + "\",\n"
-                + "	\"onosHost\": \"" + onosHost + "\"\n"
-                + "}";
-        //JOptionPane.showMessageDialog(this, "Conectando con el controlador...", "Conectando...", JOptionPane.INFORMATION_MESSAGE);
-        JDialog dialog = mostrarDialogo();
-        try {
+        if (ping(EntornoTools.apiHost)) {
+            JDialog dialog = null;
+            try {
+                if (EntornoTools.isAdmin()) {
+                    sufix = "administration";
+                } else {
+                    sufix = "users";
+                }
+                EntornoTools.endpointEnvironment = endpoint + "/" + sufix + "/environment";
+                EntornoTools.endpointFlows = endpoint + "/" + sufix + "/flows";
+                EntornoTools.endpointVpls = endpoint + "/" + sufix + "/vpls";
+                EntornoTools.endpointMeters = endpoint + "/" + sufix + "/meters";
+                EntornoTools.endpointSwitches = endpoint + "/" + sufix + "/switches";
 
-            int response = HttpTools.doJSONPost(new URL((EntornoTools.endpointAuth)), json);
-            if (response == 200) {
-                EntornoTools.descubrirEntorno();
-                //            conectando.dispose();
-                //            conectando.doAceptar();
-                dialog.setVisible(false);
-                JFrame principal = new Principal();
-                principal.setVisible(true);
-                principal.pack();
-                this.dispose();
-            } else {
-                dialog.setVisible(false);
-                JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
-            }
-            // Check connetivity
+                String json = "{\n"
+                        + "	\"userOnos\":\"" + user + "\",\n"
+                        + "	\"passwordOnos\":\"" + password + "\",\n"
+                        + "	\"onosHost\": \"" + onosHost + "\"\n"
+                        + "}";
+                //JOptionPane.showMessageDialog(this, "Conectando con el controlador...", "Conectando...", JOptionPane.INFORMATION_MESSAGE);
+                dialog = mostrarDialogo();
+
+                int response = HttpTools.doJSONPost(new URL((EntornoTools.endpointAuth)), json);
+                if (response == 200) {
+                    EntornoTools.descubrirEntorno();
+                    //            conectando.dispose();
+                    //            conectando.doAceptar();
+                    dialog.setVisible(false);
+                    JFrame principal = new Principal();
+                    principal.setVisible(true);
+                    principal.pack();
+                    this.dispose();
+                } else {
+                    dialog.setVisible(false);
+                    JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+                }
+                // Check connetivity
 //            if(ping(EntornoTools.onosHost)){
 //                EntornoTools.descubrirEntorno();
 //    //            conectando.dispose();
@@ -418,15 +427,18 @@ public class OnosFrame extends javax.swing.JFrame {
 //            
 //            }
 
-        } catch (IOException e1) {
-            //COMPLETAR VENTANA DE AVISO
+            } catch (Exception e1) {
+                //COMPLETAR VENTANA DE AVISO
 //            conectando.dispose();
-            dialog.setVisible(false);
-            System.err.println(e1.getMessage());
-            JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+                dialog.setVisible(false);
+                System.err.println(e1.getMessage());
+                JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
 //            JDialog errorOnos = new NewOkCancelDialog(this, true, "ERROR. No se ha podido establecer conexión con el controlador");
 //            errorOnos.setVisible(true);
 //            errorOnos.pack();
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión con OSRA", "Error de conexión", JOptionPane.ERROR_MESSAGE);
         }
     }
 

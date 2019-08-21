@@ -219,10 +219,16 @@ public class EntornoTools {
             }
             for (Link l : s.getListLinks()) {
                 System.out.println("Ids links: " + l.getSrc() + "<->" + l.getDst());
-                graph.removeEdge(l.toString());
-                graph.addEdge(l.toString(), l.getSrc(), l.getDst());
-                Edge ed = graph.getEdge(l.toString());
-                ed.addAttribute("ui.label", l.getSrc() + "/" + l.getSrcPort() + "<->" + l.getDst() + "/" + l.getDstPort());
+                graph.removeEdge(l.toString()+"1");
+//                graph.removeEdge(l.toString()+"2");
+                graph.addEdge(l.toString()+"1", l.getSrc(), l.getDst());
+//                graph.addEdge(l.toString()+"2", l.getDst(), l.getSrc());
+                Edge ed1 = graph.getEdge(l.toString()+"1");
+//                Edge ed2 = graph.getEdge(l.toString()+"2");
+                ed1.addAttribute("ui.label", l.getSrc() + "/" + l.getSrcPort() + "-" + l.getDst() + "/" + l.getDstPort());
+//                ed2.addAttribute("ui.hide");
+//                ed2.addAttribute("ui.label", l.getDst() + "/" + l.getDstPort());
+                
             }
         }
         for (Host h : Entorno.mapHosts.values()) {
@@ -260,8 +266,9 @@ public class EntornoTools {
             if (pipe == null) {
                 pipe = viewer.newViewerPipe();
                 NodeClickListener listener = new NodeClickListener(pipe, view, graph, entorno, parser);
+//                EdgeClickListener listenerEdge = new EdgeClickListener(pipe, view, graph, entorno, parser);
                 pipe.addViewerListener((ViewerListener) listener);
-
+//                pipe.addViewerListener((ViewerListener) listenerEdge);
                 pipe.addAttributeSink(graph);
             }
             System.out.println("ZOOM: " + view.getCamera().getViewPercent());

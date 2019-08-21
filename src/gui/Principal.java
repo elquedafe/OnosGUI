@@ -17,6 +17,8 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
+import java.io.FileNotFoundException;
+import java.net.ConnectException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -141,6 +143,11 @@ public class Principal extends javax.swing.JFrame {
         jLabelSwitch1 = new javax.swing.JLabel();
         jButtonEliminarMeter = new javax.swing.JButton();
         jPanelQueue = new javax.swing.JPanel();
+        jScrollPaneQueues = new javax.swing.JScrollPane();
+        jTableQueues = new javax.swing.JTable();
+        jPanelQueueDetails = new javax.swing.JPanel();
+        jButtonDeleteQueue = new javax.swing.JButton();
+        jButtonNewQueue = new javax.swing.JButton();
         jPanelStatistics = new javax.swing.JPanel();
         jScrollPaneStatistics = new javax.swing.JScrollPane();
 
@@ -342,15 +349,15 @@ public class Principal extends javax.swing.JFrame {
         jPanelLinks.setLayout(jPanelLinksLayout);
         jPanelLinksLayout.setHorizontalGroup(
             jPanelLinksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 777, Short.MAX_VALUE)
+            .addGap(0, 811, Short.MAX_VALUE)
             .addGroup(jPanelLinksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPaneLinks, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE))
+                .addComponent(jScrollPaneLinks, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE))
         );
         jPanelLinksLayout.setVerticalGroup(
             jPanelLinksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 392, Short.MAX_VALUE)
+            .addGap(0, 407, Short.MAX_VALUE)
             .addGroup(jPanelLinksLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jScrollPaneLinks, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE))
+                .addComponent(jScrollPaneLinks, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE))
         );
 
         jPanelCard.add(jPanelLinks, "jPanelLinks");
@@ -480,13 +487,13 @@ public class Principal extends javax.swing.JFrame {
         jPanelFlowsLayout.setHorizontalGroup(
             jPanelFlowsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFlowsLayout.createSequentialGroup()
-                .addComponent(jScrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
+                .addComponent(jScrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
                 .addGap(6, 6, 6)
                 .addComponent(jPanelDetalleFlow, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanelFlowsLayout.setVerticalGroup(
             jPanelFlowsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+            .addComponent(jScrollPaneTable, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
             .addComponent(jPanelDetalleFlow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -512,9 +519,16 @@ public class Principal extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPaneVpls.setViewportView(jTableVpls);
@@ -585,7 +599,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanelDetalleVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxVpls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelVplsName))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 238, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
                 .addComponent(jButtonNuevoVpls)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonEliminarVpls)
@@ -599,14 +613,14 @@ public class Principal extends javax.swing.JFrame {
         jPanelVplsLayout.setHorizontalGroup(
             jPanelVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelVplsLayout.createSequentialGroup()
-                .addComponent(jScrollPaneVpls, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
+                .addComponent(jScrollPaneVpls, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelDetalleVpls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanelVplsLayout.setVerticalGroup(
             jPanelVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPaneVpls, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-            .addComponent(jPanelDetalleVpls, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+            .addComponent(jPanelDetalleVpls, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
         );
 
         jPanelCard.add(jPanelVpls, "jPanelVpls");
@@ -628,9 +642,16 @@ public class Principal extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jTableMeters.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -714,27 +735,106 @@ public class Principal extends javax.swing.JFrame {
         jPanelMetersLayout.setHorizontalGroup(
             jPanelMetersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMetersLayout.createSequentialGroup()
-                .addComponent(jScrollPaneMeters, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
+                .addComponent(jScrollPaneMeters, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelDetalleMeters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanelMetersLayout.setVerticalGroup(
             jPanelMetersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelDetalleMeters, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPaneMeters, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
+            .addComponent(jScrollPaneMeters, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
         );
 
         jTabbedPaneQoS.addTab("Meters", jPanelMeters);
+
+        jTableQueues.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Switch", "Puerto", "Max. rate", "Min. rate"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPaneQueues.setViewportView(jTableQueues);
+
+        jButtonDeleteQueue.setBackground(new java.awt.Color(37, 44, 51));
+        jButtonDeleteQueue.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonDeleteQueue.setText("Eliminar cola");
+        jButtonDeleteQueue.setBorderPainted(false);
+        jButtonDeleteQueue.setOpaque(true);
+        jButtonDeleteQueue.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonDeleteQueueMouseClicked(evt);
+            }
+        });
+
+        jButtonNewQueue.setBackground(new java.awt.Color(37, 44, 51));
+        jButtonNewQueue.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonNewQueue.setText("Añadir cola");
+        jButtonNewQueue.setBorderPainted(false);
+        jButtonNewQueue.setOpaque(true);
+        jButtonNewQueue.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonNewQueueMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelQueueDetailsLayout = new javax.swing.GroupLayout(jPanelQueueDetails);
+        jPanelQueueDetails.setLayout(jPanelQueueDetailsLayout);
+        jPanelQueueDetailsLayout.setHorizontalGroup(
+            jPanelQueueDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelQueueDetailsLayout.createSequentialGroup()
+                .addContainerGap(12, Short.MAX_VALUE)
+                .addComponent(jButtonDeleteQueue, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
+            .addGroup(jPanelQueueDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelQueueDetailsLayout.createSequentialGroup()
+                    .addContainerGap(13, Short.MAX_VALUE)
+                    .addComponent(jButtonNewQueue, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(16, 16, 16)))
+        );
+        jPanelQueueDetailsLayout.setVerticalGroup(
+            jPanelQueueDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelQueueDetailsLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonDeleteQueue)
+                .addContainerGap())
+            .addGroup(jPanelQueueDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelQueueDetailsLayout.createSequentialGroup()
+                    .addContainerGap(278, Short.MAX_VALUE)
+                    .addComponent(jButtonNewQueue)
+                    .addGap(48, 48, 48)))
+        );
 
         javax.swing.GroupLayout jPanelQueueLayout = new javax.swing.GroupLayout(jPanelQueue);
         jPanelQueue.setLayout(jPanelQueueLayout);
         jPanelQueueLayout.setHorizontalGroup(
             jPanelQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 756, Short.MAX_VALUE)
+            .addGroup(jPanelQueueLayout.createSequentialGroup()
+                .addComponent(jScrollPaneQueues, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelQueueDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanelQueueLayout.setVerticalGroup(
             jPanelQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 346, Short.MAX_VALUE)
+            .addGroup(jPanelQueueLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPaneQueues, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanelQueueLayout.createSequentialGroup()
+                .addComponent(jPanelQueueDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jTabbedPaneQoS.addTab("Queues", jPanelQueue);
@@ -747,7 +847,7 @@ public class Principal extends javax.swing.JFrame {
         jPanelStatistics.setLayout(jPanelStatisticsLayout);
         jPanelStatisticsLayout.setHorizontalGroup(
             jPanelStatisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 777, Short.MAX_VALUE)
+            .addGap(0, 811, Short.MAX_VALUE)
             .addGroup(jPanelStatisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelStatisticsLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -756,7 +856,7 @@ public class Principal extends javax.swing.JFrame {
         );
         jPanelStatisticsLayout.setVerticalGroup(
             jPanelStatisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 392, Short.MAX_VALUE)
+            .addGap(0, 407, Short.MAX_VALUE)
             .addGroup(jPanelStatisticsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelStatisticsLayout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -797,7 +897,7 @@ public class Principal extends javax.swing.JFrame {
     private void jLabelEnlacesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelEnlacesMouseClicked
         CardLayout card = (CardLayout) jPanelCard.getLayout();
         card.show(jPanelCard, jPanelLinks.getName());
-
+        Principal p = this;
         // Change label appearence
         GuiTools.pressLabel(jLabelEnlaces, labels);
 
@@ -810,10 +910,11 @@ public class Principal extends javax.swing.JFrame {
         try {
             // Update data
             EntornoTools.descubrirEntorno();
-
+            
             // Update GUI
             EntornoTools.actualizarGUILinks(((DefaultListModel) jListLinks.getModel()), Entorno.mapSwitches);
         } catch (IOException ex) {
+            JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -824,8 +925,10 @@ public class Principal extends javax.swing.JFrame {
                 try {
                     //Update data
                     EntornoTools.descubrirEntorno();
+                    JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
                 }
                 // Get link selected in the table
                 if (jListLinks.getSelectedIndex() != -1) {
@@ -878,7 +981,7 @@ public class Principal extends javax.swing.JFrame {
     private void jLabelFlowsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelFlowsMouseClicked
         CardLayout card = (CardLayout) jPanelCard.getLayout();
         card.show(jPanelCard, jPanelFlows.getName());
-
+        Principal p = this;
         // Change label appearence
         GuiTools.pressLabel(jLabelFlows, labels);
 
@@ -891,8 +994,10 @@ public class Principal extends javax.swing.JFrame {
         try {
             //Update data
             EntornoTools.descubrirEntorno();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
         }
 
         //Update GUI
@@ -900,7 +1005,8 @@ public class Principal extends javax.swing.JFrame {
         EntornoTools.actualizarBoxSwitches(jComboBoxSwitches);
 
         // Timeout method
-        ActionListener flowsTimeout = new ActionListener() {
+        ActionListener flowsTimeout;
+        flowsTimeout = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 try {
                     EntornoTools.descubrirEntorno();
@@ -934,12 +1040,16 @@ public class Principal extends javax.swing.JFrame {
                     }
                     //Reseleccionar elemento de la lista
                     /*if(flowSelected != null)
-                            (DefaultTableModel)jTableFlows
-                            jListFlows.setSelectedIndex(((DefaultListModel)jListFlows.getModel()).indexOf(flowSelected));
-                     */
+                    (DefaultTableModel)jTableFlows
+                    jListFlows.setSelectedIndex(((DefaultListModel)jListFlows.getModel()).indexOf(flowSelected));
+                    */
                     
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
+                    System.out.println(e.getCause());
+                    JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace();
+                    
                 }
                 
             }
@@ -1092,9 +1202,10 @@ public class Principal extends javax.swing.JFrame {
                             
                         }
                         if (selected.length > 1) {
-                            JDialog acp = new NewOkCancelDialog(this, false, "Flujos eliminados correctamente");
-                            acp.setVisible(true);
-                            acp.pack();
+                            JOptionPane.showMessageDialog(this, "Flujos eliminados correctamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
+//                            JDialog acp = new NewOkCancelDialog(this, false, "Flujos eliminados correctamente");
+//                            acp.setVisible(true);
+//                            acp.pack();
                         }
                     } catch (IOException ex) {
                         System.err.println(ex.getMessage());
@@ -1130,7 +1241,7 @@ public class Principal extends javax.swing.JFrame {
      * @param evt
      */
     private void jLabelTopologiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelTopologiaMouseClicked
-        
+        Principal p = this;
         CardLayout card = (CardLayout) jPanelCard.getLayout();
         card.show(jPanelCard, this.jPanelTopologia.getName());
 
@@ -1147,7 +1258,9 @@ public class Principal extends javax.swing.JFrame {
         try {
             //Update data
             EntornoTools.descubrirEntorno();
+            
         } catch (IOException ex) {
+            JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -1179,6 +1292,7 @@ public class Principal extends javax.swing.JFrame {
      */
     private void jLabelQoSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelQoSMouseClicked
         //try{
+        Principal p = this;
         CardLayout card = (CardLayout) jPanelCard.getLayout();
         card.show(jPanelCard, jTabbedPaneQoS.getName());
 
@@ -1202,8 +1316,10 @@ public class Principal extends javax.swing.JFrame {
             EntornoTools.getMeters();
         } catch (MalformedURLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
         } catch (IOException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
         }
 
         //Update GUI
@@ -1250,7 +1366,7 @@ public class Principal extends javax.swing.JFrame {
     private void jLabelVplsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelVplsMouseClicked
         CardLayout card = (CardLayout) jPanelCard.getLayout();
         card.show(jPanelCard, jPanelVpls.getName());
-
+        Principal p = this;
         // Change label appearence
         GuiTools.pressLabel(jLabelVpls, labels);
 
@@ -1265,6 +1381,7 @@ public class Principal extends javax.swing.JFrame {
             EntornoTools.actualizarGUIVplsTable(jTableVpls, Entorno.vpls);
             
         } catch (IOException ex) {
+            JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
         ActionListener vplsTimeout = new ActionListener() {
@@ -1297,6 +1414,7 @@ public class Principal extends javax.swing.JFrame {
                     
                 } catch (IOException e) {
                     e.printStackTrace();
+                    JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
                 }
                 
             }
@@ -1529,9 +1647,10 @@ public class Principal extends javax.swing.JFrame {
                         }
                     }
                 }
-                JDialog acp = new NewOkCancelDialog(this, false, "Todos los flujos eliminados correctamente");
-                acp.setVisible(true);
-                acp.pack();
+//                JDialog acp = new NewOkCancelDialog(this, false, "Todos los flujos eliminados correctamente");
+//                acp.setVisible(true);
+//                acp.pack();
+                JOptionPane.showMessageDialog(this, "Todos los flujos eliminados correctamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
                 System.err.println(ex.getMessage());
                 JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se han podido eliminar los flujos");
@@ -1571,14 +1690,24 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTableFlowsMouseClicked
 
+    private void jButtonDeleteQueueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDeleteQueueMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonDeleteQueueMouseClicked
+
+    private void jButtonNewQueueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNewQueueMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonNewQueueMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonDeleteQueue;
     private javax.swing.JButton jButtonDesconexion;
     private javax.swing.JButton jButtonEliminar;
     private javax.swing.JButton jButtonEliminarAll;
     private javax.swing.JButton jButtonEliminarMeter;
     private javax.swing.JButton jButtonEliminarVpls;
     private javax.swing.JButton jButtonNewMeter;
+    private javax.swing.JButton jButtonNewQueue;
     private javax.swing.JButton jButtonNuevo;
     private javax.swing.JButton jButtonNuevoVpls;
     private javax.swing.JComboBox<String> jComboBoxSwitches;
@@ -1608,18 +1737,25 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelMenu;
     private javax.swing.JPanel jPanelMeters;
     private javax.swing.JPanel jPanelQueue;
+    private javax.swing.JPanel jPanelQueueDetails;
     private javax.swing.JPanel jPanelStatistics;
     private javax.swing.JPanel jPanelTopologia;
     private javax.swing.JPanel jPanelVpls;
     private javax.swing.JScrollPane jScrollPaneFlows;
     private javax.swing.JScrollPane jScrollPaneLinks;
     private javax.swing.JScrollPane jScrollPaneMeters;
+    private javax.swing.JScrollPane jScrollPaneQueues;
     private javax.swing.JScrollPane jScrollPaneStatistics;
     private javax.swing.JScrollPane jScrollPaneTable;
     private javax.swing.JScrollPane jScrollPaneVpls;
     private javax.swing.JTabbedPane jTabbedPaneQoS;
     private javax.swing.JTable jTableFlows;
     private javax.swing.JTable jTableMeters;
+    private javax.swing.JTable jTableQueues;
     private javax.swing.JTable jTableVpls;
     // End of variables declaration//GEN-END:variables
+
+    private void returnToLogin() {
+        this.dispose();
+    }
 }
