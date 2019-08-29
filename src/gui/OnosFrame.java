@@ -345,6 +345,7 @@ public class OnosFrame extends javax.swing.JFrame {
         String user = null;
         String password = null;
         String onosHost = null;
+        String ovsdbDevice = null;
 //        String user = String.valueOf(jTextFieldUsuarioOnos.getText());
 //        String password = String.valueOf(jTextFieldPasswordOnos.getPassword());
 //        String onosHost = String.valueOf(jTextFieldControlador.getText());
@@ -355,6 +356,7 @@ public class OnosFrame extends javax.swing.JFrame {
             user = prop.getProperty("onos.user");
             password = prop.getProperty("onos.password");
             onosHost = prop.getProperty("onos.host");
+            ovsdbDevice = prop.getProperty("onos.ovsdb");
         } catch (IOException e) {
             System.out.println(e.toString());
         } finally {
@@ -391,6 +393,7 @@ public class OnosFrame extends javax.swing.JFrame {
                         + "	\"userOnos\":\"" + user + "\",\n"
                         + "	\"passwordOnos\":\"" + password + "\",\n"
                         + "	\"onosHost\": \"" + onosHost + "\"\n"
+                        + "	\"ovsdbDevice\": \"" + ovsdbDevice + "\"\n"
                         + "}";
                 //JOptionPane.showMessageDialog(this, "Conectando con el controlador...", "Conectando...", JOptionPane.INFORMATION_MESSAGE);
                 dialog = mostrarDialogo();
