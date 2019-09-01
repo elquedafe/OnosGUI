@@ -33,6 +33,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.SoftBevelBorder;
@@ -60,11 +61,18 @@ public class Principal extends javax.swing.JFrame {
     
     private final int VPLS_NAME = 0;
     
+    private final int TAB_METERS = 0;
+    private final int TAB_QUEUES = 1;
+    
+    private final int ID_QUEUE = 0;
+    private final int ID_SWITCH_QUEUE = 1;
+    
     private Timer timerDevices;
     private Timer timerFlows;
     private Timer timerMeters;
     private Timer timerVpls;
     private Timer timerLinks;
+    private Timer timerQueues;
     
     private List<JLabel> labels;
 
@@ -626,6 +634,11 @@ public class Principal extends javax.swing.JFrame {
         jPanelCard.add(jPanelVpls, "jPanelVpls");
 
         jTabbedPaneQoS.setName("jTabbedPaneQoS"); // NOI18N
+        jTabbedPaneQoS.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPaneQoSStateChanged(evt);
+            }
+        });
 
         jTableMeters.setAutoCreateRowSorter(true);
         jTableMeters.setModel(new javax.swing.table.DefaultTableModel(
@@ -749,18 +762,27 @@ public class Principal extends javax.swing.JFrame {
 
         jTableQueues.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Switch", "Puerto", "Max. rate", "Min. rate"
+                "Id", "Switch", "Puerto", "Max. rate", "Min. rate", "Burst"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -829,11 +851,11 @@ public class Principal extends javax.swing.JFrame {
         jPanelQueueLayout.setVerticalGroup(
             jPanelQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelQueueLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPaneQueues, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanelQueueLayout.createSequentialGroup()
-                .addComponent(jPanelQueueDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelQueueLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelQueueLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPaneQueues, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE))
+                    .addComponent(jPanelQueueDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -904,6 +926,7 @@ public class Principal extends javax.swing.JFrame {
         // If any of these timers are, running stop them
         TimerTools.stopTimer(timerFlows);
         TimerTools.stopTimer(timerMeters);
+        TimerTools.stopTimer(timerQueues);
         TimerTools.stopTimer(timerDevices);
         TimerTools.stopTimer(timerVpls);
         
@@ -962,6 +985,7 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerLinks);
         TimerTools.stopTimer(timerVpls);
         TimerTools.stopTimer(timerMeters);
+        TimerTools.stopTimer(timerQueues);
         TimerTools.stopTimer(timerFlows);
 
         // Close principal window
@@ -990,6 +1014,7 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerLinks);
         TimerTools.stopTimer(timerVpls);
         TimerTools.stopTimer(timerMeters);
+        TimerTools.stopTimer(timerQueues);
         
         try {
             //Update data
@@ -1253,6 +1278,7 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerLinks);
         TimerTools.stopTimer(timerVpls);
         TimerTools.stopTimer(timerMeters);
+        TimerTools.stopTimer(timerQueues);
         TimerTools.stopTimer(timerFlows);
         
         try {
@@ -1308,7 +1334,8 @@ public class Principal extends javax.swing.JFrame {
 //            EntornoTools.descubrirEntorno();
 //            EntornoTools.actualizarGUITopologia(jPanelTopologia);
         // Select meter Tab
-        jTabbedPaneQoS.setSelectedIndex(0);
+        jTabbedPaneQoS.setSelectedIndex(TAB_METERS);
+        
         
         try {
             //Update data
@@ -1697,6 +1724,127 @@ public class Principal extends javax.swing.JFrame {
     private void jButtonNewQueueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNewQueueMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonNewQueueMouseClicked
+
+    private void jTabbedPaneQoSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneQoSStateChanged
+        Principal p = this;
+        switch(jTabbedPaneQoS.getSelectedIndex()){
+            case TAB_METERS:
+                //stop queue thread
+                TimerTools.stopTimer(timerQueues);
+                //start meters thread
+                try {
+                    //Update data
+                    EntornoTools.descubrirEntorno();
+                    EntornoTools.getMeters();
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+                } catch (IOException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+                }
+
+                //Update GUI
+                EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.getAllMeters());
+                EntornoTools.actualizarBoxSwitches(jComboBoxSwitchesMeters);
+
+                //Timeout method
+                ActionListener metersTimeout = new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        String idMeterSelected = null;
+                        String idSwitchSelected = null;
+
+                        try {
+                            //Update data
+                            EntornoTools.descubrirEntorno();
+                            EntornoTools.getMeters();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        // Retrieve selected item from meter table
+                        if (jTableMeters.getSelectedRow() != -1) {
+                            idMeterSelected = ((DefaultTableModel) jTableMeters.getModel()).getDataVector().get(jTableMeters.getSelectedRow()).get(ID).toString();
+                            idSwitchSelected = ((DefaultTableModel) jTableMeters.getModel()).getDataVector().get(jTableMeters.getSelectedRow()).get(SWITCH).toString();
+                        }
+
+                        //Update GUI
+                        EntornoTools.actualizarGUIMetersTable(jTableMeters, Entorno.getAllMeters());
+                        EntornoTools.actualizarBoxSwitches(jComboBoxSwitchesMeters);
+
+                        // Reselect meter in table
+                        for (int i = 0; i < jTableMeters.getRowCount(); i++) {
+                            if (((DefaultTableModel) jTableMeters.getModel()).getDataVector().get(i).get(ID).toString().equals(idMeterSelected) && ((DefaultTableModel) jTableMeters.getModel()).getDataVector().get(i).get(SWITCH).toString().equals(idSwitchSelected)) {
+                                jTableMeters.setRowSelectionInterval(i, i);
+                            }
+                        }
+                    }
+                };
+
+                // Run timer
+                timerMeters = TimerTools.runTimer(timerMeters, metersTimeout);
+                
+                break;
+            case TAB_QUEUES:
+                //stop meters thread
+                TimerTools.stopTimer(timerMeters);
+                //start queue thread
+                try {
+                    //Update data
+                    EntornoTools.descubrirEntorno();
+                    EntornoTools.getQueues();
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+                } catch (IOException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+                }
+
+                //Update GUI
+                EntornoTools.actualizarGUIQueuesTable(jTableQueues, Entorno.getAllQueues());
+//                EntornoTools.actualizarBoxSwitches(jComboBoxSwitchesMeters);
+
+                //Timeout method
+                ActionListener queuesTimeout = new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        String idQueueSelected = null;
+                        String idSwitchSelected = null;
+
+                        try {
+                            //Update data
+                            EntornoTools.descubrirEntorno();;
+                            EntornoTools.getQueues();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        // Retrieve selected item from meter table
+                        if (jTableQueues.getSelectedRow() != -1) {
+                            idQueueSelected = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().get(jTableQueues.getSelectedRow()).get(ID_QUEUE).toString();
+                            idSwitchSelected = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().get(jTableQueues.getSelectedRow()).get(ID_SWITCH_QUEUE).toString();
+                        }
+
+                        //Update GUI
+                        EntornoTools.actualizarGUIMetersTable(jTableQueues, Entorno.getAllMeters());
+//                        EntornoTools.actualizarBoxSwitches(jComboBoxSwitchesMeters);
+
+                        // Reselect meter in table
+                        for (int i = 0; i < jTableQueues.getRowCount(); i++) {
+                            if (((DefaultTableModel) jTableQueues.getModel()).getDataVector().get(i).get(ID_QUEUE).toString().equals(idQueueSelected) && ((DefaultTableModel) jTableQueues.getModel()).getDataVector().get(i).get(ID_SWITCH_QUEUE).toString().equals(idSwitchSelected)) {
+                                jTableQueues.setRowSelectionInterval(i, i);
+                            }
+                        }
+                    }
+                };
+
+                // Run timer
+                timerQueues = TimerTools.runTimer(timerQueues, queuesTimeout);
+                
+                break;
+
+        }
+    }//GEN-LAST:event_jTabbedPaneQoSStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -19,6 +19,7 @@ import arquitectura.Host;
 import arquitectura.Link;
 import arquitectura.Meter;
 import arquitectura.Port;
+import arquitectura.Queue;
 import arquitectura.Switch;
 import arquitectura.Vpls;
 import com.google.gson.Gson;
@@ -55,6 +56,22 @@ public class JsonManager {
         List<Meter> l = Entorno.getAllMeters();
     }
     //private static JsonReader reader;
+
+    static void parseoQueues(String json) {
+        Gson gson = new Gson();
+        List<Queue> listQueues = new ArrayList<Queue>();
+        Queue q = null;
+        List auxList = (ArrayList)gson.fromJson(json, ArrayList.class);
+        for(Object o : auxList){
+            q = gson.fromJson(gson.toJson(o), Queue.class);
+            listQueues.add(q);
+        }
+        
+        
+        
+        Entorno.addQueues(listQueues);
+        List<Queue> l = Entorno.getAllQueues();
+    }
 
     /*public String getJSONGet(URL url, String usuario, String password) throws IOException{
         String encoding;

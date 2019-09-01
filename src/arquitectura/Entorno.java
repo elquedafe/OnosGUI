@@ -98,6 +98,15 @@ public class Entorno {
         return meters;
     }
     
+    public static List<Queue> getAllQueues(){
+        List<Queue> queues = new ArrayList<Queue>();
+        for(Switch s : mapSwitches.values()){
+           queues = s.getQueues();
+           
+        }
+        return queues;
+    }
+    
     
     
     public static void addMeters(List<Meter> meters){
@@ -107,13 +116,30 @@ public class Entorno {
         }
     }
     
+    public static void addQueues(List<Queue> queues){
+        cleanQueues();
+        for(Queue q : queues){
+            addQueue(q);
+        }
+    }
+    
     private static void addMeter(Meter meter){
         mapSwitches.get(meter.getDeviceId()).getMeters().add(meter);
+    }
+    
+    private static void addQueue(Queue queue){
+        mapSwitches.get(queue.getSwitchId()).getQueues().add(queue);
     }
     
     private static void cleanMeters(){
         for(Switch s : mapSwitches.values()){
             s.getMeters().clear();
+        }
+    }
+    
+    private static void cleanQueues(){
+        for(Switch s : mapSwitches.values()){
+            s.getQueues().clear();
         }
     }
 	

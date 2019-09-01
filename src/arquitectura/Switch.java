@@ -26,6 +26,7 @@ public class Switch {
     private Map<String, Flow> flows;
     private List<Link> links;
     private List<Meter> meters;
+    private List<Queue> queues;
 
     public Switch(String id) {
         this.id = id;
@@ -34,10 +35,12 @@ public class Switch {
         this.links = new ArrayList<Link>();
         this.flows = new HashMap<String, Flow>();
         this.meters = new ArrayList<Meter>();
+        this.queues = new ArrayList<Queue>();
     }
     
     public Switch(){
         this.meters = new ArrayList<Meter>();
+        this.queues = new ArrayList<Queue>();
     }
 
     public Switch(String id,
@@ -72,7 +75,10 @@ public class Switch {
         this.links = new ArrayList<Link>();
         this.flows = new HashMap<String, Flow>();
         this.meters = new ArrayList<Meter>();
+        this.queues = new ArrayList<Queue>();
     }
+    
+    
 
     public List<Port> getListPorts() {
         return ports;
@@ -161,6 +167,14 @@ public class Switch {
 
     public void setMeters(List<Meter> meters) {
         this.meters = meters;
+    }
+
+    public List<Queue> getQueues() {
+        return queues;
+    }
+
+    public void setQueues(List<Queue> queues) {
+        this.queues = queues;
     }
 
 }

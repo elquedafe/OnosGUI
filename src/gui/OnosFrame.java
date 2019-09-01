@@ -388,11 +388,11 @@ public class OnosFrame extends javax.swing.JFrame {
                 EntornoTools.endpointVpls = endpoint + "/" + sufix + "/vpls";
                 EntornoTools.endpointMeters = endpoint + "/" + sufix + "/meters";
                 EntornoTools.endpointSwitches = endpoint + "/" + sufix + "/switches";
-
+                EntornoTools.endpointQueues = endpoint + "/" + sufix + "/queues/"+ovsdbDevice;
                 String json = "{\n"
                         + "	\"userOnos\":\"" + user + "\",\n"
                         + "	\"passwordOnos\":\"" + password + "\",\n"
-                        + "	\"onosHost\": \"" + onosHost + "\"\n"
+                        + "	\"onosHost\": \"" + onosHost + "\"\n,"
                         + "	\"ovsdbDevice\": \"" + ovsdbDevice + "\"\n"
                         + "}";
                 //JOptionPane.showMessageDialog(this, "Conectando con el controlador...", "Conectando...", JOptionPane.INFORMATION_MESSAGE);

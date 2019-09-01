@@ -10,6 +10,7 @@ import arquitectura.Flow;
 import arquitectura.Host;
 import arquitectura.Link;
 import arquitectura.Meter;
+import arquitectura.Queue;
 import arquitectura.Switch;
 import arquitectura.Vpls;
 import com.google.gson.Gson;
@@ -72,6 +73,7 @@ public class EntornoTools {
     public static String endpointFlows;
     public static String endpointVpls;
     public static String endpointMeters;
+    public static String endpointQueues;
     public static String endpointSwitches;
     public static String endpointAuth;
     public static String apiHost;
@@ -319,6 +321,13 @@ public class EntornoTools {
         if(json != null && !json.isEmpty() && !json.equals("null\n"))
             JsonManager.parseoMeters(json);
     }
+    
+    public static void getQueues() throws IOException {
+        String json;
+        json = HttpTools.doJSONGet(new URL(EntornoTools.endpointQueues));
+        if(json != null && !json.isEmpty() && !json.equals("null\n"))
+            JsonManager.parseoQueues(json);
+    }
 
     public static void getVpls() throws IOException {
         // TODO Auto-generated method stub
@@ -368,6 +377,18 @@ public class EntornoTools {
         
         LinkedTreeMap jsonObject = gson.fromJson(json, LinkedTreeMap.class);
         return (boolean)jsonObject.get("isAdmin");
+    }
+
+    public static void actualizarGUIQueuesTable(JTable table, List<Queue> queues) {
+        //Delete table rows
+        ((DefaultTableModel) table.getModel()).setRowCount(0);
+        if (queues != null) {
+            for (Queue auxQueue : queues) {
+                Object[] array = auxQueue.toTableArray();
+                ((DefaultTableModel) table.getModel()).addRow(array);
+
+            }
+        }
     }
 
 }
