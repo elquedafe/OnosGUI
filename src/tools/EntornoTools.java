@@ -391,4 +391,9 @@ public class EntornoTools {
         }
     }
 
+    public static void loadQueuesIntoDB() throws IOException {
+        EntornoTools.getQueues();
+        
+    }
+
 }

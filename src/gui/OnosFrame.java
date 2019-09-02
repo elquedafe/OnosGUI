@@ -388,7 +388,7 @@ public class OnosFrame extends javax.swing.JFrame {
                 EntornoTools.endpointVpls = endpoint + "/" + sufix + "/vpls";
                 EntornoTools.endpointMeters = endpoint + "/" + sufix + "/meters";
                 EntornoTools.endpointSwitches = endpoint + "/" + sufix + "/switches";
-                EntornoTools.endpointQueues = endpoint + "/" + sufix + "/queues/"+ovsdbDevice;
+                EntornoTools.endpointQueues = endpoint + "/" + sufix + "/queues";
                 String json = "{\n"
                         + "	\"userOnos\":\"" + user + "\",\n"
                         + "	\"passwordOnos\":\"" + password + "\",\n"
@@ -401,6 +401,7 @@ public class OnosFrame extends javax.swing.JFrame {
                 int response = HttpTools.doJSONPost(new URL((EntornoTools.endpointAuth)), json);
                 if (response == 200) {
                     EntornoTools.descubrirEntorno();
+                    EntornoTools.loadQueuesIntoDB();
                     //            conectando.dispose();
                     //            conectando.doAceptar();
                     dialog.setVisible(false);

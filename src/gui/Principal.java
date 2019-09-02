@@ -1826,7 +1826,7 @@ public class Principal extends javax.swing.JFrame {
                         }
 
                         //Update GUI
-                        EntornoTools.actualizarGUIMetersTable(jTableQueues, Entorno.getAllMeters());
+                        EntornoTools.actualizarGUIQueuesTable(jTableQueues, Entorno.getAllQueues());
 //                        EntornoTools.actualizarBoxSwitches(jComboBoxSwitchesMeters);
 
                         // Reselect meter in table

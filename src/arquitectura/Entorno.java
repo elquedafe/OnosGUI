@@ -100,9 +100,12 @@ public class Entorno {
     
     public static List<Queue> getAllQueues(){
         List<Queue> queues = new ArrayList<Queue>();
+        List<Queue> swQueues = null;
         for(Switch s : mapSwitches.values()){
-           queues = s.getQueues();
-           
+           swQueues = s.getQueues();
+           for(Queue q : swQueues){
+               queues.add(q);
+           }
         }
         return queues;
     }

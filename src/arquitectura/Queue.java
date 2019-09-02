@@ -12,7 +12,7 @@ import java.util.Vector;
  * @author alvaroluismartinez
  */
 public class Queue {
-    private long queueId;
+        private long queueId;
 	private String switchId;
 	private String minRate;
 	private String maxRate;
