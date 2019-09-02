@@ -93,6 +93,8 @@ public class Principal extends javax.swing.JFrame {
         this.jLabelUserName.setText("Usuario: " + EntornoTools.user);
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         EntornoTools.descubrirEntorno();
+        EntornoTools.addDefaultQueues();
+        
         
     }
 
@@ -1718,11 +1720,58 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jTableFlowsMouseClicked
 
     private void jButtonDeleteQueueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDeleteQueueMouseClicked
-        // TODO add your handling code here:
+        String queueId = "";
+        try {
+        if (jTableQueues.getSelectedRow() != -1) {
+                String id = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().elementAt(jTableQueues.getSelectedRow()).get(ID_QUEUE).toString();
+                String sw = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().elementAt(jTableQueues.getSelectedRow()).get(ID_SWITCH_QUEUE).toString();
+                Flow flow = null;
+                try {
+                    int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar la cola " + id + " del switch " + sw + "?", "Eliminar queue", WIDTH);
+                    if (resultado == JOptionPane.OK_OPTION) {
+                        for (Flow f : Entorno.mapSwitches.get(sw).getMapFlows().values()) {
+                            FlowTreatment treatment = f.getFlowTreatment();
+                            List<FlowInstruction> l = treatment.getListInstructions();
+                            for (FlowInstruction instruction : l) {
+//                                Map<String, Object> inst = instruction.getInstructions();
+                                if (instruction.getType().equals("QUEUE")) {
+                                    Map<String, Object> inst = instruction.getInstructions();
+                                    queueId = String.format("%.0f", inst.get("queueId"));
+//                                    meterId = (String)instruc.get("meterId");
+                                    if (queueId.equals(id)) {
+                                        flow = f;
+                                    }
+                                }
+                            }
+                        }
+                        System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointQueues + "/" + id)));
+                        JDialog acp = new NewOkCancelDialog(this, false, "Queue " + id + " eliminado correctamente");
+                        acp.setVisible(true);
+                        acp.pack();
+                        
+                    }
+                } catch (IOException ex) {
+                    System.err.println(ex.getMessage());
+                    JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar el Queue");
+                    err.setVisible(true);
+                    err.pack();
+                }
+            }
+        } catch (NullPointerException ex) {
+            JDialog err = new NewOkCancelDialog(this, false, "Elija un Queue de la lista");
+            err.setVisible(true);
+            err.pack();
+        }
     }//GEN-LAST:event_jButtonDeleteQueueMouseClicked
 
     private void jButtonNewQueueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNewQueueMouseClicked
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            JDialog newQueue = new NuevoQueue();
+            newQueue.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButtonNewQueueMouseClicked
 
     private void jTabbedPaneQoSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneQoSStateChanged

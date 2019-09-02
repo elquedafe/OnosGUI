@@ -396,4 +396,14 @@ public class EntornoTools {
         
     }
 
+    public static void addDefaultQueues() {
+        try {
+            HttpTools.doJSONPost(new URL(EntornoTools.endpointQueues), "");
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(EntornoTools.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(EntornoTools.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
