@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import tools.EntornoTools;
 import tools.HttpTools;
 
@@ -278,47 +279,53 @@ public class NuevoQueue extends NuevoDialog {
         String portType = (String)this.jComboBoxPortType.getSelectedItem();
         if(portType.equals("-"))
             portType="";
-        int minRate = Integer.parseInt(jTextFieldMinRate.getText());
-        int maxRate = Integer.parseInt(jTextFieldMaxRate.getText());
-        int burst = Integer.parseInt(jTextFieldBurst.getText());
         
-        
-        switch(ipVersionBox){
-            case "IPv4":
-                ipVersion = "4";
-                break;
-            case "IPv6":
-                ipVersion = "6";
-                break;
-            default:
-                ipVersion = "4";
-        }
-        
-        String json = "";
-        json = "{" +
-        "\"ipVersion\": \""+ ipVersion +"\"," +       
-        "\"srcHost\": \""+ srcHost.getIpList().get(0) +"\"," +
-        "\"srcPort\": \""+ srcPort +"\"," +
-        "\"dstHost\": \""+ dstHost.getIpList().get(0) +"\"," +
-        "\"dstPort\": \""+ dstPort +"\"," +
-        "\"portType\": \"" + portType + "\"," +
-        "\"minRate\": " + minRate + "," +
-        "\"maxRate\": " + maxRate + "," +
-        "\"burst\": "+ burst +
-        "}";    
-        
-        String respuesta = "";
-        System.err.println("\n****\n"+json);
-        try {
-            HttpTools.doJSONPost(new URL(EntornoTools.endpointQueues), json);
-            JDialog respuestaPost = new NewOkCancelDialog(null, true, "Queue añadido correctamente");
-            respuestaPost.setVisible(true);
-            respuestaPost.pack();
-        } catch (IOException ex) {
-            JDialog errorPost = new NewOkCancelDialog(null, true, "ERROR. No se ha podido añadir la Queue de forma correcta");
-            errorPost.setVisible(true);
-            errorPost.pack();
-            Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
+        try{
+            int minRate = Integer.parseInt(jTextFieldMinRate.getText());
+            int maxRate = Integer.parseInt(jTextFieldMaxRate.getText());
+            int burst = Integer.parseInt(jTextFieldBurst.getText());
+
+
+            switch(ipVersionBox){
+                case "IPv4":
+                    ipVersion = "4";
+                    break;
+                case "IPv6":
+                    ipVersion = "6";
+                    break;
+                default:
+                    ipVersion = "4";
+            }
+
+            String json = "";
+            json = "{" +
+            "\"ipVersion\": \""+ ipVersion +"\"," +       
+            "\"srcHost\": \""+ srcHost.getIpList().get(0) +"\"," +
+            "\"srcPort\": \""+ srcPort +"\"," +
+            "\"dstHost\": \""+ dstHost.getIpList().get(0) +"\"," +
+            "\"dstPort\": \""+ dstPort +"\"," +
+            "\"portType\": \"" + portType + "\"," +
+            "\"minRate\": " + minRate + "," +
+            "\"maxRate\": " + maxRate + "," +
+            "\"burst\": "+ burst +
+            "}";    
+
+            String respuesta = "";
+            System.err.println("\n****\n"+json);
+            try {
+                HttpTools.doJSONPost(new URL(EntornoTools.endpointQueues), json);
+                JDialog respuestaPost = new NewOkCancelDialog(null, true, "Queue añadido correctamente");
+                respuestaPost.setVisible(true);
+                respuestaPost.pack();
+            } catch (IOException ex) {
+                JDialog errorPost = new NewOkCancelDialog(null, true, "ERROR. No se ha podido añadir la Queue de forma correcta");
+                errorPost.setVisible(true);
+                errorPost.pack();
+                Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }catch(NumberFormatException e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Seleccione parámetros de Max rate, Min rate y burst válidos", "Parametros no validos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonAddMouseClicked
 
