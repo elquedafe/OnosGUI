@@ -158,6 +158,7 @@ public class Principal extends javax.swing.JFrame {
         jPanelQueueDetails = new javax.swing.JPanel();
         jButtonDeleteQueue = new javax.swing.JButton();
         jButtonNewQueue = new javax.swing.JButton();
+        jButtonDeleteAllQueue = new javax.swing.JButton();
         jPanelStatistics = new javax.swing.JPanel();
         jScrollPaneStatistics = new javax.swing.JScrollPane();
 
@@ -814,31 +815,38 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jButtonDeleteAllQueue.setBackground(new java.awt.Color(37, 44, 51));
+        jButtonDeleteAllQueue.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonDeleteAllQueue.setText("Eliminar todas");
+        jButtonDeleteAllQueue.setBorderPainted(false);
+        jButtonDeleteAllQueue.setOpaque(true);
+        jButtonDeleteAllQueue.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonDeleteAllQueueMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelQueueDetailsLayout = new javax.swing.GroupLayout(jPanelQueueDetails);
         jPanelQueueDetails.setLayout(jPanelQueueDetailsLayout);
         jPanelQueueDetailsLayout.setHorizontalGroup(
             jPanelQueueDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelQueueDetailsLayout.createSequentialGroup()
                 .addContainerGap(12, Short.MAX_VALUE)
-                .addComponent(jButtonDeleteQueue, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17))
-            .addGroup(jPanelQueueDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelQueueDetailsLayout.createSequentialGroup()
-                    .addContainerGap(13, Short.MAX_VALUE)
+                .addGroup(jPanelQueueDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonDeleteAllQueue, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonNewQueue, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(16, 16, 16)))
+                    .addComponent(jButtonDeleteQueue, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(17, 17, 17))
         );
         jPanelQueueDetailsLayout.setVerticalGroup(
             jPanelQueueDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelQueueDetailsLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonNewQueue)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButtonDeleteQueue)
-                .addContainerGap())
-            .addGroup(jPanelQueueDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelQueueDetailsLayout.createSequentialGroup()
-                    .addContainerGap(278, Short.MAX_VALUE)
-                    .addComponent(jButtonNewQueue)
-                    .addGap(48, 48, 48)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonDeleteAllQueue))
         );
 
         javax.swing.GroupLayout jPanelQueueLayout = new javax.swing.GroupLayout(jPanelQueue);
@@ -1895,8 +1903,47 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTabbedPaneQoSStateChanged
 
+    private void jButtonDeleteAllQueueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDeleteAllQueueMouseClicked
+        
+        String queueId = "";
+        String id = "";
+        String sw = "";
+        Flow flow = null;
+        for(int i = 0; i < jTableQueues.getRowCount(); i++){
+            id = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().elementAt(i).get(ID_QUEUE).toString();
+            sw = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().elementAt(i).get(ID_SWITCH_QUEUE).toString();
+            try {
+                int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar todas las colas?", "Eliminar todas", WIDTH);
+                if (resultado == JOptionPane.OK_OPTION) {
+                    for (Flow f : Entorno.mapSwitches.get(sw).getMapFlows().values()) {
+                        FlowTreatment treatment = f.getFlowTreatment();
+                        List<FlowInstruction> l = treatment.getListInstructions();
+                        for (FlowInstruction instruction : l) {
+//                                Map<String, Object> inst = instruction.getInstructions();
+                            if (instruction.getType().equals("QUEUE")) {
+                                Map<String, Object> inst = instruction.getInstructions();
+                                queueId = String.format("%.0f", inst.get("queueId"));
+//                                    meterId = (String)instruc.get("meterId");
+                                if (queueId.equals(id)) {
+                                    flow = f;
+                                }
+                            }
+                        }
+                    }
+                    System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointQueues + "/" + id)));
+                        
+                }
+            }
+            catch (IOException ex) {
+                System.err.println(ex.getMessage());
+                JOptionPane.showMessageDialog(this, "No se ha podido borrar la cola"+queueId, "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButtonDeleteAllQueueMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonDeleteAllQueue;
     private javax.swing.JButton jButtonDeleteQueue;
     private javax.swing.JButton jButtonDesconexion;
     private javax.swing.JButton jButtonEliminar;
