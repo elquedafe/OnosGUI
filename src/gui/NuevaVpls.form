@@ -44,26 +44,37 @@
                       <Component id="jScrollPane1" min="-2" pref="186" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="jLabelRate" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabelBurst" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="jTextFieldRate" min="-2" pref="97" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabelKbps" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jLabelRate" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelBurst" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="jTextFieldMinRate" min="-2" pref="97" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jLabelKbps" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jTextFieldBurst" min="-2" pref="97" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jLabelKbps2" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
                           <Group type="102" attributes="0">
-                              <Component id="jTextFieldBurst" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="jLabelRate1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jTextFieldMaxRate" min="-2" pref="97" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabelKbps2" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelKbps1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
                   <Component id="jTextFieldVplsName" alignment="0" min="-2" pref="186" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="58" max="32767" attributes="0"/>
+              <EmptySpace pref="29" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -76,9 +87,9 @@
                   <Component id="jLabelVplsName" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jTextFieldVplsName" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                           <Component id="jScrollPane1" min="-2" pref="171" max="-2" attributes="0"/>
@@ -89,10 +100,17 @@
                           <Component id="jButtonAdd" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabelRate1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextFieldMaxRate" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelKbps1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabelRate" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextFieldRate" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextFieldMinRate" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabelKbps" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -223,10 +241,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelRate">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Rate:"/>
+        <Property name="text" type="java.lang.String" value="Min. Rate:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextFieldRate">
+    <Component class="javax.swing.JTextField" name="jTextFieldMinRate">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelBurst">
       <Properties>
@@ -241,6 +259,18 @@
     <Component class="javax.swing.JTextField" name="jTextFieldBurst">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelKbps2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="kbps"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelRate1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Max. Rate:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldMaxRate">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabelKbps1">
       <Properties>
         <Property name="text" type="java.lang.String" value="kbps"/>
       </Properties>

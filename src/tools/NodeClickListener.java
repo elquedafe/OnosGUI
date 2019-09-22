@@ -1,7 +1,9 @@
 package tools;
 
 import arquitectura.Entorno;
+import gui.NuevoDialog;
 import gui.NuevoFlujo;
+import gui.NuevoFlujoSocket;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.Timer;
@@ -137,7 +139,7 @@ public class NodeClickListener implements ViewerListener, MouseInputListener {
             System.out.println("Button pushed on node " + id);
             Node n = graph.getNode(id);
             if (n.getAttribute("ui.class").equals("switch")) {
-                JDialog dialog = new NuevoFlujo(id);
+                NuevoDialog dialog = new NuevoFlujoSocket();
                 dialog.setVisible(true);
                 dialog.pack();
             }

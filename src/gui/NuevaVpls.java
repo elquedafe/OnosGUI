@@ -8,6 +8,7 @@ package gui;
 import arquitectura.Entorno;
 import arquitectura.Host;
 import java.awt.Component;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,11 +58,14 @@ public class NuevaVpls extends NuevoDialog {
         jButtonCancel = new javax.swing.JButton();
         jButtonAdd = new javax.swing.JButton();
         jLabelRate = new javax.swing.JLabel();
-        jTextFieldRate = new javax.swing.JTextField();
+        jTextFieldMinRate = new javax.swing.JTextField();
         jLabelBurst = new javax.swing.JLabel();
         jLabelKbps = new javax.swing.JLabel();
         jTextFieldBurst = new javax.swing.JTextField();
         jLabelKbps2 = new javax.swing.JLabel();
+        jLabelRate1 = new javax.swing.JLabel();
+        jTextFieldMaxRate = new javax.swing.JTextField();
+        jLabelKbps1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
@@ -137,13 +141,17 @@ public class NuevaVpls extends NuevoDialog {
             }
         });
 
-        jLabelRate.setText("Rate:");
+        jLabelRate.setText("Min. Rate:");
 
         jLabelBurst.setText("Burst:");
 
         jLabelKbps.setText("kbps");
 
         jLabelKbps2.setText("kbps");
+
+        jLabelRate1.setText("Max. Rate:");
+
+        jLabelKbps1.setText("kbps");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -167,20 +175,28 @@ public class NuevaVpls extends NuevoDialog {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(38, 38, 38)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabelRate)
-                            .addComponent(jLabelBurst))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextFieldRate, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabelKbps))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabelRate)
+                                    .addComponent(jLabelBurst))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jTextFieldMinRate, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabelKbps))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jTextFieldBurst, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabelKbps2))))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextFieldBurst, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabelRate1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextFieldMaxRate, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabelKbps2))))
+                                .addComponent(jLabelKbps1))))
                     .addComponent(jTextFieldVplsName, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,9 +206,9 @@ public class NuevaVpls extends NuevoDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelVplsName)
                     .addComponent(jTextFieldVplsName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -201,9 +217,15 @@ public class NuevaVpls extends NuevoDialog {
                             .addComponent(jButtonCancel)
                             .addComponent(jButtonAdd)))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelRate1)
+                            .addComponent(jTextFieldMaxRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabelKbps1))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelRate)
-                            .addComponent(jTextFieldRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldMinRate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelKbps))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,16 +250,25 @@ public class NuevaVpls extends NuevoDialog {
         if(json.endsWith(","))
             json = json.substring(0, json.length()-1);
         json += "]\n";
-        if(!this.jTextFieldRate.getText().isEmpty() && !this.jTextFieldBurst.getText().isEmpty()){
+        if(!this.jTextFieldMaxRate.getText().isEmpty() && !this.jTextFieldBurst.getText().isEmpty() && this.jTextFieldMinRate.getText().isEmpty()){
             json += ",\n"
-                    + "\"rate\":"+this.jTextFieldRate.getText().toString()+",\n" +
+                    + "\"maxRate\":"+this.jTextFieldMaxRate.getText().toString()+",\n" +
+                    "\"minRate\":-1,\n" +
+                    "\"burst\":"+this.jTextFieldBurst.getText().toString();
+        }
+        else if(!this.jTextFieldMaxRate.getText().isEmpty() && !this.jTextFieldBurst.getText().isEmpty() && !this.jTextFieldMinRate.getText().isEmpty()){
+            json += ",\n"
+                    + "\"maxRate\":"+this.jTextFieldMaxRate.getText().toString()+",\n" +
+                    "\"minRate\":"+this.jTextFieldMinRate.getText().toString()+",\n" +
                     "\"burst\":"+this.jTextFieldBurst.getText().toString();
         }
         json += "}";
         
         System.out.println(EntornoTools.endpoint+"/vpls/"+this.jTextFieldVplsName.getText()+ " -->" +json);
         try {
-            HttpTools.doJSONPost(new URL(EntornoTools.endpointVpls + "/" + this.jTextFieldVplsName.getText()), json);
+            
+                HttpTools.doJSONPost(new URL(EntornoTools.endpointVpls + "/" + this.jTextFieldVplsName.getText()), json);
+            
         } catch (MalformedURLException ex) {
             Logger.getLogger(NuevaVpls.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -265,14 +296,17 @@ public class NuevaVpls extends NuevoDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelBurst;
     private javax.swing.JLabel jLabelKbps;
+    private javax.swing.JLabel jLabelKbps1;
     private javax.swing.JLabel jLabelKbps2;
     private javax.swing.JLabel jLabelRate;
+    private javax.swing.JLabel jLabelRate1;
     private javax.swing.JLabel jLabelVplsName;
     private javax.swing.JList<Host> jListHosts;
     private javax.swing.JPanel jPanelBanner;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextFieldBurst;
-    private javax.swing.JTextField jTextFieldRate;
+    private javax.swing.JTextField jTextFieldMaxRate;
+    private javax.swing.JTextField jTextFieldMinRate;
     private javax.swing.JTextField jTextFieldVplsName;
     // End of variables declaration//GEN-END:variables
 

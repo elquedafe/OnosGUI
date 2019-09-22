@@ -146,7 +146,7 @@ public class OnosFrame extends javax.swing.JFrame {
 
         jButtonRegistrar.setBackground(new java.awt.Color(37, 44, 51));
         jButtonRegistrar.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonRegistrar.setText("Registrar");
+        jButtonRegistrar.setText("Nuevo usuario");
         jButtonRegistrar.setBorderPainted(false);
         jButtonRegistrar.setOpaque(true);
         jButtonRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {

@@ -139,9 +139,7 @@ public class Principal extends javax.swing.JFrame {
         jScrollPaneVpls = new javax.swing.JScrollPane();
         jTableVpls = new javax.swing.JTable();
         jPanelDetalleVpls = new javax.swing.JPanel();
-        jComboBoxVpls = new javax.swing.JComboBox<>();
         jButtonNuevoVpls = new javax.swing.JButton();
-        jLabelVplsName = new javax.swing.JLabel();
         jButtonEliminarVpls = new javax.swing.JButton();
         jTabbedPaneQoS = new javax.swing.JTabbedPane();
         jPanelMeters = new javax.swing.JPanel();
@@ -547,18 +545,6 @@ public class Principal extends javax.swing.JFrame {
         jPanelDetalleVpls.setName("jPanelDetalleFlow"); // NOI18N
         jPanelDetalleVpls.setPreferredSize(new java.awt.Dimension(237, 160));
 
-        jComboBoxVpls.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos" }));
-        jComboBoxVpls.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBoxVplsItemStateChanged(evt);
-            }
-        });
-        jComboBoxVpls.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxVplsActionPerformed(evt);
-            }
-        });
-
         jButtonNuevoVpls.setBackground(new java.awt.Color(37, 44, 51));
         jButtonNuevoVpls.setForeground(new java.awt.Color(255, 255, 255));
         jButtonNuevoVpls.setText("Añadir VPLS");
@@ -569,9 +555,6 @@ public class Principal extends javax.swing.JFrame {
                 jButtonNuevoVplsMouseClicked(evt);
             }
         });
-
-        jLabelVplsName.setFont(new java.awt.Font("Lucida Grande", 0, 12)); // NOI18N
-        jLabelVplsName.setText("VPLS:");
 
         jButtonEliminarVpls.setBackground(new java.awt.Color(37, 44, 51));
         jButtonEliminarVpls.setForeground(new java.awt.Color(255, 255, 255));
@@ -589,35 +572,21 @@ public class Principal extends javax.swing.JFrame {
         jPanelDetalleVplsLayout.setHorizontalGroup(
             jPanelDetalleVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalleVplsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelDetalleVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanelDetalleVplsLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanelDetalleVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonNuevoVpls, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonEliminarVpls, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18))
-                    .addGroup(jPanelDetalleVplsLayout.createSequentialGroup()
-                        .addComponent(jLabelVplsName)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                        .addComponent(jComboBoxVpls, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                .addContainerGap(33, Short.MAX_VALUE)
+                .addGroup(jPanelDetalleVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonNuevoVpls, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonEliminarVpls, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18))
         );
         jPanelDetalleVplsLayout.setVerticalGroup(
             jPanelDetalleVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDetalleVplsLayout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(jPanelDetalleVplsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxVpls, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelVplsName))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
+                .addContainerGap(311, Short.MAX_VALUE)
                 .addComponent(jButtonNuevoVpls)
                 .addGap(18, 18, 18)
                 .addComponent(jButtonEliminarVpls)
                 .addGap(20, 20, 20))
         );
-
-        jLabelVplsName.getAccessibleContext().setAccessibleName("Vpls:");
 
         javax.swing.GroupLayout jPanelVplsLayout = new javax.swing.GroupLayout(jPanelVpls);
         jPanelVpls.setLayout(jPanelVplsLayout);
@@ -1606,14 +1575,6 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonEliminarMeterMouseClicked
 
-    private void jComboBoxVplsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxVplsItemStateChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxVplsItemStateChanged
-
-    private void jComboBoxVplsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxVplsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxVplsActionPerformed
-
     private void jButtonNuevoVplsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNuevoVplsMouseClicked
         try {
             // TODO add your handling code here:
@@ -1956,7 +1917,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButtonNuevoVpls;
     private javax.swing.JComboBox<String> jComboBoxSwitches;
     private javax.swing.JComboBox<String> jComboBoxSwitchesMeters;
-    private javax.swing.JComboBox<String> jComboBoxVpls;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelEnlaces;
@@ -1968,7 +1928,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelTopologia;
     private javax.swing.JLabel jLabelUserName;
     private javax.swing.JLabel jLabelVpls;
-    private javax.swing.JLabel jLabelVplsName;
     private javax.swing.JList<Flow> jListFlows;
     private javax.swing.JList<Link> jListLinks;
     private javax.swing.JPanel jPanelBanner;

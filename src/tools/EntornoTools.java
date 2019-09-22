@@ -200,37 +200,39 @@ public class EntornoTools {
             //viewer.enableAutoLayout();
         }*/
         for (Switch s : Entorno.mapSwitches.values()) {
-            nNodos++;
-            System.out.println("Switch id: " + s.getId());
-            Point3 xyz = Toolkit.nodePointPosition(graph, s.getId());
-            if (s.getAvailable()) {
-                graph.removeNode(s.getId());
-                graph.addNode(s.getId());
-                Node sw = graph.getNode(s.getId());
-
-                if (xyz != null) {
-                    sw.setAttribute("xyz", xyz.x, xyz.y, xyz.z);
-                }
+            if(!s.getId().contains("ovsdb")){
+                nNodos++;
+                System.out.println("Switch id: " + s.getId());
+                Point3 xyz = Toolkit.nodePointPosition(graph, s.getId());
                 if (s.getAvailable()) {
-                    sw.addAttribute("ui.class", "switch");
-                }
+                    graph.removeNode(s.getId());
+                    graph.addNode(s.getId());
+                    Node sw = graph.getNode(s.getId());
 
-                sw.addAttribute("ui.label", sw.getId());
-            } else {
-                //sw.addAttribute("ui.class", "switchUnavailable");
-            }
-            for (Link l : s.getListLinks()) {
-                System.out.println("Ids links: " + l.getSrc() + "<->" + l.getDst());
-                graph.removeEdge(l.toString()+"1");
-//                graph.removeEdge(l.toString()+"2");
-                graph.addEdge(l.toString()+"1", l.getSrc(), l.getDst());
-//                graph.addEdge(l.toString()+"2", l.getDst(), l.getSrc());
-                Edge ed1 = graph.getEdge(l.toString()+"1");
-//                Edge ed2 = graph.getEdge(l.toString()+"2");
-                ed1.addAttribute("ui.label", l.getSrc() + "/" + l.getSrcPort() + "-" + l.getDst() + "/" + l.getDstPort());
-//                ed2.addAttribute("ui.hide");
-//                ed2.addAttribute("ui.label", l.getDst() + "/" + l.getDstPort());
-                
+                    if (xyz != null) {
+                        sw.setAttribute("xyz", xyz.x, xyz.y, xyz.z);
+                    }
+                    if (s.getAvailable()) {
+                        sw.addAttribute("ui.class", "switch");
+                    }
+
+                    sw.addAttribute("ui.label", sw.getId());
+                } else {
+                    //sw.addAttribute("ui.class", "switchUnavailable");
+                }
+                for (Link l : s.getListLinks()) {
+                    System.out.println("Ids links: " + l.getSrc() + "<->" + l.getDst());
+                    graph.removeEdge(l.toString()+"1");
+    //                graph.removeEdge(l.toString()+"2");
+                    graph.addEdge(l.toString()+"1", l.getSrc(), l.getDst());
+    //                graph.addEdge(l.toString()+"2", l.getDst(), l.getSrc());
+                    Edge ed1 = graph.getEdge(l.toString()+"1");
+    //                Edge ed2 = graph.getEdge(l.toString()+"2");
+                    ed1.addAttribute("ui.label", l.getSrc() + "/" + l.getSrcPort() + "-" + l.getDst() + "/" + l.getDstPort());
+    //                ed2.addAttribute("ui.hide");
+    //                ed2.addAttribute("ui.label", l.getDst() + "/" + l.getDstPort());
+
+                }
             }
         }
         for (Host h : Entorno.mapHosts.values()) {
