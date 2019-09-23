@@ -1870,34 +1870,37 @@ public class Principal extends javax.swing.JFrame {
         String id = "";
         String sw = "";
         Flow flow = null;
-        for(int i = 0; i < jTableQueues.getRowCount(); i++){
-            id = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().elementAt(i).get(ID_QUEUE).toString();
-            sw = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().elementAt(i).get(ID_SWITCH_QUEUE).toString();
-            try {
-                int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar todas las colas?", "Eliminar todas", WIDTH);
-                if (resultado == JOptionPane.OK_OPTION) {
-                    for (Flow f : Entorno.mapSwitches.get(sw).getMapFlows().values()) {
-                        FlowTreatment treatment = f.getFlowTreatment();
-                        List<FlowInstruction> l = treatment.getListInstructions();
-                        for (FlowInstruction instruction : l) {
-//                                Map<String, Object> inst = instruction.getInstructions();
-                            if (instruction.getType().equals("QUEUE")) {
-                                Map<String, Object> inst = instruction.getInstructions();
-                                queueId = String.format("%.0f", inst.get("queueId"));
-//                                    meterId = (String)instruc.get("meterId");
-                                if (queueId.equals(id)) {
-                                    flow = f;
+        int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar todas las colas?", "Eliminar todas", WIDTH);
+        if (resultado == JOptionPane.OK_OPTION) {
+            for(int i = 0; i < jTableQueues.getRowCount(); i++){
+                id = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().elementAt(i).get(ID_QUEUE).toString();
+                sw = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().elementAt(i).get(ID_SWITCH_QUEUE).toString();
+                try {
+
+                        for (Flow f : Entorno.mapSwitches.get(sw).getMapFlows().values()) {
+                            FlowTreatment treatment = f.getFlowTreatment();
+                            List<FlowInstruction> l = treatment.getListInstructions();
+                            for (FlowInstruction instruction : l) {
+    //                                Map<String, Object> inst = instruction.getInstructions();
+                                if (instruction.getType().equals("QUEUE")) {
+                                    Map<String, Object> inst = instruction.getInstructions();
+                                    queueId = String.format("%.0f", inst.get("queueId"));
+    //                                    meterId = (String)instruc.get("meterId");
+                                    if (queueId.equals(id)) {
+                                        flow = f;
+                                    }
                                 }
                             }
                         }
-                    }
-                    System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointQueues + "/" + id)));
-                        
+                        System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointQueues + "/" + id)));
+
+
                 }
-            }
-            catch (IOException ex) {
-                System.err.println(ex.getMessage());
-                JOptionPane.showMessageDialog(this, "No se ha podido borrar la cola"+queueId, "Error", JOptionPane.ERROR_MESSAGE);
+
+                catch (IOException ex) {
+                    System.err.println(ex.getMessage());
+                    JOptionPane.showMessageDialog(this, "No se ha podido borrar la cola "+queueId, "Error", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
     }//GEN-LAST:event_jButtonDeleteAllQueueMouseClicked
