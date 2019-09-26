@@ -41,6 +41,7 @@ import tools.HttpTools;
 import tools.JsonManager;
 
 /**
+ * Login window
  *
  * @author alvaroluismartinez
  */
@@ -226,6 +227,11 @@ public class OnosFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Event when pressing ENTER key
+     *
+     * @param evt
+     */
     private void jTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             jButtonConectar.doClick();
@@ -233,12 +239,20 @@ public class OnosFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextFieldKeyPressed
 
+    /**
+     * Connect button click event
+     *
+     * @param evt
+     */
     private void jButtonConectarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonConectarMouseClicked
-        // TODO add your handling code here:
-        //DESCUBRIR ENTORNO
         conectar();
     }//GEN-LAST:event_jButtonConectarMouseClicked
 
+    /**
+     * Event when pressing ENTER key in user field
+     *
+     * @param evt
+     */
     private void jTextFieldUsuarioOSRAjTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldUsuarioOSRAjTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             jButtonConectar.doClick();
@@ -246,6 +260,11 @@ public class OnosFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextFieldUsuarioOSRAjTextFieldKeyPressed
 
+    /**
+     * Event when pressing ENTER key in password field
+     *
+     * @param evt
+     */
     private void jTextFieldPasswordOSRAjTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldPasswordOSRAjTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             jButtonConectar.doClick();
@@ -253,6 +272,11 @@ public class OnosFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextFieldPasswordOSRAjTextFieldKeyPressed
 
+    /**
+     * Register button event
+     *
+     * @param evt
+     */
     private void jButtonRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRegistrarMouseClicked
         Registro reg = new Registro();
         reg.setVisible(true);
@@ -295,6 +319,7 @@ public class OnosFrame extends javax.swing.JFrame {
     }
 
     /**
+     * Opens a new dialog connecting...
      *
      * @return
      */
@@ -308,11 +333,21 @@ public class OnosFrame extends javax.swing.JFrame {
         return dialog;
     }
 
+    /**
+     * Makes ping to ip and return if destination is alive
+     *
+     * @param ip
+     * @return
+     */
     private boolean ping(String ip) {
+        Socket t = null;
+        boolean ret = false;
         try {
-            boolean ret = false;
-            Socket t = new Socket();
+            //Create socket
+            t = new Socket();
             t.connect(new InetSocketAddress(ip, 8080), 1000);
+
+            //Open read source
             DataInputStream dis = new DataInputStream(t.getInputStream());
             PrintStream ps = new PrintStream(t.getOutputStream());
             ps.println("Hello");
@@ -331,25 +366,30 @@ public class OnosFrame extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        } finally {
+            if (t != null) {
+                try {
+                    t.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(OnosFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
 
     }
 
+    /**
+     * Connect user to API REST
+     */
     private void conectar() {
-//        Conectando conectando = new Conectando(this, true);
-//        conectando.setVisible(true);
-//        conectando.pack();
-
         Properties prop = new Properties();
         InputStream is = null;
         String user = null;
         String password = null;
         String onosHost = null;
         String ovsdbDevice = null;
-//        String user = String.valueOf(jTextFieldUsuarioOnos.getText());
-//        String password = String.valueOf(jTextFieldPasswordOnos.getPassword());
-//        String onosHost = String.valueOf(jTextFieldControlador.getText());
 
+        //Read onosConfig.properties file
         try {
             is = new FileInputStream("onosConfig.properties");
             prop.load(is);
@@ -368,42 +408,54 @@ public class OnosFrame extends javax.swing.JFrame {
                 }
             }
         }
+
+        //Retrieve gui data
         EntornoTools.user = String.valueOf(jTextFieldUsuarioOSRA.getText());
         EntornoTools.password = new String(jTextFieldPasswordOSRA.getPassword());
         EntornoTools.apiHost = String.valueOf(jTextFieldApiHost.getText());
         EntornoTools.endpoint = "http://" + EntornoTools.apiHost + ":8080/onosapp-v1";
         EntornoTools.endpointAuth = endpoint + "/rest/authorization";
-        String sufix = "";
 
+        String sufix = "";
         if (ping(EntornoTools.apiHost)) {
             JDialog dialog = null;
             try {
+                //Check if user is admin and associate the user's role
                 if (EntornoTools.isAdmin()) {
                     sufix = "administration";
                 } else {
                     sufix = "users";
                 }
+                
+                //Get endpoints
                 EntornoTools.endpointEnvironment = endpoint + "/" + sufix + "/environment";
                 EntornoTools.endpointFlows = endpoint + "/" + sufix + "/flows";
                 EntornoTools.endpointVpls = endpoint + "/" + sufix + "/vpls";
                 EntornoTools.endpointMeters = endpoint + "/" + sufix + "/meters";
                 EntornoTools.endpointSwitches = endpoint + "/" + sufix + "/switches";
                 EntornoTools.endpointQueues = endpoint + "/" + sufix + "/queues";
+
+                //Authentication JSON
                 String json = "{\n"
                         + "	\"userOnos\":\"" + user + "\",\n"
                         + "	\"passwordOnos\":\"" + password + "\",\n"
                         + "	\"onosHost\": \"" + onosHost + "\"\n,"
                         + "	\"ovsdbDevice\": \"" + ovsdbDevice + "\"\n"
                         + "}";
-                //JOptionPane.showMessageDialog(this, "Conectando con el controlador...", "Conectando...", JOptionPane.INFORMATION_MESSAGE);
+
+                //Connecting window
                 dialog = mostrarDialogo();
 
+                //Authentication POST
                 int response = HttpTools.doJSONPost(new URL((EntornoTools.endpointAuth)), json);
                 if (response == 200) {
+                    //Get network environment
                     EntornoTools.descubrirEntorno();
+
+                    //Add default queues to switches ports
                     EntornoTools.loadQueuesIntoDB();
-                    //            conectando.dispose();
-                    //            conectando.doAceptar();
+
+                    //Hide login window and open main window
                     dialog.setVisible(false);
                     JFrame principal = new Principal();
                     principal.setVisible(true);
@@ -411,38 +463,15 @@ public class OnosFrame extends javax.swing.JFrame {
                     this.dispose();
                 } else {
                     dialog.setVisible(false);
-                    JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
                 }
-                // Check connetivity
-//            if(ping(EntornoTools.onosHost)){
-//                EntornoTools.descubrirEntorno();
-//    //            conectando.dispose();
-//    //            conectando.doAceptar();
-//                dialog.setVisible(false);
-//                JFrame principal = new Principal();
-//                principal.setVisible(true);
-//                principal.pack();
-//                this.dispose();
-//            }
-//            else{
-//                dialog.setVisible(false);
-//                System.err.println("No conexion con controlador");
-//                JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión con el controlador", "Error de conexión", JOptionPane.ERROR_MESSAGE);
-//            
-//            }
-
             } catch (Exception e1) {
-                //COMPLETAR VENTANA DE AVISO
-//            conectando.dispose();
                 dialog.setVisible(false);
                 System.err.println(e1.getMessage());
-                JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
-//            JDialog errorOnos = new NewOkCancelDialog(this, true, "ERROR. No se ha podido establecer conexión con el controlador");
-//            errorOnos.setVisible(true);
-//            errorOnos.pack();
+                JOptionPane.showMessageDialog(this, "No se ha podido establecer conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(this, "ERROR. No se ha podido establecer conexión con OSRA", "Error de conexión", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "No se ha podido establecer conexión con OSRA", "Error de conexión", JOptionPane.ERROR_MESSAGE);
         }
     }
 

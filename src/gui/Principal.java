@@ -45,7 +45,7 @@ import tools.*;
  * @author alvaroluismartinez
  */
 public class Principal extends javax.swing.JFrame {
-    
+
     private final int SWITCH = 0;
     private final int ID = 1;
     private final int ID_GRUPO = 2;
@@ -53,27 +53,27 @@ public class Principal extends javax.swing.JFrame {
     private final int ESTADO = 4;
     private final int PAQUETES = 5;
     private final int BYTES = 6;
-    
+
     private final int ESTADO_METER = 2;
     private final int RATE_METER = 3;
     private final int BURST_METER = 4;
     private final int BYTES_METER = 5;
-    
+
     private final int VPLS_NAME = 0;
-    
+
     private final int TAB_METERS = 0;
     private final int TAB_QUEUES = 1;
-    
+
     private final int ID_QUEUE = 0;
     private final int ID_SWITCH_QUEUE = 1;
-    
+
     private Timer timerDevices;
     private Timer timerFlows;
     private Timer timerMeters;
     private Timer timerVpls;
     private Timer timerLinks;
     private Timer timerQueues;
-    
+
     private List<JLabel> labels;
 
     /**
@@ -94,8 +94,7 @@ public class Principal extends javax.swing.JFrame {
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         EntornoTools.descubrirEntorno();
         EntornoTools.addDefaultQueues();
-        
-        
+
     }
 
     /**
@@ -651,11 +650,6 @@ public class Principal extends javax.swing.JFrame {
                 jComboBoxSwitchesMetersItemStateChanged(evt);
             }
         });
-        jComboBoxSwitchesMeters.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxSwitchesMetersActionPerformed(evt);
-            }
-        });
 
         jButtonNewMeter.setBackground(new java.awt.Color(37, 44, 51));
         jButtonNewMeter.setForeground(new java.awt.Color(255, 255, 255));
@@ -908,11 +902,11 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerQueues);
         TimerTools.stopTimer(timerDevices);
         TimerTools.stopTimer(timerVpls);
-        
+
         try {
             // Update data
             EntornoTools.descubrirEntorno();
-            
+
             // Update GUI
             EntornoTools.actualizarGUILinks(((DefaultListModel) jListLinks.getModel()), Entorno.mapSwitches);
         } catch (IOException ex) {
@@ -944,7 +938,7 @@ public class Principal extends javax.swing.JFrame {
                 if (linkSelected != null) {
                     jListLinks.setSelectedIndex(((DefaultListModel) jListLinks.getModel()).indexOf(linkSelected));
                 }
-                
+
             }
         };
 
@@ -994,12 +988,11 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerVpls);
         TimerTools.stopTimer(timerMeters);
         TimerTools.stopTimer(timerQueues);
-        
+
         try {
             //Update data
             EntornoTools.descubrirEntorno();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
         }
@@ -1025,7 +1018,7 @@ public class Principal extends javax.swing.JFrame {
                         for (int i = 0; i < selectedRowsIndex.length; i++) {
                             idFlowsSeletedId.add(((DefaultTableModel) jTableFlows.getModel()).getDataVector().get(selectedRowsIndex[i]).get(ID).toString());
                         }
-                        
+
                     }
                     //Actualizar listas
 
@@ -1046,19 +1039,18 @@ public class Principal extends javax.swing.JFrame {
                     /*if(flowSelected != null)
                     (DefaultTableModel)jTableFlows
                     jListFlows.setSelectedIndex(((DefaultListModel)jListFlows.getModel()).indexOf(flowSelected));
-                    */
-                    
-                }
-                catch (IOException e) {
+                     */
+
+                } catch (IOException e) {
                     System.out.println(e.getCause());
                     JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
                     e.printStackTrace();
-                    
+
                 }
-                
+
             }
         };
-        
+
         timerFlows = TimerTools.runTimer(timerFlows, flowsTimeout);
     }//GEN-LAST:event_jLabelFlowsMouseClicked
 
@@ -1112,13 +1104,13 @@ public class Principal extends javax.swing.JFrame {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        
+
                     }
                 };
 
                 // If timer is not running starts it
                 TimerTools.runTimer(timerFlows, flowsTimeout);
-                
+
             } //If "todos" (all) is selected
             else {
                 try {
@@ -1182,8 +1174,9 @@ public class Principal extends javax.swing.JFrame {
         try {
             if (jTableFlows.getSelectedRow() != -1) {
                 int[] selected = jTableFlows.getSelectedRows();
-                for (int i = 0; i < selected.length; i++) 
+                for (int i = 0; i < selected.length; i++) {
                     selected[i] = jTableFlows.convertRowIndexToModel(selected[i]);
+                }
                 int resultado = -1;
                 if (selected.length == 1) {
                     resultado = JOptionPane.showConfirmDialog(rootPane, "¿Desea eliminar el flujo " + ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(selected[0]).get(ID).toString() + " del switch " + ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(selected[0]).get(SWITCH).toString() + "?", "Eliminar flujo", WIDTH);
@@ -1196,14 +1189,12 @@ public class Principal extends javax.swing.JFrame {
                         for (int i = 0; i < selected.length; i++) {
                             id = ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(selected[i]).get(ID).toString();
                             String sw = ((DefaultTableModel) jTableFlows.getModel()).getDataVector().elementAt(selected[i]).get(SWITCH).toString();
-                            
+
                             System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointFlows + "/" + sw + "/" + id)));
                             if (selected.length == 1) {
-                                JDialog acp = new NewOkCancelDialog(this, false, "Flujo " + id + " eliminado correctamente");
-                                acp.setVisible(true);
-                                acp.pack();
+                                JOptionPane.showMessageDialog(this, "Flujo " + id + " eliminado correctamente.", "Flujo eliminado", JOptionPane.INFORMATION_MESSAGE);
                             }
-                            
+
                         }
                         if (selected.length > 1) {
                             JOptionPane.showMessageDialog(this, "Flujos eliminados correctamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
@@ -1214,27 +1205,19 @@ public class Principal extends javax.swing.JFrame {
                     } catch (IOException ex) {
                         System.err.println(ex.getMessage());
                         if (selected.length > 1) {
-                            JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se han podido eliminar los flujos");
-                            err.pack();
-                            err.setVisible(true);
+                            JOptionPane.showMessageDialog(this, "No se han podido eliminar los flujos correctamente.", "Error flujo", JOptionPane.ERROR_MESSAGE);
                         } else if (selected.length == 1) {
-                            JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar el flujo");
-                            err.pack();
-                            err.setVisible(true);
-                            
+                            JOptionPane.showMessageDialog(this, "No se han podido eliminar el flujo correctamente.", "Error flujo", JOptionPane.ERROR_MESSAGE);
+
                         }
                     }
-                    
+
                 }
             } else {
-                JDialog err = new NewOkCancelDialog(this, false, "Elija un flujo de la lista");
-                err.setVisible(true);
-                err.pack();
+                JOptionPane.showMessageDialog(this, "Elija un flujo de la lista.", "Error flujo", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NullPointerException ex) {
-            JDialog err = new NewOkCancelDialog(this, false, "Elija un flujo de la lista");
-            err.setVisible(true);
-            err.pack();
+            JOptionPane.showMessageDialog(this, "Elija un flujo de la lista.", "Error flujo", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_jButtonEliminarFlujoMouseClicked
@@ -1259,11 +1242,11 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerMeters);
         TimerTools.stopTimer(timerQueues);
         TimerTools.stopTimer(timerFlows);
-        
+
         try {
             //Update data
             EntornoTools.descubrirEntorno();
-            
+
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -1314,8 +1297,7 @@ public class Principal extends javax.swing.JFrame {
 //            EntornoTools.actualizarGUITopologia(jPanelTopologia);
         // Select meter Tab
         jTabbedPaneQoS.setSelectedIndex(TAB_METERS);
-        
-        
+
         try {
             //Update data
             EntornoTools.descubrirEntorno();
@@ -1337,7 +1319,7 @@ public class Principal extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent evt) {
                 String idMeterSelected = null;
                 String idSwitchSelected = null;
-                
+
                 try {
                     //Update data
                     EntornoTools.descubrirEntorno();
@@ -1369,6 +1351,11 @@ public class Principal extends javax.swing.JFrame {
         timerMeters = TimerTools.runTimer(timerMeters, metersTimeout);
     }//GEN-LAST:event_jLabelQoSMouseClicked
 
+    /**
+     * Click event for VPLS label
+     *
+     * @param evt
+     */
     private void jLabelVplsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelVplsMouseClicked
         CardLayout card = (CardLayout) jPanelCard.getLayout();
         card.show(jPanelCard, jPanelVpls.getName());
@@ -1381,11 +1368,11 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerLinks);
         TimerTools.stopTimer(timerMeters);
         TimerTools.stopTimer(timerFlows);
-        
+
         try {
             EntornoTools.getVpls();
             EntornoTools.actualizarGUIVplsTable(jTableVpls, Entorno.vpls);
-            
+
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -1417,32 +1404,37 @@ public class Principal extends javax.swing.JFrame {
                             (DefaultTableModel)jTableFlows
                             jListFlows.setSelectedIndex(((DefaultListModel)jListFlows.getModel()).indexOf(flowSelected));
                      */
-                    
+
                 } catch (IOException e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(p, "ERROR. No se ha podido establecer conexión. No se pueden actualizar los datos.", "Error de conexión", JOptionPane.ERROR_MESSAGE);
                 }
-                
+
             }
         };
-        
+
         timerVpls = TimerTools.runTimer(timerVpls, vplsTimeout);
 //            EntornoTools.descubrirEntorno();
 //            EntornoTools.actualizarGUITopologia(jPanelTopologia);
     }//GEN-LAST:event_jLabelVplsMouseClicked
 
+    /**
+     * Meter switch filter change event
+     *
+     * @param evt
+     */
     private void jComboBoxSwitchesMetersItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxSwitchesMetersItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             if (timerMeters != null && timerMeters.isRunning()) {
                 timerMeters.stop();
             }
             String sw = (String) jComboBoxSwitchesMeters.getSelectedItem();
-            
+
             if (!sw.equals("Todos")) {
                 try {
                     EntornoTools.descubrirEntorno();
                     EntornoTools.getMeters();
-                    
+
                     EntornoTools.actualizarGUIMetersTable(jTableMeters, EntornoTools.getMetersBySwitch(sw));
                     ActionListener metersTimeout;
                     metersTimeout = new ActionListener() {
@@ -1465,7 +1457,7 @@ public class Principal extends javax.swing.JFrame {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            
+
                         }
                     };
                     if (timerMeters != null && !timerMeters.isRunning()) {
@@ -1501,7 +1493,7 @@ public class Principal extends javax.swing.JFrame {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            
+
                         }
                     };
                     if (!timerMeters.isRunning()) {
@@ -1516,10 +1508,11 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboBoxSwitchesMetersItemStateChanged
 
-    private void jComboBoxSwitchesMetersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxSwitchesMetersActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBoxSwitchesMetersActionPerformed
-
+    /**
+     * New meter click button click event
+     *
+     * @param evt
+     */
     private void jButtonNewMeterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNewMeterMouseClicked
         try {
             // TODO add your handling code here:
@@ -1530,6 +1523,11 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonNewMeterMouseClicked
 
+    /**
+     * Meter delete button click event
+     *
+     * @param evt
+     */
     private void jButtonEliminarMeterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEliminarMeterMouseClicked
         String meterId = "";
         try {
@@ -1556,37 +1554,41 @@ public class Principal extends javax.swing.JFrame {
                             }
                         }
                         System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointMeters + "/" + sw + "/" + id)));
-                        JDialog acp = new NewOkCancelDialog(this, false, "Meter " + id + " eliminado correctamente");
-                        acp.setVisible(true);
-                        acp.pack();
-                        
+
+                        JOptionPane.showMessageDialog(this, "Meter " + id + " eliminado correctamente.", "Nuevo meter", JOptionPane.INFORMATION_MESSAGE);
                     }
                 } catch (IOException ex) {
                     System.err.println(ex.getMessage());
-                    JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar el meter");
-                    err.setVisible(true);
-                    err.pack();
+                    JOptionPane.showMessageDialog(this, "No se ha podido eliminar el meter de forma correcta.", "Error meter", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (NullPointerException ex) {
-            JDialog err = new NewOkCancelDialog(this, false, "Elija un meter de la lista");
-            err.setVisible(true);
-            err.pack();
+            JOptionPane.showMessageDialog(this, "Elija un meter de la lista.", "Error meter", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonEliminarMeterMouseClicked
 
+    /**
+     * New VPLS button click event
+     *
+     * @param evt
+     */
     private void jButtonNuevoVplsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNuevoVplsMouseClicked
         try {
             // TODO add your handling code here:
             JDialog newVpls = new NuevaVpls();
             newVpls.setVisible(true);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(Principal.class
                     .getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonNuevoVplsMouseClicked
 
+    /**
+     * VPLS delete button click event
+     *
+     * @param evt
+     */
     private void jButtonEliminarVplsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEliminarVplsMouseClicked
         try {
             if (jTableVpls.getSelectedRow() != -1) {
@@ -1595,24 +1597,23 @@ public class Principal extends javax.swing.JFrame {
                     int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar la VPLS \"" + vplsName + "\"?", "Eliminar vpls", WIDTH);
                     if (resultado == JOptionPane.OK_OPTION) {
                         System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointVpls + "/" + vplsName)));
-                        JDialog acp = new NewOkCancelDialog(this, false, "Vpls " + vplsName + " eliminada correctamente");
-                        acp.setVisible(true);
-                        acp.pack();
+                        JOptionPane.showMessageDialog(this, "VPLS " + vplsName + " eliminada correctamente.", "VPLS eliminada", JOptionPane.INFORMATION_MESSAGE);
                     }
                 } catch (IOException ex) {
                     System.err.println(ex.getMessage());
-                    JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar la vpls");
-                    err.setVisible(true);
-                    err.pack();
+                    JOptionPane.showMessageDialog(this, "No se ha podido eliminar la VPLS de forma correcta.", "Error VPLS", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (NullPointerException ex) {
-            JDialog err = new NewOkCancelDialog(this, false, "Elija una vpls de la lista");
-            err.setVisible(true);
-            err.pack();
+            JOptionPane.showMessageDialog(this, "Elija una vpls de la lista.", "Error VPLS", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonEliminarVplsMouseClicked
 
+    /**
+     * Statistic label click event
+     *
+     * @param evt
+     */
     private void jLabelStatisticsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabelStatisticsMouseClicked
         // TODO add your handling code here:
         CardLayout card = (CardLayout) jPanelCard.getLayout();
@@ -1628,6 +1629,11 @@ public class Principal extends javax.swing.JFrame {
         TimerTools.stopTimer(timerVpls);
     }//GEN-LAST:event_jLabelStatisticsMouseClicked
 
+    /**
+     * All flow delete button click event
+     *
+     * @param evt
+     */
     private void jButtonEliminarAllFlujoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonEliminarAllFlujoMouseClicked
         // TODO add your handling code here:
         try {
@@ -1651,9 +1657,7 @@ public class Principal extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Todos los flujos eliminados correctamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
                 System.err.println(ex.getMessage());
-                JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se han podido eliminar los flujos");
-                err.pack();
-                err.setVisible(true);
+                JOptionPane.showMessageDialog(this, "No se han podido eliminar los flujos.", "Error flujos", JOptionPane.ERROR_MESSAGE);
             }
 //            } else {
 //                JDialog err = new NewOkCancelDialog(this, false, "Elija un flujo de la lista");
@@ -1661,52 +1665,61 @@ public class Principal extends javax.swing.JFrame {
 //                err.pack();
 //            }
         } catch (NullPointerException ex) {
-            JDialog err = new NewOkCancelDialog(this, false, "Elija un flujo de la lista");
-            err.setVisible(true);
-            err.pack();
+            JOptionPane.showMessageDialog(this, "Elija un flujo de la lista.", "Error flujos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonEliminarAllFlujoMouseClicked
 
     private void jListFlowsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListFlowsMouseClicked
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jListFlowsMouseClicked
 
+    /**
+     * Double click on flow table event
+     *
+     * @param evt
+     */
     private void jTableFlowsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableFlowsMouseClicked
-        // TODO add your handling code here:
-        if(evt.getClickCount() == 2){
-            System.out.println("DOUBLE CLICK!!");
+        if (evt.getClickCount() == 2) {
             Vector<Vector> vA = ((DefaultTableModel) jTableFlows.getModel()).getDataVector();
             int row = jTableFlows.convertRowIndexToModel(jTableFlows.getSelectedRow());
             Vector v = vA.elementAt(row);
             String idFlow = v.get(ID).toString();
             String idSwitch = v.get(SWITCH).toString();
+            
+            //Opens flow info window
             Flow f = Entorno.mapSwitches.get(idSwitch).getMapFlows().get(idFlow);
             FlowInfo info = new FlowInfo(this, true, f);
             info.setVisible(true);
-            
+
         }
     }//GEN-LAST:event_jTableFlowsMouseClicked
 
+    /**
+     * Queue delete button event
+     *
+     * @param evt
+     */
     private void jButtonDeleteQueueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDeleteQueueMouseClicked
         String queueId = "";
         try {
-        if (jTableQueues.getSelectedRow() != -1) {
+            if (jTableQueues.getSelectedRow() != -1) {
                 String id = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().elementAt(jTableQueues.getSelectedRow()).get(ID_QUEUE).toString();
                 String sw = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().elementAt(jTableQueues.getSelectedRow()).get(ID_SWITCH_QUEUE).toString();
                 Flow flow = null;
                 try {
+                    
+                    //Confirm dialog
                     int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar la cola " + id + " del switch " + sw + "?", "Eliminar queue", WIDTH);
                     if (resultado == JOptionPane.OK_OPTION) {
+                        //For all flows. Get flow with queue id given
                         for (Flow f : Entorno.mapSwitches.get(sw).getMapFlows().values()) {
                             FlowTreatment treatment = f.getFlowTreatment();
                             List<FlowInstruction> l = treatment.getListInstructions();
                             for (FlowInstruction instruction : l) {
-//                                Map<String, Object> inst = instruction.getInstructions();
                                 if (instruction.getType().equals("QUEUE")) {
                                     Map<String, Object> inst = instruction.getInstructions();
                                     queueId = String.format("%.0f", inst.get("queueId"));
-//                                    meterId = (String)instruc.get("meterId");
                                     if (queueId.equals(id)) {
                                         flow = f;
                                     }
@@ -1714,28 +1727,25 @@ public class Principal extends javax.swing.JFrame {
                             }
                         }
                         System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointQueues + "/" + id)));
-                        JDialog acp = new NewOkCancelDialog(this, false, "Queue " + id + " eliminado correctamente");
-                        acp.setVisible(true);
-                        acp.pack();
-                        
+                        JOptionPane.showMessageDialog(this, "Cola " + id + " eliminada correctamente.", "Nueva cola", JOptionPane.INFORMATION_MESSAGE);
                     }
                 } catch (IOException ex) {
                     System.err.println(ex.getMessage());
-                    JDialog err = new NewOkCancelDialog(this, false, "ERROR. No se ha podido eliminar el Queue");
-                    err.setVisible(true);
-                    err.pack();
+                    JOptionPane.showMessageDialog(this, "No se ha podido eliminar la cola", "Error cola ", JOptionPane.ERROR_MESSAGE);
                 }
             }
         } catch (NullPointerException ex) {
-            JDialog err = new NewOkCancelDialog(this, false, "Elija un Queue de la lista");
-            err.setVisible(true);
-            err.pack();
+            JOptionPane.showMessageDialog(this, "Elija un Queue de la lista", "Error cola", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonDeleteQueueMouseClicked
 
+    /**
+     * new queue button click event
+     *
+     * @param evt
+     */
     private void jButtonNewQueueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonNewQueueMouseClicked
         try {
-            // TODO add your handling code here:
             JDialog newQueue = new NuevoQueue();
             newQueue.setVisible(true);
         } catch (IOException ex) {
@@ -1743,9 +1753,14 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonNewQueueMouseClicked
 
+    /**
+     * Change QoS tab event
+     *
+     * @param evt
+     */
     private void jTabbedPaneQoSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneQoSStateChanged
         Principal p = this;
-        switch(jTabbedPaneQoS.getSelectedIndex()){
+        switch (jTabbedPaneQoS.getSelectedIndex()) {
             case TAB_METERS:
                 //stop queue thread
                 TimerTools.stopTimer(timerQueues);
@@ -1801,7 +1816,7 @@ public class Principal extends javax.swing.JFrame {
 
                 // Run timer
                 timerMeters = TimerTools.runTimer(timerMeters, metersTimeout);
-                
+
                 break;
             case TAB_QUEUES:
                 //stop meters thread
@@ -1858,48 +1873,53 @@ public class Principal extends javax.swing.JFrame {
 
                 // Run timer
                 timerQueues = TimerTools.runTimer(timerQueues, queuesTimeout);
-                
+
                 break;
 
         }
     }//GEN-LAST:event_jTabbedPaneQoSStateChanged
 
+    /**
+     * Delete all queues button click event
+     *
+     * @param evt
+     */
     private void jButtonDeleteAllQueueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonDeleteAllQueueMouseClicked
-        
         String queueId = "";
         String id = "";
         String sw = "";
         Flow flow = null;
+        
+        //Confirm dialog
         int resultado = JOptionPane.showConfirmDialog(rootPane, "Desea eliminar todas las colas?", "Eliminar todas", WIDTH);
         if (resultado == JOptionPane.OK_OPTION) {
-            for(int i = 0; i < jTableQueues.getRowCount(); i++){
+            //For all rows
+            for (int i = 0; i < jTableQueues.getRowCount(); i++) {
+                //Retrieve id and switch
                 id = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().elementAt(i).get(ID_QUEUE).toString();
                 sw = ((DefaultTableModel) jTableQueues.getModel()).getDataVector().elementAt(i).get(ID_SWITCH_QUEUE).toString();
                 try {
-
-                        for (Flow f : Entorno.mapSwitches.get(sw).getMapFlows().values()) {
-                            FlowTreatment treatment = f.getFlowTreatment();
-                            List<FlowInstruction> l = treatment.getListInstructions();
-                            for (FlowInstruction instruction : l) {
-    //                                Map<String, Object> inst = instruction.getInstructions();
-                                if (instruction.getType().equals("QUEUE")) {
-                                    Map<String, Object> inst = instruction.getInstructions();
-                                    queueId = String.format("%.0f", inst.get("queueId"));
-    //                                    meterId = (String)instruc.get("meterId");
-                                    if (queueId.equals(id)) {
-                                        flow = f;
-                                    }
+                    //For all flows
+                    for (Flow f : Entorno.mapSwitches.get(sw).getMapFlows().values()) {
+                        FlowTreatment treatment = f.getFlowTreatment();
+                        List<FlowInstruction> l = treatment.getListInstructions();
+                        
+                        //For all instructions. Get flow with queue Id given
+                        for (FlowInstruction instruction : l) {
+                            if (instruction.getType().equals("QUEUE")) {
+                                Map<String, Object> inst = instruction.getInstructions();
+                                queueId = String.format("%.0f", inst.get("queueId"));
+                                if (queueId.equals(id)) {
+                                    flow = f;
                                 }
                             }
                         }
-                        System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointQueues + "/" + id)));
+                    }
+                    System.out.println(HttpTools.doDelete(new URL(EntornoTools.endpointQueues + "/" + id)));
 
-
-                }
-
-                catch (IOException ex) {
+                } catch (IOException ex) {
                     System.err.println(ex.getMessage());
-                    JOptionPane.showMessageDialog(this, "No se ha podido borrar la cola "+queueId, "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "No se ha podido borrar la cola " + queueId, "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
@@ -1961,7 +1981,4 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTable jTableVpls;
     // End of variables declaration//GEN-END:variables
 
-    private void returnToLogin() {
-        this.dispose();
-    }
 }

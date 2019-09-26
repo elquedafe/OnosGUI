@@ -6,7 +6,7 @@
 package arquitectura;
 
 /**
- *
+ * Represents a band used within a meter.
  * @author alvaroluismartinez
  */
 public class Band {
@@ -16,14 +16,26 @@ public class Band {
     private int bytes;
     private int burstSize;
 
+    /**
+     * Return maximum rate applied to meter.
+     * @return rate
+     */
     public int getRate() {
         return rate;
     }
 
+    /**
+     * Return bytes seen by the band.
+     * @return 
+     */
     public int getBytes() {
         return bytes;
     }
 
+    /**
+     * Return burst size.
+     * @return 
+     */
     public int getBurstSize() {
         return burstSize;
     }

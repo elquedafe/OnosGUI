@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
+ * Flow information window.
  *
  * @author alvaroluismartinez
  */
@@ -27,7 +28,6 @@ public class FlowInfo extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         fillInfo(f);
-        
         pack();
     }
 
@@ -302,7 +302,13 @@ public class FlowInfo extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Fill flow info into the window.
+     *
+     * @param f flow
+     */
     private void fillInfo(Flow f) {
+        //Fill gui flow params
         this.jLabelId.setText(f.getId());
         this.jLabelDevice.setText(f.getDeviceId());
         this.jLabelTable.setText(f.getTableId());
@@ -317,73 +323,29 @@ public class FlowInfo extends javax.swing.JDialog {
         this.jLabelSeen.setText(String.valueOf(f.getLastSeen()));
         this.jLabelPackets.setText(String.valueOf(f.getPackets()));
         this.jLabelBytes.setText(String.valueOf(f.getBytes()));
-        
+
+        //Fill treatment text area
         List<FlowInstruction> fI = f.getFlowTreatment().getListInstructions();
         String str = "";
-        for(FlowInstruction flowInstruction: fI){
+        //for each flow instruction it is added to text area
+        for (FlowInstruction flowInstruction : fI) {
             String type = flowInstruction.getType();
             Map<String, Object> instructions = flowInstruction.getInstructions();
-            String value ="";
-            for(Object o: instructions.values()){
+            String value = "";
+            for (Object o : instructions.values()) {
                 value = String.valueOf(o);
             }
-           
-            str += type+": "+value+System.lineSeparator();
-//            str += flowInstruction.getType()+((Entry<String,Object>)flowInstruction.getInstructions().get(0)).getValue()+System.lineSeparator();
+            str += type + ": " + value + System.lineSeparator();
         }
         this.jTextAreaTreatment.append(str);
         str = "";
-//        List<FlowCriteria> fC = f.getFlowSelector().getListFlowCriteria();
-        
-        for(FlowCriteria flowCriteria : f.getFlowSelector().getListFlowCriteria()){
-            str += flowCriteria.getType()+": "+flowCriteria.getCriteria().getValue()+System.lineSeparator();
+
+        //Fill selector text area
+        for (FlowCriteria flowCriteria : f.getFlowSelector().getListFlowCriteria()) {
+            str += flowCriteria.getType() + ": " + flowCriteria.getCriteria().getValue() + System.lineSeparator();
         }
         this.jTextAreaSelector.append(str);
-        
-        
     }
-
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(InfoDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(InfoDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(InfoDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(InfoDetails.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the dialog */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                InfoDetails dialog = new InfoDetails(new javax.swing.JFrame(), true);
-//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    @Override
-//                    public void windowClosing(java.awt.event.WindowEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//                dialog.setVisible(true);
-//            }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabe2;

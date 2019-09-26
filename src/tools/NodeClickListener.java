@@ -130,7 +130,7 @@ public class NodeClickListener implements ViewerListener, MouseInputListener {
     }
 
     /**
-     * Inherited function unused
+     * Event when button is released
      */
     public void buttonReleased(String id) {
         endTime = System.nanoTime();
@@ -143,23 +143,6 @@ public class NodeClickListener implements ViewerListener, MouseInputListener {
                 dialog.setVisible(true);
                 dialog.pack();
             }
-            //  String _ui_label = n.getAttribute("_ui.label");
-            //  String ui_label = n.getAttribute("ui.label");
-
-            // if not set toggle on node and adj edges
-            //  if (ui_label==null || ui_label.equals(""))
-            //  {
-            //   n.setAttribute("ui.label", _ui_label);
-            //
-            //   // Label adjacent edges
-            //   labelAdjacentEdges(n);
-            //
-            //  }
-            //  else // Toggle node off and adj unbound edges
-            //  {
-            //   n.setAttribute("ui.label", "");
-            //   unlabelAdjacentEdges(n);
-            //  }
         }
     }
 

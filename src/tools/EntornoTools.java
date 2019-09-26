@@ -86,8 +86,8 @@ public class EntornoTools {
     public static JsonManager parser;
 
     /**
-     * 
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     public static void descubrirEntorno() throws IOException {
         String json;
@@ -96,7 +96,7 @@ public class EntornoTools {
     }
 
     /**
-     * 
+     *
      */
     public static void actualizarGUILinks(DefaultListModel<Link> modeloListaLinks, Map<String, Switch> sws) {
         List<Link> l = null;
@@ -134,16 +134,16 @@ public class EntornoTools {
     }
 
     /**
-     * 
+     *
      * @param table
-     * @param values 
+     * @param values
      */
     public static void actualizarGUIFlowsTable(JTable table, Collection<Switch> values) {
         ((DefaultTableModel) table.getModel()).setRowCount(0);
         for (Switch auxswitch : values) {
             for (Flow flow : auxswitch.getMapFlows().values()) {
                 Object[] array = flow.toArray();
-                ((DefaultTableModel)table.getModel()).addRow(array);
+                ((DefaultTableModel) table.getModel()).addRow(array);
             }
         }
     }
@@ -177,10 +177,16 @@ public class EntornoTools {
         }
     }
 
+    /**
+     * Update topology GUI
+     * @param panel 
+     */
     public static void actualizarGUITopologia(JPanel panel) {
+        //Reset panel
         panel.removeAll();
         int nNodos = 0;
-        //Graph graph = new SingleGraph("Topologia", false, true);
+        
+        //Graph properties
         if (graph == null) {
             System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
             graph = new MultiGraph("Topologia", false, true);
@@ -195,12 +201,10 @@ public class EntornoTools {
             graph.addAttribute("ui.quality");
 
         }
-        /*if(entorno.getListLinks().isEmpty() && entorno.getMapHosts().isEmpty() && entorno.getMapSwitches().isEmpty()){
-            graph.clear();
-            //viewer.enableAutoLayout();
-        }*/
+        
+        //Paint switches
         for (Switch s : Entorno.mapSwitches.values()) {
-            if(!s.getId().contains("ovsdb")){
+            if (!s.getId().contains("ovsdb")) {
                 nNodos++;
                 System.out.println("Switch id: " + s.getId());
                 Point3 xyz = Toolkit.nodePointPosition(graph, s.getId());
@@ -222,19 +226,21 @@ public class EntornoTools {
                 }
                 for (Link l : s.getListLinks()) {
                     System.out.println("Ids links: " + l.getSrc() + "<->" + l.getDst());
-                    graph.removeEdge(l.toString()+"1");
-    //                graph.removeEdge(l.toString()+"2");
-                    graph.addEdge(l.toString()+"1", l.getSrc(), l.getDst());
-    //                graph.addEdge(l.toString()+"2", l.getDst(), l.getSrc());
-                    Edge ed1 = graph.getEdge(l.toString()+"1");
-    //                Edge ed2 = graph.getEdge(l.toString()+"2");
+                    graph.removeEdge(l.toString() + "1");
+                    //                graph.removeEdge(l.toString()+"2");
+                    graph.addEdge(l.toString() + "1", l.getSrc(), l.getDst());
+                    //                graph.addEdge(l.toString()+"2", l.getDst(), l.getSrc());
+                    Edge ed1 = graph.getEdge(l.toString() + "1");
+                    //                Edge ed2 = graph.getEdge(l.toString()+"2");
                     ed1.addAttribute("ui.label", l.getSrc() + "/" + l.getSrcPort() + "-" + l.getDst() + "/" + l.getDstPort());
-    //                ed2.addAttribute("ui.hide");
-    //                ed2.addAttribute("ui.label", l.getDst() + "/" + l.getDstPort());
+                    //                ed2.addAttribute("ui.hide");
+                    //                ed2.addAttribute("ui.label", l.getDst() + "/" + l.getDstPort());
 
                 }
             }
         }
+        
+        //Paint hosts
         for (Host h : Entorno.mapHosts.values()) {
             nNodos++;
             System.out.println("Host id: " + h.getId());
@@ -263,6 +269,7 @@ public class EntornoTools {
             host.addAttribute("ui.label", ips);
         }
 
+        //Activate NodeClickListener
         if (view == null) {
             viewer = new Viewer(graph, Viewer.ThreadingModel.GRAPH_IN_GUI_THREAD);
             view = viewer.addDefaultView(false);
@@ -270,28 +277,18 @@ public class EntornoTools {
             if (pipe == null) {
                 pipe = viewer.newViewerPipe();
                 NodeClickListener listener = new NodeClickListener(pipe, view, graph, entorno, parser);
-//                EdgeClickListener listenerEdge = new EdgeClickListener(pipe, view, graph, entorno, parser);
                 pipe.addViewerListener((ViewerListener) listener);
-//                pipe.addViewerListener((ViewerListener) listenerEdge);
                 pipe.addAttributeSink(graph);
             }
-            System.out.println("ZOOM: " + view.getCamera().getViewPercent());
-//            if(nNodos>10)
-//                view.getCamera().setViewPercent((double)10/nNodos);
             panel.add((DefaultView) view);
-        } else {
-            //viewer.disableAutoLayout();
-        }
-
-//        (view).repaint();
-//        while(true){
-//            pipe.pump();
-//          }
+        } 
         panel.add((DefaultView) view);
-//        
-
     }
 
+    /**
+     * Read all links from API REST
+     * @param modelo 
+     */
     private static void cargarAllLinks(DefaultListModel<Link> modelo) {
         for (Switch s : Entorno.mapSwitches.values()) {
             for (Link l : s.getListLinks()) {
@@ -303,6 +300,12 @@ public class EntornoTools {
         }
     }
 
+    /**
+     * Check duplicated links and delete it
+     * @param modelo
+     * @param l
+     * @return 
+     */
     private static boolean duplicado(DefaultListModel<Link> modelo, Link l) {
         boolean b = false;
         Link auxLink = null;
@@ -317,20 +320,34 @@ public class EntornoTools {
 
     }
 
+    /**
+     * Get meters info from API REST
+     * @throws IOException 
+     */
     public static void getMeters() throws IOException {
         String json;
         json = HttpTools.doJSONGet(new URL(EntornoTools.endpointMeters));
-        if(json != null && !json.isEmpty() && !json.equals("null\n"))
+        if (json != null && !json.isEmpty() && !json.equals("null\n")) {
             JsonManager.parseoMeters(json);
+        }
     }
-    
+
+    /**
+     * Get queues info from API REST
+     * @throws IOException 
+     */
     public static void getQueues() throws IOException {
         String json;
         json = HttpTools.doJSONGet(new URL(EntornoTools.endpointQueues));
-        if(json != null && !json.isEmpty() && !json.equals("null\n"))
+        if (json != null && !json.isEmpty() && !json.equals("null\n")) {
             JsonManager.parseoQueues(json);
+        }
     }
 
+    /**
+     * Get VPLS info from API REST
+     * @throws IOException 
+     */
     public static void getVpls() throws IOException {
         // TODO Auto-generated method stub
         String json = "";
@@ -341,6 +358,11 @@ public class EntornoTools {
 
     }
 
+    /**
+     * Get meters by switch id
+     * @param swId
+     * @return meters list with switch id
+     */
     public static List<Meter> getMetersBySwitch(String swId) {
         List<Meter> list = new ArrayList<Meter>();
         for (Meter m : Entorno.getAllMeters()) {
@@ -354,6 +376,11 @@ public class EntornoTools {
         return list;
     }
 
+    /**
+     * Update GUI VPLS table
+     * @param jTableVpls
+     * @param vpls 
+     */
     public static void actualizarGUIVplsTable(JTable jTableVpls, List<Vpls> vpls) {
         //Delete table
         ((DefaultTableModel) jTableVpls.getModel()).setRowCount(0);
@@ -366,6 +393,10 @@ public class EntornoTools {
         }
     }
 
+    /**
+     * Check if user is admin
+     * @return 
+     */
     public static boolean isAdmin() {
         Gson gson = new Gson();
         String json;
@@ -376,11 +407,16 @@ public class EntornoTools {
         } catch (IOException ex) {
             return false;
         }
-        
+
         LinkedTreeMap jsonObject = gson.fromJson(json, LinkedTreeMap.class);
-        return (boolean)jsonObject.get("isAdmin");
+        return (boolean) jsonObject.get("isAdmin");
     }
 
+    /**
+     * Update GUI queues table
+     * @param table
+     * @param queues 
+     */
     public static void actualizarGUIQueuesTable(JTable table, List<Queue> queues) {
         //Delete table rows
         ((DefaultTableModel) table.getModel()).setRowCount(0);
@@ -393,18 +429,24 @@ public class EntornoTools {
         }
     }
 
+    /**
+     * Read DDBB queues info
+     * @throws IOException 
+     */
     public static void loadQueuesIntoDB() throws IOException {
         EntornoTools.getQueues();
-        
     }
 
+    /**
+     * Adds default queues if not exists
+     */
     public static void addDefaultQueues() {
         try {
             HttpTools.doJSONPost(new URL(EntornoTools.endpointQueues), "");
         } catch (MalformedURLException ex) {
-            Logger.getLogger(EntornoTools.class.getName()).log(Level.SEVERE, null, ex);
+            
         } catch (IOException ex) {
-            Logger.getLogger(EntornoTools.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
     }
 

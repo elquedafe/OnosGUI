@@ -15,8 +15,9 @@ public class Conectando extends javax.swing.JDialog {
 
     /**
      * Creates new form Conectando
+     *
      * @param parent
-     * @param modal 
+     * @param modal
      */
     public Conectando(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -73,16 +74,29 @@ public class Conectando extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Event action in Accept button
+     *
+     * @param evt
+     */
     private void jButtonAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAceptarActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_jButtonAceptarActionPerformed
 
-    public JButton getAceptarButton(){
+    /**
+     * Return accpet button
+     *
+     * @return accept button
+     */
+    public JButton getAceptarButton() {
         return this.jButtonAceptar;
     }
-    
-    public void doAceptar(){
+
+    /**
+     * Accept button pressed
+     */
+    public void doAceptar() {
         jButtonAceptar.doClick();
     }
 

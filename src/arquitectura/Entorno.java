@@ -5,87 +5,51 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
+ * Represent the SDN netwrok environment.
  * @author alvaroluismartinez
  */
 public class Entorno {
-    //private int nNodos = 0;
-    //private int nSwitches = 0;
-    //private int nHosts = 0;
     public static Map<String, Switch> mapSwitches = new HashMap<String, Switch>();
-    //private List<Link> listLinks;
-    //private List<Switch> listSwitches;
     public static List<Cluster> listClusters = new ArrayList<Cluster>();
     public static Map<String, Host> mapHosts = new HashMap<String, Host>();
     public static List<Vpls> vpls = new ArrayList<Vpls>();
-    /*public Entorno() {
-            //this.nNodos = 0;
-            //this.nSwitches = 0;
-            //this.nHosts = 0;
-            this.mapSwitches = new HashMap<String, Switch>();
-            //this.listLinks = new ArrayList<Link>();
-            //this.listSwitches = new ArrayList<Switch>();
-            this.listClusters = new ArrayList<Cluster>();
-            this.mapHosts = new HashMap<String, Host>();
-    }*/
-
-    /*public static Map<String, Switch> getMapSwitches() {
-            return mapSwitches;
-    }*/
-
-    /*public void setMapSwitches(Map<String, Switch> mapSwitches) {
-            this.mapSwitches = mapSwitches;
-    }*/
-
-    /*public Map<String, Host> getMapHosts() {
-            return mapHosts;
-    }*/
-
-    /*public void setMapHosts(Map<String, Host> mapHosts) {
-            this.mapHosts = mapHosts;
-    }*/
-
-//    public List<Link> getListLinks() {
-//            return listLinks;
-//    }
-//
-//    public void setListLinks(List<Link> listLinks) {
-//            this.listLinks = listLinks;
-//    }
-
-//    public List<Cluster> getListClusters() {
-//            return listClusters;
-//    }
-    /*public List<Switch> getListSwitches() {
-            return listSwitches;
-    }
-
-    public void setListSwitches(List<Switch> listSwitches) {
-            this.listSwitches = listSwitches;
-    }*/
-
-//    public void addLink(Link link){
-//            this.listLinks.add(link);
-//    }
-
+    
+    /**
+     * Add new cluster.
+     * @param cluster 
+     */
     public static void addCluster(Cluster cluster){
         listClusters.add(cluster);
     }
 
-    public static void addSwitch(String nombre) {
-        mapSwitches.put(nombre, new Switch(nombre));
-            //this.nSwitches++;
+    /**
+     * Add new switch.
+     * @param name 
+     */
+    public static void addSwitch(String name) {
+        mapSwitches.put(name, new Switch(name));
     }
 
-    public static void addHost(String nombre) {
-        mapHosts.put(nombre, new Host(nombre));
-            //this.nSwitches++;
+    /**
+     * Add new host given its name.
+     * @param nombre 
+     */
+    public static void addHost(String name) {
+        mapHosts.put(name, new Host(name));
     }
     
+    /**
+     * Add new host.
+     * @param host 
+     */
     public static void addHost(Host host){
         mapHosts.put(host.getId(), host);
     }
 	
+    /**
+     * Return network meter list.
+     * @return meters list
+     */
     public static List<Meter> getAllMeters(){
         List<Meter> meters = new ArrayList<Meter>();
         List<Meter> swMeters = null;
@@ -98,6 +62,10 @@ public class Entorno {
         return meters;
     }
     
+    /**
+     * Return network queues list.
+     * @return queues list
+     */
     public static List<Queue> getAllQueues(){
         List<Queue> queues = new ArrayList<Queue>();
         List<Queue> swQueues = null;
@@ -110,8 +78,10 @@ public class Entorno {
         return queues;
     }
     
-    
-    
+    /**
+     * Add meters.
+     * @param meters 
+     */
     public static void addMeters(List<Meter> meters){
         cleanMeters();
         for(Meter m : meters){
@@ -119,6 +89,10 @@ public class Entorno {
         }
     }
     
+    /**
+     * Add queues.
+     * @param queues 
+     */
     public static void addQueues(List<Queue> queues){
         cleanQueues();
         for(Queue q : queues){
@@ -126,20 +100,34 @@ public class Entorno {
         }
     }
     
+    /**
+     * Add meter.
+     * @param meter 
+     */
     private static void addMeter(Meter meter){
         mapSwitches.get(meter.getDeviceId()).getMeters().add(meter);
     }
     
+    /**
+     * Add queue.
+     * @param queue 
+     */
     private static void addQueue(Queue queue){
         mapSwitches.get(queue.getSwitchId()).getQueues().add(queue);
     }
     
+    /**
+     * Remove all meters.
+     */
     private static void cleanMeters(){
         for(Switch s : mapSwitches.values()){
             s.getMeters().clear();
         }
     }
     
+    /**
+     * Remove all queues.
+     */
     private static void cleanQueues(){
         for(Switch s : mapSwitches.values()){
             s.getQueues().clear();

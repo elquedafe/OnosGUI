@@ -16,23 +16,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import tools.EntornoTools;
 import tools.HttpTools;
 import tools.JsonManager;
 
 /**
+ * New flow intent window
  *
  * @author alvaroluismartinez
  */
 public class NuevoFlujoSocket extends NuevoDialog {
+
     String selectedSwitch;
+
     /**
      * Creates new form NuevoFlujo
+     *
      * @param entorno
      * @param parser
      * @throws java.io.IOException
      */
-    public NuevoFlujoSocket(){
+    public NuevoFlujoSocket() {
         this.setTitle("Nuevo Flujo Socket");
         this.selectedSwitch = selectedSwitch;
         initComponents();
@@ -113,11 +118,6 @@ public class NuevoFlujoSocket extends NuevoDialog {
         jTextFieldSrcPort.setOpaque(true);
 
         jComboBoxIpVersion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "4", "6" }));
-        jComboBoxIpVersion.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                jComboBoxIpVersionItemStateChanged(evt);
-            }
-        });
 
         jButtonAdd.setText("Añadir");
         jButtonAdd.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -234,61 +234,51 @@ public class NuevoFlujoSocket extends NuevoDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     @Override
-    protected void fillComponents(){
-        //Llenar sw y puertos
-        // LLenar Hosts
-        for(Host h : Entorno.mapHosts.values()){
+    protected void fillComponents() {
+        for (Host h : Entorno.mapHosts.values()) {
             this.jComboBoxDstHost.addItem(h);
             this.jComboBoxSrcHost.addItem(h);
         }
     }
-    
+
     @Override
     protected void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
-        // TODO add your handling code here:
+        // Close Window
         this.dispose();
     }//GEN-LAST:event_jButtonCancelMouseClicked
 
     @Override
     protected void jButtonAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMouseClicked
         // TODO add your handling code here:
-        int ipVersion = Integer.parseInt((String)jComboBoxIpVersion.getSelectedItem());
+        int ipVersion = Integer.parseInt((String) jComboBoxIpVersion.getSelectedItem());
         String srcPort = String.valueOf(this.jTextFieldSrcPort.getText());
         String dstPort = String.valueOf(this.jTextFieldDstPort.getText());
-        Host hostOrigen = (Host)this.jComboBoxSrcHost.getSelectedItem();
-        Host hostDestino = (Host)this.jComboBoxDstHost.getSelectedItem();
-        String portType = (String)this.jComboBoxPortType.getSelectedItem();
-        String json = ""; 
-        if(portType.equals("-")) 
+        Host hostOrigen = (Host) this.jComboBoxSrcHost.getSelectedItem();
+        Host hostDestino = (Host) this.jComboBoxDstHost.getSelectedItem();
+        String portType = (String) this.jComboBoxPortType.getSelectedItem();
+        String json;
+
+        if (portType.equals("-")) {
             portType = "";
-        
-        json = "{\n" +
-                "	\"ipVersion\": "+ipVersion+",\n" +
-                "	\"srcHost\": \""+hostOrigen.getIpList().get(0)+"\",\n" +
-                "	\"srcPort\": \""+srcPort+"\",\n" +
-                "	\"dstHost\": \""+hostDestino.getIpList().get(0)+"\",\n" +
-                "	\"dstPort\": \""+dstPort+"\",\n" +
-                "	\"portType\": \""+portType+"\"\n" +
-                "}";
-        String respuesta = "";
-        System.err.println("\n****\n"+json);
+        }
+
+        json = "{\n"
+                + "	\"ipVersion\": " + ipVersion + ",\n"
+                + "	\"srcHost\": \"" + hostOrigen.getIpList().get(0) + "\",\n"
+                + "	\"srcPort\": \"" + srcPort + "\",\n"
+                + "	\"dstHost\": \"" + hostDestino.getIpList().get(0) + "\",\n"
+                + "	\"dstPort\": \"" + dstPort + "\",\n"
+                + "	\"portType\": \"" + portType + "\"\n"
+                + "}";
+        System.err.println("\n****\n" + json);
         try {
-            HttpTools.doJSONPost(new URL(EntornoTools.endpointFlows + "/" + hostOrigen.getIpList().get(0) +"/"+hostDestino.getIpList().get(0)+"?element=host"), json);
-            JDialog respuestaPost = new NewOkCancelDialog(null, true, "Flujo añadido correctamente");
-            respuestaPost.setVisible(true);
-            respuestaPost.pack();
+            //Post flow to API REST
+            HttpTools.doJSONPost(new URL(EntornoTools.endpointFlows + "/" + hostOrigen.getIpList().get(0) + "/" + hostDestino.getIpList().get(0) + "?element=host"), json);
+            JOptionPane.showMessageDialog(this, "Flujo añadido correctamente.", "Nuevo flujo", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
-            JDialog errorPost = new NewOkCancelDialog(null, true, "ERROR. No se ha podido añadir el flujo de forma correcta");
-            errorPost.setVisible(true);
-            errorPost.pack();
-            //Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "No se ha podido añadir el flujo de forma correcta.", "Error flujo", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonAddMouseClicked
-
-    private void jComboBoxIpVersionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxIpVersionItemStateChanged
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jComboBoxIpVersionItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

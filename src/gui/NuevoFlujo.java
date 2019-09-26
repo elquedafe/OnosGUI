@@ -16,23 +16,26 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import tools.EntornoTools;
 import tools.HttpTools;
 import tools.JsonManager;
 
 /**
+ * New basic flow window
  *
  * @author alvaroluismartinez
  */
 public class NuevoFlujo extends NuevoDialog {
+
     String selectedSwitch;
+
     /**
-     * Creates new form NuevoFlujo
-     * @param entorno
-     * @param parser
-     * @throws java.io.IOException
+     * New flow window
+     *
+     * @param selectedSwitch switch selected in previous window
      */
-    public NuevoFlujo(String selectedSwitch){
+    public NuevoFlujo(String selectedSwitch) {
         this.setTitle("Nuevo Flujo");
         this.selectedSwitch = selectedSwitch;
         initComponents();
@@ -42,8 +45,9 @@ public class NuevoFlujo extends NuevoDialog {
             Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
         }
         fillComponents();
-        if(selectedSwitch!=null)
+        if (selectedSwitch != null) {
             jComboBoxSwitch.setSelectedItem(selectedSwitch);
+        }
         pack();
     }
 
@@ -266,18 +270,18 @@ public class NuevoFlujo extends NuevoDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     @Override
-    protected void fillComponents(){
+    protected void fillComponents() {
         //Llenar sw y puertos
         Entorno.mapSwitches.values().forEach((s) -> {
             this.jComboBoxSwitch.addItem(s.getId());
         });
         // LLenar Hosts
-        for(Host h : Entorno.mapHosts.values()){
+        for (Host h : Entorno.mapHosts.values()) {
             this.jComboBoxDstHost.addItem(h);
             this.jComboBoxSrcHost.addItem(h);
         }
     }
-    
+
     @Override
     protected void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
         // TODO add your handling code here:
@@ -286,83 +290,86 @@ public class NuevoFlujo extends NuevoDialog {
 
     @Override
     protected void jButtonAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMouseClicked
-        // TODO add your handling code here:
-        String sw = (String)jComboBoxSwitch.getSelectedItem();
-        Port srcPort = (Port)jComboBoxSrcPort.getSelectedItem();
-        Port dstPort = (Port)jComboBoxDstPort.getSelectedItem();
-        Host hostOrigen = (Host)this.jComboBoxSrcHost.getSelectedItem();
-        Host hostDestino = (Host)this.jComboBoxDstHost.getSelectedItem();
+        // Retrieve data
+        String sw = (String) jComboBoxSwitch.getSelectedItem();
+        Port srcPort = (Port) jComboBoxSrcPort.getSelectedItem();
+        Port dstPort = (Port) jComboBoxDstPort.getSelectedItem();
+        Host hostOrigen = (Host) this.jComboBoxSrcHost.getSelectedItem();
+        Host hostDestino = (Host) this.jComboBoxDstHost.getSelectedItem();
         String prioridad = jTextFieldPrioridad.getText();
         String timeout = jTextFieldTimeout.getText();
         String idTabla = jTextFieldIdTabla.getText();
         String idGrupo = jTextFieldIdGrupo.getText();
         String json = "";
-        json = "{" +
-        "\"priority\": "+ prioridad +"," +
-        "\"timeout\": " + timeout + "," +
-        "\"isPermanent\": false," +
-        "\"deviceId\": \""+ sw +"\"," +
-        "\"tableId\": "+ idTabla +"," +
-        "\"groupId\": "+ idGrupo +"," +
-        "\"appId\": \"org.onosproject.fwd\"," +
-        "\"treatment\": {" +
-        "\"instructions\": [" +
-        "{" +
-        "\"type\": \"OUTPUT\"," +
-        "\"port\": \""+ dstPort.getPortNumber() +"\"" +
-        "}" +
-        "]" +
-        "}," +
-        "\"selector\": {" +
-        "\"criteria\": [" +
-        "{" +
-        "\"type\": \"IN_PORT\"," +
-        "\"port\": \""+ srcPort.getPortNumber() +"\"" +
-        "}," +
-        "{" +
-        "\"type\": \"ETH_DST\"," +
-        "\"mac\": \""+ hostDestino.getMac() +"\"" +
-        "}," +
-        "{" +
-        "\"type\": \"ETH_SRC\"," +
-        "\"mac\": \""+ hostOrigen.getMac() +"\"" +
-        "}" +
-        "]" +
-        "}" +
-        "}";   
-        
-        json = "{\n" +
-                "	\"switchId\": \""+sw+"\",\n" +
-                "	\"priority\": "+prioridad+",\n" +
-                "	\"timeout\": "+timeout+", \n" +
-                "	\"isPermanent\": "+true+",\n" +
-                "	\"srcPort\": \""+srcPort.getPortNumber()+"\",\n" +
-                "	\"dstPort\": \""+dstPort.getPortNumber()+"\",\n" +
-                "	\"srcHost\": \""+hostDestino.getMac()+"\",\n" +
-                "	\"dstHost\": \""+hostOrigen.getMac()+"\"\n" +
-                "}";
-        String respuesta = "";
-        System.err.println("\n****\n"+json);
+
+        //Create json
+        json = "{"
+                + "\"priority\": " + prioridad + ","
+                + "\"timeout\": " + timeout + ","
+                + "\"isPermanent\": false,"
+                + "\"deviceId\": \"" + sw + "\","
+                + "\"tableId\": " + idTabla + ","
+                + "\"groupId\": " + idGrupo + ","
+                + "\"appId\": \"org.onosproject.fwd\","
+                + "\"treatment\": {"
+                + "\"instructions\": ["
+                + "{"
+                + "\"type\": \"OUTPUT\","
+                + "\"port\": \"" + dstPort.getPortNumber() + "\""
+                + "}"
+                + "]"
+                + "},"
+                + "\"selector\": {"
+                + "\"criteria\": ["
+                + "{"
+                + "\"type\": \"IN_PORT\","
+                + "\"port\": \"" + srcPort.getPortNumber() + "\""
+                + "},"
+                + "{"
+                + "\"type\": \"ETH_DST\","
+                + "\"mac\": \"" + hostDestino.getMac() + "\""
+                + "},"
+                + "{"
+                + "\"type\": \"ETH_SRC\","
+                + "\"mac\": \"" + hostOrigen.getMac() + "\""
+                + "}"
+                + "]"
+                + "}"
+                + "}";
+
+        json = "{\n"
+                + "	\"switchId\": \"" + sw + "\",\n"
+                + "	\"priority\": " + prioridad + ",\n"
+                + "	\"timeout\": " + timeout + ", \n"
+                + "	\"isPermanent\": " + true + ",\n"
+                + "	\"srcPort\": \"" + srcPort.getPortNumber() + "\",\n"
+                + "	\"dstPort\": \"" + dstPort.getPortNumber() + "\",\n"
+                + "	\"srcHost\": \"" + hostDestino.getMac() + "\",\n"
+                + "	\"dstHost\": \"" + hostOrigen.getMac() + "\"\n"
+                + "}";
+        System.err.println("\n****\n" + json);
+
         try {
+            //Post to API REST
             HttpTools.doJSONPost(new URL(EntornoTools.endpointFlows + "/" + sw), json);
-            JDialog respuestaPost = new NewOkCancelDialog(null, true, "Flujo añadido correctamente");
-            respuestaPost.setVisible(true);
-            respuestaPost.pack();
+            JOptionPane.showMessageDialog(this, "Flujo añadido correctamente.", "Nuevo flujo", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
-            JDialog errorPost = new NewOkCancelDialog(null, true, "ERROR. No se ha podido añadir el flujo de forma correcta");
-            errorPost.setVisible(true);
-            errorPost.pack();
-            //Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "No se ha podido añadir el flujo de forma correcta.", "Error flujo", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonAddMouseClicked
 
+    /**
+     * Change combo box item event
+     *
+     * @param evt
+     */
     private void jComboBoxSwitchItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxSwitchItemStateChanged
         // TODO add your handling code here:
-        if(evt.getStateChange() == ItemEvent.SELECTED){
-            Switch s = Entorno.mapSwitches.get((String)jComboBoxSwitch.getSelectedItem());
-            ((DefaultComboBoxModel)jComboBoxDstPort.getModel()).removeAllElements();
-            ((DefaultComboBoxModel)jComboBoxSrcPort.getModel()).removeAllElements();
-            for(Port p : s.getListPorts()){
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            Switch s = Entorno.mapSwitches.get((String) jComboBoxSwitch.getSelectedItem());
+            ((DefaultComboBoxModel) jComboBoxDstPort.getModel()).removeAllElements();
+            ((DefaultComboBoxModel) jComboBoxSrcPort.getModel()).removeAllElements();
+            for (Port p : s.getListPorts()) {
                 jComboBoxSrcPort.addItem(p);
                 jComboBoxDstPort.addItem(p);
             }
@@ -370,7 +377,7 @@ public class NuevoFlujo extends NuevoDialog {
     }//GEN-LAST:event_jComboBoxSwitchItemStateChanged
 
     private void jComboBoxSrcPortItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxSrcPortItemStateChanged
-        
+
     }//GEN-LAST:event_jComboBoxSrcPortItemStateChanged
 
     private void jTextFieldIdGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIdGrupoActionPerformed

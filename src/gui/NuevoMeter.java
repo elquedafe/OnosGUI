@@ -13,15 +13,19 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import tools.EntornoTools;
 import tools.HttpTools;
 
 /**
+ * New meter window
  *
  * @author alvaroluismartinez
  */
 public class NuevoMeter extends NuevoDialog {
+
     private String selectedSwitch;
+
     /**
      * Creates new form NuevoMeter
      */
@@ -33,7 +37,7 @@ public class NuevoMeter extends NuevoDialog {
         fillComponents();
         jComboBoxSrcHost.setSelectedIndex(0);
         pack();
-        
+
     }
 
     /**
@@ -261,20 +265,21 @@ public class NuevoMeter extends NuevoDialog {
 
     @Override
     protected void jButtonAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMouseClicked
-        String ipVersionBox = (String)this.jComboBoxIpVersion.getSelectedItem();
+        //Retrieve data
+        String ipVersionBox = (String) this.jComboBoxIpVersion.getSelectedItem();
         String ipVersion = "";
-        Host srcHost = (Host)this.jComboBoxSrcHost.getSelectedItem();
+        Host srcHost = (Host) this.jComboBoxSrcHost.getSelectedItem();
         String srcPort = this.jTextFieldSrcPort.getText().toString();
-        Host dstHost = (Host)this.jComboBoxDstHost.getSelectedItem();
+        Host dstHost = (Host) this.jComboBoxDstHost.getSelectedItem();
         String dstPort = this.jTextFieldDstPort.getText().toString();
-        String portType = (String)this.jComboBoxPortType.getSelectedItem();
-        if(portType.equals("-"))
-            portType="";
+        String portType = (String) this.jComboBoxPortType.getSelectedItem();
+        if (portType.equals("-")) {
+            portType = "";
+        }
         int rate = Integer.parseInt(jTextFieldRate.getText());
         int burst = Integer.parseInt(jTextFieldBurst.getText());
-        
-        
-        switch(ipVersionBox){
+
+        switch (ipVersionBox) {
             case "IPv4":
                 ipVersion = "4";
                 break;
@@ -284,37 +289,34 @@ public class NuevoMeter extends NuevoDialog {
             default:
                 ipVersion = "4";
         }
-        
+
+        //Create JSON
         String json = "";
-        json = "{" +
-        "\"ipVersion\": \""+ ipVersion +"\"," +       
-        "\"srcHost\": \""+ srcHost.getIpList().get(0) +"\"," +
-        "\"srcPort\": \""+ srcPort +"\"," +
-        "\"dstHost\": \""+ dstHost.getIpList().get(0) +"\"," +
-        "\"dstPort\": \""+ dstPort +"\"," +
-        "\"portType\": \"" + portType + "\"," +
-        "\"rate\": " + rate + "," +
-        "\"burst\": "+ burst +
-        "}";    
-        
-        String respuesta = "";
-        System.err.println("\n****\n"+json);
+        json = "{"
+                + "\"ipVersion\": \"" + ipVersion + "\","
+                + "\"srcHost\": \"" + srcHost.getIpList().get(0) + "\","
+                + "\"srcPort\": \"" + srcPort + "\","
+                + "\"dstHost\": \"" + dstHost.getIpList().get(0) + "\","
+                + "\"dstPort\": \"" + dstPort + "\","
+                + "\"portType\": \"" + portType + "\","
+                + "\"rate\": " + rate + ","
+                + "\"burst\": " + burst
+                + "}";
+
+        System.err.println("\n****\n" + json);
         try {
-            HttpTools.doJSONPost(new URL(EntornoTools.endpointMeters+"/"+srcHost.getIpList().get(0)+"/"+dstHost.getIpList().get(0)), json);
-            JDialog respuestaPost = new NewOkCancelDialog(null, true, "Meter añadido correctamente");
-            respuestaPost.setVisible(true);
-            respuestaPost.pack();
+            //POST meter to API REST
+            HttpTools.doJSONPost(new URL(EntornoTools.endpointMeters + "/" + srcHost.getIpList().get(0) + "/" + dstHost.getIpList().get(0)), json);
+            JOptionPane.showMessageDialog(this, "Meter añadido correctamente.", "Nuevo meter", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
-            JDialog errorPost = new NewOkCancelDialog(null, true, "ERROR. No se ha podido añadir el Meter de forma correcta");
-            errorPost.setVisible(true);
-            errorPost.pack();
-            Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "No se ha podido añadir el meter de forma correcta.", "Error meter", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonAddMouseClicked
 
     @Override
     protected void fillComponents() {
-        for(Host h : Entorno.mapHosts.values()){
+        //for each host add host to combobox item
+        for (Host h : Entorno.mapHosts.values()) {
             this.jComboBoxSrcHost.addItem(h);
             this.jComboBoxDstHost.addItem(h);
         }

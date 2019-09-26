@@ -14,6 +14,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import tools.EntornoTools;
 import tools.HttpTools;
 
@@ -168,35 +169,43 @@ public class Registro extends JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Cancel button click event
+     *
+     * @param evt
+     */
     protected void jButtonCancelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonCancelMouseClicked
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jButtonCancelMouseClicked
 
+    /**
+     * Register button click event
+     *
+     * @param evt
+     */
     protected void jButtonRegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonRegisterMouseClicked
-        String user = this.jTextFieldUser.getText().toString();
+        //Retrieve GUI info
+        String user = this.jTextFieldUser.getText().toString();        
         String pass1 = new String(this.jTextFieldPassword1.getPassword());
         String pass2 = new String(this.jTextFieldPassword2.getPassword());
+        
+        //If passwords matche
         if (pass1.equals(pass2)) {
+            //Register user
             String json = "{\n"
                     + "   \"user\":\"" + user + "\",\n"
                     + "   \"password\":\"" + pass1 + "\"\n"
                     + "}";
             try {
-                HttpTools.doJSONPost(new URL("http://10.0.1.3:8080/onosapp-v1/rest/register"), json);
-                JDialog respuestaReg = new NewOkCancelDialog(null, true, "Usuario " + this.jTextFieldUser.getText().toString() + " registrado correctamente");
-                respuestaReg.setVisible(true);
-                respuestaReg.pack();
+                HttpTools.doJSONPost(new URL("http://"+EntornoTools.apiHost+":8080/onosapp-v1/rest/register"), json);
+                JOptionPane.showMessageDialog(this, "Usuario " + this.jTextFieldUser.getText().toString() + " registrado correctamente.", "Usuario registrado", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
                 Logger.getLogger(Registro.class.getName()).log(Level.SEVERE, null, ex);
-                JDialog respuestaReg = new NewOkCancelDialog(null, true, "Error al registrar el usuario.");
-                respuestaReg.pack();
-                respuestaReg.setVisible(true);
+                JOptionPane.showMessageDialog(this, "Error al registrar el usuario.", "Error registro", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JDialog respuestaReg = new NewOkCancelDialog(null, true, "Los campos de contraseña no coinciden. Vuelva a escribirlos");
-            respuestaReg.pack();
-            respuestaReg.setVisible(true);
+            JOptionPane.showMessageDialog(this, "Los campos de contraseña no coinciden.", "Error contraseñas", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonRegisterMouseClicked
 

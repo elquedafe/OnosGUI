@@ -18,6 +18,7 @@ import tools.EntornoTools;
 import tools.HttpTools;
 
 /**
+ * New queue window
  *
  * @author alvaroluismartinez
  */
@@ -27,7 +28,7 @@ public class NuevoQueue extends NuevoDialog {
      * Creates new form NuevoQueue
      */
     public NuevoQueue() throws IOException {
-        
+
         initComponents();
         EntornoTools.descubrirEntorno();
         EntornoTools.getQueues();
@@ -272,23 +273,24 @@ public class NuevoQueue extends NuevoDialog {
 
     @Override
     protected void jButtonAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMouseClicked
-        String ipVersionBox = (String)this.jComboBoxIpVersion.getSelectedItem();
+        //Retrieve data
+        String ipVersionBox = (String) this.jComboBoxIpVersion.getSelectedItem();
         String ipVersion = "";
-        Host srcHost = (Host)this.jComboBoxSrcHost.getSelectedItem();
+        Host srcHost = (Host) this.jComboBoxSrcHost.getSelectedItem();
         String srcPort = this.jTextFieldSrcPort.getText().toString();
-        Host dstHost = (Host)this.jComboBoxDstHost.getSelectedItem();
+        Host dstHost = (Host) this.jComboBoxDstHost.getSelectedItem();
         String dstPort = this.jTextFieldDstPort.getText().toString();
-        String portType = (String)this.jComboBoxPortType.getSelectedItem();
-        if(portType.equals("-"))
-            portType="";
-        
-        try{
+        String portType = (String) this.jComboBoxPortType.getSelectedItem();
+        if (portType.equals("-")) {
+            portType = "";
+        }
+
+        try {
             int minRate = Integer.parseInt(jTextFieldMinRate.getText());
             int maxRate = Integer.parseInt(jTextFieldMaxRate.getText());
             int burst = Integer.parseInt(jTextFieldBurst.getText());
 
-
-            switch(ipVersionBox){
+            switch (ipVersionBox) {
                 case "IPv4":
                     ipVersion = "4";
                     break;
@@ -299,35 +301,31 @@ public class NuevoQueue extends NuevoDialog {
                     ipVersion = "4";
             }
 
+            //Create JSON
             String json = "";
-            json = "{" +
-            "\"ipVersion\": \""+ ipVersion +"\"," +       
-            "\"srcHost\": \""+ srcHost.getIpList().get(0) +"\"," +
-            "\"srcPort\": \""+ srcPort +"\"," +
-            "\"dstHost\": \""+ dstHost.getIpList().get(0) +"\"," +
-            "\"dstPort\": \""+ dstPort +"\"," +
-            "\"portType\": \"" + portType + "\"," +
-            "\"minRate\": " + minRate + "," +
-            "\"maxRate\": " + maxRate + "," +
-            "\"burst\": "+ burst +
-            "}";    
+            json = "{"
+                    + "\"ipVersion\": \"" + ipVersion + "\","
+                    + "\"srcHost\": \"" + srcHost.getIpList().get(0) + "\","
+                    + "\"srcPort\": \"" + srcPort + "\","
+                    + "\"dstHost\": \"" + dstHost.getIpList().get(0) + "\","
+                    + "\"dstPort\": \"" + dstPort + "\","
+                    + "\"portType\": \"" + portType + "\","
+                    + "\"minRate\": " + minRate + ","
+                    + "\"maxRate\": " + maxRate + ","
+                    + "\"burst\": " + burst
+                    + "}";
 
-            String respuesta = "";
-            System.err.println("\n****\n"+json);
+            System.err.println("\n****\n" + json);
             try {
+                //POST queue
                 HttpTools.doJSONPost(new URL(EntornoTools.endpointQueues), json);
-                JDialog respuestaPost = new NewOkCancelDialog(null, true, "Queue añadido correctamente");
-                respuestaPost.setVisible(true);
-                respuestaPost.pack();
+                JOptionPane.showMessageDialog(this, "Cola añadida correctamente.", "Nueva cola", JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
-                JDialog errorPost = new NewOkCancelDialog(null, true, "ERROR. No se ha podido añadir la Queue de forma correcta");
-                errorPost.setVisible(true);
-                errorPost.pack();
-                Logger.getLogger(NuevoFlujo.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "No se ha podido añadir la cola de forma correcta.", "Error cola", JOptionPane.ERROR_MESSAGE);
             }
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Seleccione parámetros de Max rate, Min rate y burst válidos", "Parametros no validos", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Parametros no validos", "Seleccione parámetros de Max rate, Min rate y burst válidos", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonAddMouseClicked
 
@@ -338,15 +336,12 @@ public class NuevoQueue extends NuevoDialog {
 
     @Override
     protected void fillComponents() {
-        for(Host h : Entorno.mapHosts.values()){
+        for (Host h : Entorno.mapHosts.values()) {
             this.jComboBoxSrcHost.addItem(h);
             this.jComboBoxDstHost.addItem(h);
         }
     }
 
-
-
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
@@ -376,6 +371,5 @@ public class NuevoQueue extends NuevoDialog {
     private javax.swing.JTextField jTextFieldMinRate;
     private javax.swing.JTextField jTextFieldSrcPort;
     // End of variables declaration//GEN-END:variables
-
 
 }

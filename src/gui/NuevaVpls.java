@@ -18,11 +18,13 @@ import javax.swing.DefaultListModel;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.ListCellRenderer;
 import tools.EntornoTools;
 import tools.HttpTools;
 
 /**
+ * New VPLS window
  *
  * @author alvaroluismartinez
  */
@@ -135,11 +137,6 @@ public class NuevaVpls extends NuevoDialog {
                 jButtonAddMouseClicked(evt);
             }
         });
-        jButtonAdd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAddActionPerformed(evt);
-            }
-        });
 
         jLabelRate.setText("Min. Rate:");
 
@@ -241,40 +238,44 @@ public class NuevaVpls extends NuevoDialog {
 
     @Override
     protected void jButtonAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMouseClicked
-        String json = "{\n" +
-        "	\"vplsName\":\""+ this.jTextFieldVplsName.getText() +"\",\n" +
-        "	\"hosts\" : [";
-        for(Host h : this.jListHosts.getSelectedValuesList()){
-            json += "\""+h.getIpList().get(0)+"\",";
+        String vplsName = this.jTextFieldVplsName.getText();
+        String maxRate = this.jTextFieldMaxRate.getText();
+
+        //Create JSON to post
+        String json = "{\n"
+                + "	\"vplsName\":\"" + vplsName + "\",\n"
+                + "	\"hosts\" : [";
+        for (Host h : this.jListHosts.getSelectedValuesList()) {
+            json += "\"" + h.getIpList().get(0) + "\",";
         }
-        if(json.endsWith(","))
-            json = json.substring(0, json.length()-1);
+        if (json.endsWith(",")) {
+            json = json.substring(0, json.length() - 1);
+        }
         json += "]\n";
-        if(!this.jTextFieldMaxRate.getText().isEmpty() && !this.jTextFieldBurst.getText().isEmpty() && this.jTextFieldMinRate.getText().isEmpty()){
+        if (!maxRate.isEmpty() && !this.jTextFieldBurst.getText().isEmpty() && this.jTextFieldMinRate.getText().isEmpty()) {
             json += ",\n"
-                    + "\"maxRate\":"+this.jTextFieldMaxRate.getText().toString()+",\n" +
-                    "\"minRate\":-1,\n" +
-                    "\"burst\":"+this.jTextFieldBurst.getText().toString();
-        }
-        else if(!this.jTextFieldMaxRate.getText().isEmpty() && !this.jTextFieldBurst.getText().isEmpty() && !this.jTextFieldMinRate.getText().isEmpty()){
+                    + "\"maxRate\":" + this.jTextFieldMaxRate.getText().toString() + ",\n"
+                    + "\"minRate\":-1,\n"
+                    + "\"burst\":" + this.jTextFieldBurst.getText().toString();
+        } else if (!this.jTextFieldMaxRate.getText().isEmpty() && !this.jTextFieldBurst.getText().isEmpty() && !this.jTextFieldMinRate.getText().isEmpty()) {
             json += ",\n"
-                    + "\"maxRate\":"+this.jTextFieldMaxRate.getText().toString()+",\n" +
-                    "\"minRate\":"+this.jTextFieldMinRate.getText().toString()+",\n" +
-                    "\"burst\":"+this.jTextFieldBurst.getText().toString();
+                    + "\"maxRate\":" + this.jTextFieldMaxRate.getText().toString() + ",\n"
+                    + "\"minRate\":" + this.jTextFieldMinRate.getText().toString() + ",\n"
+                    + "\"burst\":" + this.jTextFieldBurst.getText().toString();
         }
         json += "}";
-        
-        System.out.println(EntornoTools.endpoint+"/vpls/"+this.jTextFieldVplsName.getText()+ " -->" +json);
+
+        System.out.println(EntornoTools.endpoint + "/vpls/" + this.jTextFieldVplsName.getText() + " -->" + json);
+
         try {
-            
-                HttpTools.doJSONPost(new URL(EntornoTools.endpointVpls + "/" + this.jTextFieldVplsName.getText()), json);
-            
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(NuevaVpls.class.getName()).log(Level.SEVERE, null, ex);
+            HttpTools.doJSONPost(new URL(EntornoTools.endpointVpls + "/" + this.jTextFieldVplsName.getText()), json);
+            JOptionPane.showMessageDialog(this, "VPLS " + vplsName + " añadida correctamente.", "Nueva VPLS", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
             Logger.getLogger(NuevaVpls.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "No se ha podido añadir la VPLS: " + vplsName + " correctamente.", "VPLS error", JOptionPane.ERROR_MESSAGE);
         }
-        
+
+
     }//GEN-LAST:event_jButtonAddMouseClicked
 
     @Override
@@ -282,11 +283,12 @@ public class NuevaVpls extends NuevoDialog {
         dispose();
     }//GEN-LAST:event_jButtonCancelMouseClicked
 
-    private void jButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonAddActionPerformed
-
-    
+    @Override
+    protected void fillComponents() {
+        for (Host h : Entorno.mapHosts.values()) {
+            ((DefaultListModel) jListHosts.getModel()).addElement(h);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdd;
@@ -310,17 +312,4 @@ public class NuevaVpls extends NuevoDialog {
     private javax.swing.JTextField jTextFieldVplsName;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    protected void fillComponents() {
-//        DefaultListModel listModel = (DefaultListModel) jListHosts.getModel();
-//        for(Host h : Entorno.mapHosts.values()){
-//            listModel.addElement(h.toString());
-//        }
-        
-        for(Host h : Entorno.mapHosts.values()){
-            ((DefaultListModel) jListHosts.getModel()).addElement(h);
-        }
-//        jListHosts.setListData((Host[]) Entorno.mapHosts.values().toArray());
-    }
-    
 }

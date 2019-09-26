@@ -3,29 +3,28 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/onosConfig.properties</file>
-            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Flow.java</file>
-            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/tools/HttpTools.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/NuevoMeter.java</file>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/tools/HttpTools.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/tools/GuiTools.java</file>
-            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Queue.java</file>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/Conectando.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/tools/EntornoTools.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Port.java</file>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Vpls.java</file>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Band.java</file>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/FlowInfo.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/NuevoFlujoSocket.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/Registro.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/tools/NodeClickListener.java</file>
-            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Entorno.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/NuevoFlujo.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/NuevaVpls.java</file>
-            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/css/estilo.css</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/tools/TimerTools.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/tools/JsonManager.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/OnosFrame.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/NuevoDialog.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/Principal.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/gui/NuevoQueue.java</file>
+            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Cluster.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Switch.java</file>
-            <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/tools/EdgeClickListener.java</file>
             <file>file:/Users/alvaroluismartinez/NetBeansProjects/OnosGUI/src/arquitectura/Meter.java</file>
         </group>
     </open-files>
