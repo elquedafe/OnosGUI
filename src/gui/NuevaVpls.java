@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -26,7 +27,8 @@ import tools.HttpTools;
 /**
  * New VPLS window
  *
- * @author alvaroluismartinez
+ * @author Alvaro Lus Martinez
+ * @version 1.0
  */
 public class NuevaVpls extends NuevoDialog {
 
@@ -238,30 +240,38 @@ public class NuevaVpls extends NuevoDialog {
 
     @Override
     protected void jButtonAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAddMouseClicked
-        String vplsName = this.jTextFieldVplsName.getText();
-        String maxRate = this.jTextFieldMaxRate.getText();
-
+        String vplsName = this.jTextFieldVplsName.getText().toString();
+        List<Host> hostsList = this.jListHosts.getSelectedValuesList();
+        String maxRate = this.jTextFieldMaxRate.getText().toString();
+        String minRate = this.jTextFieldMinRate.getText().toString();
+        String burst = this.jTextFieldBurst.getText().toString();
+        
+        if(!minRate.isEmpty()){
+            JOptionPane.showMessageDialog(this, "VPLS with queues not implemented", "VPLS error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         //Create JSON to post
         String json = "{\n"
                 + "	\"vplsName\":\"" + vplsName + "\",\n"
                 + "	\"hosts\" : [";
-        for (Host h : this.jListHosts.getSelectedValuesList()) {
+        for (Host h : hostsList) {
             json += "\"" + h.getIpList().get(0) + "\",";
         }
         if (json.endsWith(",")) {
             json = json.substring(0, json.length() - 1);
         }
         json += "]\n";
-        if (!maxRate.isEmpty() && !this.jTextFieldBurst.getText().isEmpty() && this.jTextFieldMinRate.getText().isEmpty()) {
+        if (!maxRate.isEmpty() && !burst.isEmpty() && minRate.isEmpty()) {
             json += ",\n"
-                    + "\"maxRate\":" + this.jTextFieldMaxRate.getText().toString() + ",\n"
+                    + "\"maxRate\":" + maxRate + ",\n"
                     + "\"minRate\":-1,\n"
-                    + "\"burst\":" + this.jTextFieldBurst.getText().toString();
-        } else if (!this.jTextFieldMaxRate.getText().isEmpty() && !this.jTextFieldBurst.getText().isEmpty() && !this.jTextFieldMinRate.getText().isEmpty()) {
+                    + "\"burst\":" + burst;
+        } else if (!maxRate.isEmpty() && !burst.isEmpty() && !minRate.isEmpty()) {
             json += ",\n"
-                    + "\"maxRate\":" + this.jTextFieldMaxRate.getText().toString() + ",\n"
-                    + "\"minRate\":" + this.jTextFieldMinRate.getText().toString() + ",\n"
-                    + "\"burst\":" + this.jTextFieldBurst.getText().toString();
+                    + "\"maxRate\":" + maxRate + ",\n"
+                    + "\"minRate\":" + minRate + ",\n"
+                    + "\"burst\":" + burst;
         }
         json += "}";
 

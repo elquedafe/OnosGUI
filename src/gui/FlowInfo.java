@@ -17,7 +17,8 @@ import java.util.Map.Entry;
 /**
  * Flow information window.
  *
- * @author alvaroluismartinez
+ * @author Alvaro Lus Martinez
+ * @version 1.0
  */
 public class FlowInfo extends javax.swing.JDialog {
 

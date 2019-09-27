@@ -41,8 +41,9 @@ import javax.swing.table.DefaultTableModel;
 import tools.*;
 
 /**
- *
- * @author alvaroluismartinez
+ * Main window
+ * @author Alvaro Lus Martinez
+ * @version 1.0
  */
 public class Principal extends javax.swing.JFrame {
 
@@ -894,7 +895,7 @@ public class Principal extends javax.swing.JFrame {
         card.show(jPanelCard, jPanelLinks.getName());
         Principal p = this;
         // Change label appearence
-        GuiTools.pressLabel(jLabelEnlaces, labels);
+        EntornoTools.pressLabel(jLabelEnlaces, labels);
 
         // If any of these timers are, running stop them
         TimerTools.stopTimer(timerFlows);
@@ -980,7 +981,7 @@ public class Principal extends javax.swing.JFrame {
         card.show(jPanelCard, jPanelFlows.getName());
         Principal p = this;
         // Change label appearence
-        GuiTools.pressLabel(jLabelFlows, labels);
+        EntornoTools.pressLabel(jLabelFlows, labels);
 
         // Stop timers
         TimerTools.stopTimer(timerDevices);
@@ -1233,7 +1234,7 @@ public class Principal extends javax.swing.JFrame {
         card.show(jPanelCard, this.jPanelTopologia.getName());
 
         // Change label appearence
-        GuiTools.pressLabel(jLabelTopologia, labels);
+        EntornoTools.pressLabel(jLabelTopologia, labels);
 
         //Stop all timers
         TimerTools.stopTimer(timerDevices);
@@ -1285,7 +1286,7 @@ public class Principal extends javax.swing.JFrame {
         card.show(jPanelCard, jTabbedPaneQoS.getName());
 
         // Change label appearence
-        GuiTools.pressLabel(jLabelQoS, labels);
+        EntornoTools.pressLabel(jLabelQoS, labels);
 
         //Stop timers
         TimerTools.stopTimer(timerDevices);
@@ -1361,7 +1362,7 @@ public class Principal extends javax.swing.JFrame {
         card.show(jPanelCard, jPanelVpls.getName());
         Principal p = this;
         // Change label appearence
-        GuiTools.pressLabel(jLabelVpls, labels);
+        EntornoTools.pressLabel(jLabelVpls, labels);
 
         //Stop timers
         TimerTools.stopTimer(timerDevices);
@@ -1620,7 +1621,7 @@ public class Principal extends javax.swing.JFrame {
         card.show(jPanelCard, jPanelStatistics.getName());
 
         // Change label appearence
-        GuiTools.pressLabel(jLabelEnlaces, labels);
+        EntornoTools.pressLabel(jLabelEnlaces, labels);
 
         // If any of these timers are, running stop them
         TimerTools.stopTimer(timerFlows);

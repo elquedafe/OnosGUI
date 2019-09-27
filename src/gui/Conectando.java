@@ -8,8 +8,9 @@ package gui;
 import javax.swing.JButton;
 
 /**
- *
- * @author alvaroluismartinez
+ * Connecting window
+ * @author Alvaro Lus Martinez
+ * @version 1.0
  */
 public class Conectando extends javax.swing.JDialog {
 

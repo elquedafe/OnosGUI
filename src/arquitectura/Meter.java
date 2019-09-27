@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- *
- * @author alvaroluismartinez
+ * Represents a meter
+ * @author Alvaro Luis Martinez
+ * @version 1.0
  */
 public class Meter {
     private String id;

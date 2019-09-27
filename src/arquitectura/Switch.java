@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents a switch
+ * @author Alvaro Luis Martinez
+ * @version 1.0
+ */
 public class Switch {
 
     private String id;

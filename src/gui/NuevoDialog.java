@@ -10,7 +10,8 @@ import javax.swing.JDialog;
 /**
  * Represent a new add resource window
  *
- * @author alvaroluismartinez
+ * @author Alvaro Lus Martinez
+ * @version 1.0
  */
 public abstract class NuevoDialog extends JDialog {
 

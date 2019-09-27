@@ -24,7 +24,8 @@ import tools.JsonManager;
 /**
  * New basic flow window
  *
- * @author alvaroluismartinez
+ * @author Alvaro Lus Martinez
+ * @version 1.0
  */
 public class NuevoFlujo extends NuevoDialog {
 

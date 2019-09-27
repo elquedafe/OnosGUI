@@ -20,7 +20,8 @@ import tools.HttpTools;
 /**
  * New meter window
  *
- * @author alvaroluismartinez
+ * @author Alvaro Lus Martinez
+ * @version 1.0
  */
 public class NuevoMeter extends NuevoDialog {
 

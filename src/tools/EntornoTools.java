@@ -37,8 +37,11 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.SoftBevelBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import org.graphstream.algorithm.Toolkit;
@@ -60,8 +63,9 @@ import org.graphstream.ui.view.ViewerListener;
 import org.graphstream.ui.view.ViewerPipe;
 
 /**
- *
- * @author alvaroluismartinez
+ * Represents GUI and general methods.
+ * @author Alvaro Lus Martinez
+ * @version 1.0
  */
 public class EntornoTools {
 
@@ -86,8 +90,9 @@ public class EntornoTools {
     public static JsonManager parser;
 
     /**
+     * Get network environment
      *
-     * @throws IOException
+     * @throws IOException network error
      */
     public static void descubrirEntorno() throws IOException {
         String json;
@@ -96,7 +101,7 @@ public class EntornoTools {
     }
 
     /**
-     *
+     * Updates links in GUI.
      */
     public static void actualizarGUILinks(DefaultListModel<Link> modeloListaLinks, Map<String, Switch> sws) {
         List<Link> l = null;
@@ -104,6 +109,14 @@ public class EntornoTools {
         cargarAllLinks(modeloListaLinks);
     }
 
+    /**
+     * Delete duplicated links.
+     *
+     * @param sws collection of switchs
+     * @param nuevoLink new link
+     * @param modeloListaLinks link list model
+     * @return
+     */
     private static boolean eliminarDuplicado(Collection<Switch> sws, Link nuevoLink, DefaultListModel<Link> modeloListaLinks) {
         boolean b = false;
         int i = 0;
@@ -123,9 +136,15 @@ public class EntornoTools {
         return b;
     }
 
-    public static void actualizarGUIFlows(DefaultListModel<Flow> modeloListaFlows, Collection<Switch> values) {
+    /**
+     * Updates flows GUI.
+     *
+     * @param modeloListaFlows flow list model
+     * @param switches switches
+     */
+    public static void actualizarGUIFlows(DefaultListModel<Flow> modeloListaFlows, Collection<Switch> switches) {
         modeloListaFlows.clear();
-        for (Switch auxswitch : values) {
+        for (Switch auxswitch : switches) {
             for (Flow flow : auxswitch.getMapFlows().values()) {
                 modeloListaFlows.addElement(flow);
             }
@@ -134,13 +153,14 @@ public class EntornoTools {
     }
 
     /**
+     * Updates flows table.
      *
-     * @param table
-     * @param values
+     * @param table jtable
+     * @param switches switches
      */
-    public static void actualizarGUIFlowsTable(JTable table, Collection<Switch> values) {
+    public static void actualizarGUIFlowsTable(JTable table, Collection<Switch> switches) {
         ((DefaultTableModel) table.getModel()).setRowCount(0);
-        for (Switch auxswitch : values) {
+        for (Switch auxswitch : switches) {
             for (Flow flow : auxswitch.getMapFlows().values()) {
                 Object[] array = flow.toArray();
                 ((DefaultTableModel) table.getModel()).addRow(array);
@@ -148,6 +168,12 @@ public class EntornoTools {
         }
     }
 
+    /**
+     * Update meters table.
+     *
+     * @param table meters jtable
+     * @param meters list of meters
+     */
     public static void actualizarGUIMetersTable(JTable table, List<Meter> meters) {
         //Delete table
         ((DefaultTableModel) table.getModel()).setRowCount(0);
@@ -160,6 +186,11 @@ public class EntornoTools {
         }
     }
 
+    /**
+     * Update switches combobox.
+     *
+     * @param box jcombobox
+     */
     public static void actualizarBoxSwitches(JComboBox box) {
         for (Switch s : Entorno.mapSwitches.values()) {
             if (s.getAvailable()) {
@@ -169,6 +200,12 @@ public class EntornoTools {
         }
     }
 
+    /**
+     * Updates flow table by switch
+     *
+     * @param table flow jtable
+     * @param s switch to filter
+     */
     public static void actualizarGUIFlowsTableSwitch(JTable table, Switch s) {
         ((DefaultTableModel) table.getModel()).setRowCount(0);
         for (Flow flow : s.getMapFlows().values()) {
@@ -178,14 +215,17 @@ public class EntornoTools {
     }
 
     /**
-     * Update topology GUI
-     * @param panel 
+     * Update topology GUI.
+     *
+     * @param panel topology panel
      */
     public static void actualizarGUITopologia(JPanel panel) {
+        Node sw = null;
+
         //Reset panel
         panel.removeAll();
         int nNodos = 0;
-        
+
         //Graph properties
         if (graph == null) {
             System.setProperty("org.graphstream.ui.renderer", "org.graphstream.ui.j2dviewer.J2DGraphRenderer");
@@ -194,52 +234,44 @@ public class EntornoTools {
             graph.addAttribute("ui.antialias");
             graph.addAttribute("ui.quality");
         } else {
-
             graph.clear();
             graph.addAttribute("ui.stylesheet", "url('src/css/estilo.css')");
             graph.addAttribute("ui.antialias");
             graph.addAttribute("ui.quality");
 
         }
-        
+
         //Paint switches
         for (Switch s : Entorno.mapSwitches.values()) {
+            //Avoid painting ovsdb server
             if (!s.getId().contains("ovsdb")) {
                 nNodos++;
                 System.out.println("Switch id: " + s.getId());
                 Point3 xyz = Toolkit.nodePointPosition(graph, s.getId());
+                //Avoid unavailable switches
                 if (s.getAvailable()) {
                     graph.removeNode(s.getId());
                     graph.addNode(s.getId());
-                    Node sw = graph.getNode(s.getId());
+                    sw = graph.getNode(s.getId());
 
                     if (xyz != null) {
                         sw.setAttribute("xyz", xyz.x, xyz.y, xyz.z);
                     }
-                    if (s.getAvailable()) {
-                        sw.addAttribute("ui.class", "switch");
-                    }
-
+                    sw.addAttribute("ui.class", "switch");
                     sw.addAttribute("ui.label", sw.getId());
-                } else {
-                    //sw.addAttribute("ui.class", "switchUnavailable");
                 }
+                //Paint links
                 for (Link l : s.getListLinks()) {
                     System.out.println("Ids links: " + l.getSrc() + "<->" + l.getDst());
                     graph.removeEdge(l.toString() + "1");
-                    //                graph.removeEdge(l.toString()+"2");
                     graph.addEdge(l.toString() + "1", l.getSrc(), l.getDst());
-                    //                graph.addEdge(l.toString()+"2", l.getDst(), l.getSrc());
                     Edge ed1 = graph.getEdge(l.toString() + "1");
-                    //                Edge ed2 = graph.getEdge(l.toString()+"2");
                     ed1.addAttribute("ui.label", l.getSrc() + "/" + l.getSrcPort() + "-" + l.getDst() + "/" + l.getDstPort());
-                    //                ed2.addAttribute("ui.hide");
-                    //                ed2.addAttribute("ui.label", l.getDst() + "/" + l.getDstPort());
 
                 }
             }
         }
-        
+
         //Paint hosts
         for (Host h : Entorno.mapHosts.values()) {
             nNodos++;
@@ -281,13 +313,14 @@ public class EntornoTools {
                 pipe.addAttributeSink(graph);
             }
             panel.add((DefaultView) view);
-        } 
+        }
         panel.add((DefaultView) view);
     }
 
     /**
-     * Read all links from API REST
-     * @param modelo 
+     * Read all links from API REST.
+     *
+     * @param modelo default link model
      */
     private static void cargarAllLinks(DefaultListModel<Link> modelo) {
         for (Switch s : Entorno.mapSwitches.values()) {
@@ -301,10 +334,11 @@ public class EntornoTools {
     }
 
     /**
-     * Check duplicated links and delete it
-     * @param modelo
-     * @param l
-     * @return 
+     * Check duplicated links and delete it if it is.
+     *
+     * @param modelo link list model
+     * @param l link
+     * @return if link is duplicated
      */
     private static boolean duplicado(DefaultListModel<Link> modelo, Link l) {
         boolean b = false;
@@ -321,8 +355,9 @@ public class EntornoTools {
     }
 
     /**
-     * Get meters info from API REST
-     * @throws IOException 
+     * Get meters info from API REST.
+     *
+     * @throws IOException network error
      */
     public static void getMeters() throws IOException {
         String json;
@@ -333,8 +368,9 @@ public class EntornoTools {
     }
 
     /**
-     * Get queues info from API REST
-     * @throws IOException 
+     * Get queues info from API REST.
+     *
+     * @throws IOException network error
      */
     public static void getQueues() throws IOException {
         String json;
@@ -345,13 +381,12 @@ public class EntornoTools {
     }
 
     /**
-     * Get VPLS info from API REST
-     * @throws IOException 
+     * Get VPLS info from API REST.
+     *
+     * @throws IOException network error
      */
-    public static void getVpls() throws IOException {
-        // TODO Auto-generated method stub
+    public static void getVpls() throws IOException {      
         String json = "";
-        List<Vpls> vplsList = null;
 
         json = HttpTools.doJSONGet(new URL(EntornoTools.endpointVpls));
         JsonManager.parseoVpls(json);
@@ -359,8 +394,9 @@ public class EntornoTools {
     }
 
     /**
-     * Get meters by switch id
-     * @param swId
+     * Get meters by switch id.
+     *
+     * @param swId switch id
      * @return meters list with switch id
      */
     public static List<Meter> getMetersBySwitch(String swId) {
@@ -377,9 +413,10 @@ public class EntornoTools {
     }
 
     /**
-     * Update GUI VPLS table
-     * @param jTableVpls
-     * @param vpls 
+     * Update GUI VPLS table.
+     *
+     * @param jTableVpls vpls jtable
+     * @param vpls list of vpls
      */
     public static void actualizarGUIVplsTable(JTable jTableVpls, List<Vpls> vpls) {
         //Delete table
@@ -394,8 +431,9 @@ public class EntornoTools {
     }
 
     /**
-     * Check if user is admin
-     * @return 
+     * Check if user is admin.
+     *
+     * @return if user is admin
      */
     public static boolean isAdmin() {
         Gson gson = new Gson();
@@ -413,9 +451,10 @@ public class EntornoTools {
     }
 
     /**
-     * Update GUI queues table
-     * @param table
-     * @param queues 
+     * Updates GUI queues table.
+     *
+     * @param table queues jtable
+     * @param queues list of queues
      */
     public static void actualizarGUIQueuesTable(JTable table, List<Queue> queues) {
         //Delete table rows
@@ -430,23 +469,39 @@ public class EntornoTools {
     }
 
     /**
-     * Read DDBB queues info
-     * @throws IOException 
+     * Load DDBB queues info.
+     *
+     * @throws IOException network error
      */
     public static void loadQueuesIntoDB() throws IOException {
         EntornoTools.getQueues();
     }
 
     /**
-     * Adds default queues if not exists
+     * Adds default queues if not exists.
      */
     public static void addDefaultQueues() {
         try {
             HttpTools.doJSONPost(new URL(EntornoTools.endpointQueues), "");
         } catch (MalformedURLException ex) {
-            
+
         } catch (IOException ex) {
-            
+
+        }
+    }
+    
+    /**
+     * Press label change action.
+     * @param label
+     * @param labels 
+     */
+    public static void pressLabel(JLabel label, List<JLabel> labels) {
+        for (JLabel l : labels) {
+            if (l.getName().equals(label.getName())) {
+                l.setBorder(new SoftBevelBorder(BevelBorder.LOWERED));
+            } else {
+                l.setBorder(new SoftBevelBorder(BevelBorder.RAISED));
+            }
         }
     }
 

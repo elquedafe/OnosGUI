@@ -28,7 +28,9 @@ import org.graphstream.ui.view.ViewerPipe;
  * each event trigger the pump to the graph stream library
  *
  * @author brandon
- *
+ * @author Alvaro Luis Martinez
+ * @version 1.0
+ * Alvaro added button released code
  */
 public class NodeClickListener implements ViewerListener, MouseInputListener {
 
@@ -130,7 +132,7 @@ public class NodeClickListener implements ViewerListener, MouseInputListener {
     }
 
     /**
-     * Event when button is released
+     * Event when button is released.
      */
     public void buttonReleased(String id) {
         endTime = System.nanoTime();

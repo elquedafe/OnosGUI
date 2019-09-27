@@ -1,5 +1,10 @@
 package arquitectura;
 
+/**
+ * Represents a link
+ * @author Alvaro Luis Martinez
+ * @version 1.0
+ */
 public class Link {
 	private String src;
 	private String srcPort;

@@ -9,15 +9,16 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 /**
- *
- * @author alvaroluismartinez
+ * Represents the timer manager
+ * @author Alvaro Lus Martinez
+ * @version 1.0
  */
 public class TimerTools {
 
     /**
-     * Run timer
-     * @param timer
-     * @param timeout
+     * Runs timer.
+     * @param timer timer to run
+     * @param timeout time to timer to repeat
      * @return 
      */
     public static Timer runTimer(Timer timer, ActionListener timeout) {
@@ -32,8 +33,8 @@ public class TimerTools {
     }
 
     /**
-     * Stops timer
-     * @param timer 
+     * Stops timer.
+     * @param timer timer to stop
      */
     public static void stopTimer(Timer timer) {
         if (timer != null && timer.isRunning()) {

@@ -7,9 +7,12 @@ import java.util.Vector;
 
 /**
  * Represent a network flow.
- * @author alvaroluismartinez
+ *
+ * @author Alvaro Luis Martinez
+ * @version 1.0
  */
 public class Flow {
+
     private String id;
     private String tableId;
     private String appId;
@@ -27,6 +30,11 @@ public class Flow {
     private FlowTreatment flowTreatment;
     private FlowSelector flowSelector;
 
+    /**
+     * Flow constructor
+     *
+     * @param id flow id
+     */
     public Flow(String id) {
         this.id = id;
         this.tableId = "-1";
@@ -46,6 +54,26 @@ public class Flow {
         this.flowSelector = null;
     }
 
+    /**
+     * Flow constructor
+     *
+     * @param id flow id
+     * @param tableId table id
+     * @param appId app id
+     * @param groupId group id
+     * @param priority priority
+     * @param timeout timeout
+     * @param isPermanent is permanent
+     * @param deviceId device id
+     * @param state state
+     * @param life life time
+     * @param packets packets number
+     * @param bytes bytes number
+     * @param liveType live type
+     * @param lastSeen last seen
+     * @param flowTreatment flow treatment
+     * @param flowSelector flow selector
+     */
     public Flow(String id, String tableId, String appId, int groupId, int priority, int timeout, boolean isPermanent, String deviceId, String state, int life, int packets, int bytes, String liveType, double lastSeen, FlowTreatment flowTreatment, FlowSelector flowSelector) {
         this.id = id;
         this.tableId = tableId;
@@ -64,9 +92,10 @@ public class Flow {
         this.flowTreatment = flowTreatment;
         this.flowSelector = flowSelector;
     }
-    
+
     /**
      * Return flow id.
+     *
      * @return flow id
      */
     public String getId() {
@@ -75,7 +104,8 @@ public class Flow {
 
     /**
      * Set flow id.
-     * @param id 
+     *
+     * @param id
      */
     public void setId(String id) {
         this.id = id;
@@ -83,6 +113,7 @@ public class Flow {
 
     /**
      * Return table id,
+     *
      * @return table id
      */
     public String getTableId() {
@@ -91,7 +122,8 @@ public class Flow {
 
     /**
      * Set table id.
-     * @param tableId 
+     *
+     * @param tableId
      */
     public void setTableId(String tableId) {
         this.tableId = tableId;
@@ -99,6 +131,7 @@ public class Flow {
 
     /**
      * Return app id.
+     *
      * @return app id.
      */
     public String getAppId() {
@@ -107,7 +140,8 @@ public class Flow {
 
     /**
      * Set app id.
-     * @param appId 
+     *
+     * @param appId
      */
     public void setAppId(String appId) {
         this.appId = appId;
@@ -115,6 +149,7 @@ public class Flow {
 
     /**
      * Return group id.
+     *
      * @return group id
      */
     public int getGroupId() {
@@ -123,7 +158,8 @@ public class Flow {
 
     /**
      * Set group id.
-     * @param groupId 
+     *
+     * @param groupId
      */
     public void setGroupId(int groupId) {
         this.groupId = groupId;
@@ -131,7 +167,8 @@ public class Flow {
 
     /**
      * Return flow priority.
-     * @return 
+     *
+     * @return
      */
     public int getPriority() {
         return priority;
@@ -139,7 +176,8 @@ public class Flow {
 
     /**
      * Set flow priority.
-     * @param priority 
+     *
+     * @param priority
      */
     public void setPriority(int priority) {
         this.priority = priority;
@@ -147,6 +185,7 @@ public class Flow {
 
     /**
      * Return timeout.
+     *
      * @return timeout
      */
     public int getTimeout() {
@@ -155,7 +194,8 @@ public class Flow {
 
     /**
      * Set timeout.
-     * @param timeout 
+     *
+     * @param timeout
      */
     public void setTimeout(int timeout) {
         this.timeout = timeout;
@@ -163,6 +203,7 @@ public class Flow {
 
     /**
      * Return if flow is permanent.
+     *
      * @return is permanent
      */
     public boolean isIsPermanent() {
@@ -171,7 +212,8 @@ public class Flow {
 
     /**
      * Set is permanent.
-     * @param isPermanent 
+     *
+     * @param isPermanent
      */
     public void setIsPermanent(boolean isPermanent) {
         this.isPermanent = isPermanent;
@@ -179,6 +221,7 @@ public class Flow {
 
     /**
      * Return switch id.
+     *
      * @return switch id
      */
     public String getDeviceId() {
@@ -187,7 +230,8 @@ public class Flow {
 
     /**
      * Set switch id.
-     * @param deviceId 
+     *
+     * @param deviceId
      */
     public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
@@ -195,6 +239,7 @@ public class Flow {
 
     /**
      * Return flow state.
+     *
      * @return flow state
      */
     public String getState() {
@@ -203,7 +248,8 @@ public class Flow {
 
     /**
      * Set flow state.
-     * @param state 
+     *
+     * @param state
      */
     public void setState(String state) {
         this.state = state;
@@ -211,6 +257,7 @@ public class Flow {
 
     /**
      * Return flow life.
+     *
      * @return flow life
      */
     public int getLife() {
@@ -219,7 +266,8 @@ public class Flow {
 
     /**
      * Set flow life.
-     * @param life 
+     *
+     * @param life
      */
     public void setLife(int life) {
         this.life = life;
@@ -227,6 +275,7 @@ public class Flow {
 
     /**
      * Get flow packets number.
+     *
      * @return packets.
      */
     public int getPackets() {
@@ -235,7 +284,8 @@ public class Flow {
 
     /**
      * Set packet number.
-     * @param packets 
+     *
+     * @param packets
      */
     public void setPackets(int packets) {
         this.packets = packets;
@@ -243,6 +293,7 @@ public class Flow {
 
     /**
      * Return bytes number.
+     *
      * @return bytes number
      */
     public int getBytes() {
@@ -251,7 +302,8 @@ public class Flow {
 
     /**
      * Set bytes.
-     * @param bytes 
+     *
+     * @param bytes
      */
     public void setBytes(int bytes) {
         this.bytes = bytes;
@@ -259,6 +311,7 @@ public class Flow {
 
     /**
      * Return live type.
+     *
      * @return live type
      */
     public String getLiveType() {
@@ -267,7 +320,8 @@ public class Flow {
 
     /**
      * Set live type.
-     * @param liveType 
+     *
+     * @param liveType
      */
     public void setLiveType(String liveType) {
         this.liveType = liveType;
@@ -275,6 +329,7 @@ public class Flow {
 
     /**
      * Return last seen
+     *
      * @return last seen
      */
     public double getLastSeen() {
@@ -283,7 +338,8 @@ public class Flow {
 
     /**
      * Set last seen
-     * @param lastSeen 
+     *
+     * @param lastSeen
      */
     public void setLastSeen(double lastSeen) {
         this.lastSeen = lastSeen;
@@ -291,7 +347,8 @@ public class Flow {
 
     /**
      * Return floe selector.
-     * @return 
+     *
+     * @return
      */
     public FlowSelector getFlowSelector() {
         return flowSelector;
@@ -299,61 +356,68 @@ public class Flow {
 
     /**
      * Set flow selector.
-     * @param flowSelector 
+     *
+     * @param flowSelector
      */
     public void setFlowSelector(FlowSelector flowSelector) {
         this.flowSelector = flowSelector;
     }
-    
+
     /**
      * Return flow treatment.
+     *
      * @return flow treatment
      */
-    public FlowTreatment getFlowTreatment(){
+    public FlowTreatment getFlowTreatment() {
         return this.flowTreatment;
     }
 
     /**
-     * Override toString.
-     * @return String representation
+     * Override toString
      */
     @Override
     public String toString() {
-        return this.deviceId+ "=" + this.id + "\t--> " + "\t| " + this.packets+ " paquetes\t|\t" + this.bytes + " bytes" + "\t|\t" + this.priority;
+        return this.deviceId + "=" + this.id + "\t--> " + "\t| " + this.packets + " paquetes\t|\t" + this.bytes + " bytes" + "\t|\t" + this.priority;
     }
 
     /**
-     * Override equals.
-     * @param obj flow to compare
-     * @return is equal
+     * Override equals
      */
     @Override
     public boolean equals(Object obj) {
         Flow o = null;
-        if(obj == null)
-                return false;
-        else
-                o = (Flow) obj;
+        if (obj == null) {
+            return false;
+        } else {
+            o = (Flow) obj;
+        }
 
-        if(this.id.equals(o.getId()))
-                return true;
+        if (this.id.equals(o.getId())) {
+            return true;
+        }
 
         return false;
     }
 
     /**
      * Override toArray.
+     *
      * @return object array
      */
-    public Object[] toArray(){
+    public Object[] toArray() {
         Vector<Object> v = new Vector<Object>();
-        v.add(this.deviceId); v.add(this.id); v.add(this.priority); v.add(this.state);
+        v.add(this.deviceId);
+        v.add(this.id);
+        v.add(this.priority);
+        v.add(this.state);
         String crits = "";
-        for(FlowCriteria criteria : flowSelector.getListFlowCriteria()){
+        for (FlowCriteria criteria : flowSelector.getListFlowCriteria()) {
             Entry<String, String> c = criteria.getCriteria();
-            crits += criteria.getType() +"="+ c.getValue() +"; \n";
+            crits += criteria.getType() + "=" + c.getValue() + "; \n";
         }
-        v.add(crits); v.add(this.packets); v.add(this.bytes);
+        v.add(crits);
+        v.add(this.packets);
+        v.add(this.bytes);
         Object[] array = v.toArray();
         return array;
     }

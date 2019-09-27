@@ -24,7 +24,8 @@ import tools.JsonManager;
 /**
  * New flow intent window
  *
- * @author alvaroluismartinez
+ * @author Alvaro Lus Martinez
+ * @version 1.0
  */
 public class NuevoFlujoSocket extends NuevoDialog {
 

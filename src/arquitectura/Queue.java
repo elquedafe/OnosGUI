@@ -8,8 +8,9 @@ package arquitectura;
 import java.util.Vector;
 
 /**
- *
- * @author alvaroluismartinez
+ * Represents a queue
+ * @author Alvaro Luis Martinez
+ * @version 1.0
  */
 public class Queue {
         private long queueId;

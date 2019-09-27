@@ -10,7 +10,8 @@ import java.util.Map;
 
 /**
  * Represent flow criteria.
- * @author alvaroluismartinez
+ * @author Alvaro Luis Martinez
+ * @version 1.0
  */
 public class FlowCriteria {
     private String type;

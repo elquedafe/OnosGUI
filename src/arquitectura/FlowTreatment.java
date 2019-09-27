@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author alvaroluismartinez
+ * Represent flow treatment.
+ * @author Alvaro Luis Martinez
+ * @version 1.0
  */
 public class FlowTreatment {
     private List<FlowInstruction> flowInstructions;

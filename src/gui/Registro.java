@@ -19,8 +19,9 @@ import tools.EntornoTools;
 import tools.HttpTools;
 
 /**
- *
- * @author alvaroluismartinez
+ * Register window
+ * @author Alvaro Lus Martinez
+ * @version 1.0
  */
 public class Registro extends JDialog {
 
@@ -190,7 +191,7 @@ public class Registro extends JDialog {
         String pass1 = new String(this.jTextFieldPassword1.getPassword());
         String pass2 = new String(this.jTextFieldPassword2.getPassword());
         
-        //If passwords matche
+        //If passwords matches
         if (pass1.equals(pass2)) {
             //Register user
             String json = "{\n"

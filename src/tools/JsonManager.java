@@ -39,12 +39,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static tools.EntornoTools.endpoint;
 
+/**
+ * Represents a JSON parser
+ * @author Alvaro Lus Martinez
+ * @version 1.0
+ */
 public class JsonManager {
 
     /**
      * Parsers network meters
      *
-     * @param json
+     * @param json json to parse
      */
     static void parseoMeters(String json) {
         Gson gson = new Gson();
@@ -61,7 +66,7 @@ public class JsonManager {
     /**
      * Parses network queues
      *
-     * @param json
+     * @param json json to parse
      */
     static void parseoQueues(String json) {
         Gson gson = new Gson();
@@ -79,7 +84,7 @@ public class JsonManager {
     /**
      * Parses the network environment
      *
-     * @param json
+     * @param json json to parse
      */
     static void parseoEntorno(String json) {
         Gson gson = new Gson();
@@ -115,7 +120,7 @@ public class JsonManager {
     /**
      * Parses network VPLS
      *
-     * @param json
+     * @param json json to parse
      */
     public static void parseoVpls(String json) {
         Gson gson = new Gson();

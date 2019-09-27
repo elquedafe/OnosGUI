@@ -43,7 +43,8 @@ import tools.JsonManager;
 /**
  * Login window
  *
- * @author alvaroluismartinez
+ * @author Alvaro Lus Martinez
+ * @version 1.0
  */
 public class OnosFrame extends javax.swing.JFrame {
 
@@ -426,7 +427,7 @@ public class OnosFrame extends javax.swing.JFrame {
                 } else {
                     sufix = "users";
                 }
-                
+
                 //Get endpoints
                 EntornoTools.endpointEnvironment = endpoint + "/" + sufix + "/environment";
                 EntornoTools.endpointFlows = endpoint + "/" + sufix + "/flows";

@@ -15,14 +15,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
 
+/**
+ * Represents a HTTP manager.
+ * @author Alvaro Lus Martinez
+ * @version 1.0
+ */
 public class HttpTools {
 
     /**
-     * Do POST
-     * @param url
-     * @param body
-     * @return
-     * @throws IOException 
+     * Do POST.
+     * @param url url to POST
+     * @param body json to POST
+     * @return HTTP code
+     * @throws IOException network error 
      */
     public static int doJSONPost(URL url, String body) throws IOException {
         String encoding;
@@ -48,19 +53,9 @@ public class HttpTools {
             osw.write(body);
             osw.flush();
 
-            /*InputStream content = (InputStream)connection.getInputStream();
-            in = new BufferedReader (new InputStreamReader (content));
-            while ((line = in.readLine()) != null) {
-                response += line+"\n";
-            }*/
             connection.getInputStream();
             response = connection.getResponseCode();
-
-            /*InputStream contentError = (InputStream)connection.getErrorStream();
-            inError = new BufferedReader (new InputStreamReader (content));
-            while ((line = inError.readLine()) != null) {
-                response += line+"\n";
-            }*/
+            
             System.out.println("from doJSONPost -> "
                     + "respuesta: " + response);
         } catch (IOException e) {
@@ -83,10 +78,10 @@ public class HttpTools {
     }
 
     /**
-     * Do DELETE
-     * @param url
-     * @return
-     * @throws IOException 
+     * Do DELETE.
+     * @param url url to delete
+     * @return response
+     * @throws IOException  network error
      */
     public static String doDelete(URL url) throws IOException {
         String encoding;
@@ -106,12 +101,8 @@ public class HttpTools {
             InputStream content = (InputStream) connection.getInputStream();
             in = new BufferedReader(new InputStreamReader(content));
             while ((line = in.readLine()) != null) {
-                //System.out.println(line);
                 response += line + "\n";
             }
-
-//            connection.getInputStream();
-//            response = String.valueOf(connection.getResponseCode());
         } catch (IOException e) {
             throw new IOException(e);
         } finally {
@@ -132,10 +123,10 @@ public class HttpTools {
     }
 
     /**
-     * Do GET
-     * @param url
-     * @return
-     * @throws IOException 
+     * Do GET.
+     * @param url url to GET
+     * @return json retrieved
+     * @throws IOException network error
      */
     public static String doJSONGet(URL url) throws IOException {
         String encoding;
@@ -152,7 +143,6 @@ public class HttpTools {
             BufferedReader in
                     = new BufferedReader(new InputStreamReader(content));
             while ((line = in.readLine()) != null) {
-                //System.out.println(line);
                 json += line + "\n";
             }
         } catch (IOException e) {

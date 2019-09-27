@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
- * @author alvaroluismartinez
+ * Represent flow selector.
+ * @author Alvaro Luis Martinez
+ * @version 1.0
  */
 public class FlowSelector {
     private List<FlowCriteria> flowCriterias;

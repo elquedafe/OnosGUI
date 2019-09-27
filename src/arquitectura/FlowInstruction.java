@@ -10,8 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
- * @author alvaroluismartinez
+ * Represent flow instruction.
+ * @author Alvaro Luis Martinez
+ * @version 1.0
  */
 public class FlowInstruction {
     private String type;
